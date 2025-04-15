@@ -1,6 +1,6 @@
 # Changelog
 
-## [«unknown»](https://github.com/NASA-PDS/peppi/tree/«unknown») (2025-03-03)
+## [«unknown»](https://github.com/NASA-PDS/peppi/tree/«unknown») (2025-04-15)
 
 [Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.5.0...«unknown»)
 
@@ -19,6 +19,7 @@
 - Presentation for planetarypy TEchnocal commitee [\#86](https://github.com/NASA-PDS/peppi/issues/86)
 - Improve online documentation [\#82](https://github.com/NASA-PDS/peppi/issues/82)
 - Update OrexProduct to be a subset of the Osiris Rex mission instead of the OVIRS instrument [\#76](https://github.com/NASA-PDS/peppi/issues/76)
+- Check why roundup does not create the reference api documentation [\#75](https://github.com/NASA-PDS/peppi/issues/75)
 - Implement queries which work across mission [\#71](https://github.com/NASA-PDS/peppi/issues/71)
 
 ## [v0.5.0](https://github.com/NASA-PDS/peppi/tree/v0.5.0) (2024-12-08)
