@@ -89,6 +89,8 @@ class ProductsTestCase(unittest.TestCase):
             if n > self.MAX_ITERATIONS:
                 break
 
+        assert n > 0
+
     def test_products_with_target(self):
         test_cases = [
             {"title": "mars", "expected_lid": "urn:nasa:pds:context:target:planet.mars"},
@@ -266,6 +268,17 @@ class ProductsTestCase(unittest.TestCase):
             assert node_name in p.properties["ops:Harvest_Info.ops:node_name"]
             if n > self.MAX_ITERATIONS:
                 break
+
+    def test_has_target_mercury_observationals(self):
+        n = 0
+        for p in self.products.has_target("mercury").observationals():
+            n += 1
+            assert p.properties["ref_lid_target"][0] == "urn:nasa:pds:context:target:planet.mercury"
+            assert p.properties["product_class"][0] == "Product_Observational"
+            if n > self.MAX_ITERATIONS:
+                break
+
+        assert n == self.MAX_ITERATIONS + 1
 
 
 if __name__ == "__main__":
