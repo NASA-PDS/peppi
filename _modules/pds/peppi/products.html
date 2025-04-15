@@ -49,7 +49,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../reference.html">Library Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../support/contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../support/contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../support/contribute.html#report-a-bug-or-new-feature-request">Report a Bug or New Feature Request</a></li>
 </ul>
 
         </div>
@@ -79,16 +78,17 @@
   <h1>Source code for pds.peppi.products</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Main class of the library in this module.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">.client</span> <span class="kn">import</span> <span class="n">PDSRegistryClient</span>
-<span class="kn">from</span> <span class="nn">.result_set</span> <span class="kn">import</span> <span class="n">ResultSet</span>
+<span class="kn">from</span> <span class="nn">.query_builder</span> <span class="kn">import</span> <span class="n">QueryBuilder</span>
 
 
 <div class="viewcode-block" id="Products">
 <a class="viewcode-back" href="../../../reference.html#pds.peppi.products.Products">[docs]</a>
-<span class="k">class</span> <span class="nc">Products</span><span class="p">(</span><span class="n">ResultSet</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Products</span><span class="p">(</span><span class="n">QueryBuilder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Use to access any class of planetary products via the PDS Registry API.</span>
 
-<span class="sd">    This class is both a :class:`.query_builder.QueryBuilder` which carries methods to subset the products</span>
-<span class="sd">    and a :class:`.result_set.ResultSet` which can be iterated on or converted to for example a pandas DataFrame</span>
+<span class="sd">    This class is an inheritor of :class:`.query_builder.QueryBuilder`, which</span>
+<span class="sd">    carries methods to subset the products, and which can be iterated on or</span>
+<span class="sd">    converted to a pandas DataFrame.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Products.__init__">
@@ -101,7 +101,7 @@
 <span class="sd">        client : PDSRegistryClient</span>
 <span class="sd">            Client defining the connexion with the PDS Search API</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">ResultSet</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">client</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

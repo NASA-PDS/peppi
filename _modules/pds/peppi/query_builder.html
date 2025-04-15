@@ -49,7 +49,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../reference.html">Library Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../support/contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../support/contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../support/contribute.html#report-a-bug-or-new-feature-request">Report a Bug or New Feature Request</a></li>
 </ul>
 
         </div>
@@ -83,11 +82,17 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">.client</span> <span class="kn">import</span> <span class="n">PDSRegistryClient</span>
+<span class="kn">from</span> <span class="nn">.result_set</span> <span class="kn">import</span> <span class="n">ResultSet</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-
 
 <span class="n">PROCESSING_LEVELS</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;telemetry&quot;</span><span class="p">,</span> <span class="s2">&quot;raw&quot;</span><span class="p">,</span> <span class="s2">&quot;partially-processed&quot;</span><span class="p">,</span> <span class="s2">&quot;calibrated&quot;</span><span class="p">,</span> <span class="s2">&quot;derived&quot;</span><span class="p">]</span>
 <span class="sd">&quot;&quot;&quot;Processing level values that can be used with has_processing_level()&quot;&quot;&quot;</span>
@@ -100,10 +105,12 @@
 
 <div class="viewcode-block" id="QueryBuilder.__init__">
 <a class="viewcode-back" href="../../../reference.html#pds.peppi.query_builder.QueryBuilder.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">PDSRegistryClient</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a new instance of the QueryBuilder class.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span> <span class="o">=</span> <span class="n">ResultSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QueryBuilder.__str__">
@@ -113,7 +120,38 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  and&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;and&quot;</span><span class="p">))</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_add_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clause</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryBuilder.__iter__">
+<a class="viewcode-back" href="../../../reference.html#pds.peppi.query_builder.QueryBuilder.__iter__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterates over all products returned by the current query filter applied to this Products instance.</span>
+
+<span class="sd">        This method handles pagination automatically by fetching additional pages</span>
+<span class="sd">        from the PDS Registry API as needed. Once all available pages and results</span>
+<span class="sd">        have been yielded, this method will reset this Products instance to a</span>
+<span class="sd">        default state which can be used to perform a new query.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        product : pds.api_client.models.pds_product.PDSProduct</span>
+<span class="sd">            The next product within the current page fetched from the PDS Registry</span>
+<span class="sd">            API.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="o">.</span><span class="n">init_new_page</span><span class="p">(</span><span class="n">query_string</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">product</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="c1"># Make sure we got the StopIteration that was converted to a RuntimeError,</span>
+                <span class="c1"># otherwise we need to re-raise</span>
+                <span class="k">if</span> <span class="s2">&quot;StopIteration&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">err</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+                <span class="k">break</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_add_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clause</span><span class="p">,</span> <span class="n">logical_join</span><span class="o">=</span><span class="s2">&quot;and&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds the provided clause to the query string to use on the next fetch of products from the Registry API.</span>
 
 <span class="sd">        Repeated calls to this method results in a joining with any previously</span>
@@ -135,6 +173,11 @@
 <span class="sd">        clause : str</span>
 <span class="sd">            The query clause to append. Clause should match the domain language</span>
 <span class="sd">            expected by the PDS Registry API</span>
+<span class="sd">        logical_join : str, optional</span>
+<span class="sd">            The logical operator to use to join the new clause with any existing</span>
+<span class="sd">            clauses. Must be one of &quot;and&quot; or &quot;or&quot; (case-insensitive). This</span>
+<span class="sd">            argument has no effect if this is the first clause to be added.</span>
+<span class="sd">            Defaults to &quot;and&quot;.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -143,9 +186,18 @@
 <span class="sd">            over from a previous query.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO transition off usage of this function to build a query string</span>
+        <span class="c1">#      in response to each user method call.</span>
+        <span class="c1">#      rather, have each user call track state about what was requested,</span>
+        <span class="c1">#      and then only assemble the final query string when __iter__ is called.</span>
+        <span class="c1">#      this should allow us flexibility to assemble individual sub-clauses</span>
+        <span class="c1">#      with logical OR, then join all sub-clauses together with logical AND.</span>
+        <span class="k">if</span> <span class="n">logical_join</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;and&quot;</span><span class="p">,</span> <span class="s2">&quot;or&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid logical join operator &quot;</span><span class="si">{</span><span class="n">logical_join</span><span class="si">}</span><span class="s1">&quot;, must be either &quot;and&quot; or &quot;or&quot;.&#39;</span><span class="p">)</span>
+
         <span class="c1"># TODO have something more agnostic of what the iterator is</span>
-        <span class="c1"># since the iterator is not managed by this present object</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_page_counter&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_counter</span><span class="p">:</span>
+        <span class="c1">#      since the iterator is not managed by this present object</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="p">,</span> <span class="s2">&quot;_page_counter&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="o">.</span><span class="n">_page_counter</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                 <span class="s2">&quot;Cannot modify query while paginating over previous query results.</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;Use the reset() method on this Products instance or exhaust all returned &quot;</span>
@@ -153,29 +205,61 @@
             <span class="p">)</span>
 
         <span class="n">clause</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">clause</span><span class="si">}</span><span class="s2">)&quot;</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and </span><span class="si">{</span><span class="n">clause</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">logical_join</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">clause</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span> <span class="o">=</span> <span class="n">clause</span>
 
+    <span class="k">def</span> <span class="nf">_has_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifiers</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a query clause from 1 or n, target lids, apply OR operator between lids.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">identifiers</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">identifiers</span> <span class="o">=</span> <span class="p">[</span><span class="n">identifiers</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">identifiers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">clause</span> <span class="o">=</span> <span class="s2">&quot;or &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;ref_lid_target eq &quot;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">identifiers</span><span class="p">])</span>
+            <span class="c1"># add parenthesis to force the precendence on the &#39;or&#39; operator</span>
+            <span class="n">clause</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">clause</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_clause</span><span class="p">(</span><span class="n">clause</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No target filter defined, ignore&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
 <div class="viewcode-block" id="QueryBuilder.has_target">
 <a class="viewcode-back" href="../../../reference.html#pds.peppi.query_builder.QueryBuilder.has_target">[docs]</a>
-    <span class="k">def</span> <span class="nf">has_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a query clause selecting products having a given target identifier.</span>
+    <span class="k">def</span> <span class="nf">has_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a query clause selecting products having a given target as a lid or a keyword.</span>
+
+<span class="sd">        Adds a query clause selecting products having a given target as a lid</span>
+<span class="sd">        (for example `urn:nasa:pds:context:target:planet.mercury`) or a keyword, for example `Mercury`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        identifier : str</span>
-<span class="sd">            Identifier (LIDVID) of the target.</span>
+<span class="sd">        target : str</span>
+<span class="sd">            Identifier (LID) of the target or a keyword matching the title of the target.</span>
+<span class="sd">            The provided keyword is &quot;cannonicalized&quot; into several variations</span>
+<span class="sd">            (uppercase, lowercase, etc.) to cast a wider search across target names.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;has target&quot; query filter applied.</span>
+<span class="sd">        This instance with the &quot;has target&quot; query filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">clause</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ref_lid_target eq &quot;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_add_clause</span><span class="p">(</span><span class="n">clause</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;urn:&quot;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finding products with target lid &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="n">lids</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="nd">@cache</span>
+            <span class="k">def</span> <span class="nf">_get_lids_from_title</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">list</span><span class="p">({</span><span class="n">p</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s2">&quot;lid&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">QueryBuilder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span><span class="o">.</span><span class="n">contexts</span><span class="p">(</span><span class="n">k</span><span class="p">)})</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finding products with target &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="n">lids</span> <span class="o">=</span> <span class="n">_get_lids_from_title</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Found </span><span class="si">%d</span><span class="s1"> product(s) matching target &quot;</span><span class="si">%s</span><span class="s1">&quot;, lids are: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lids</span><span class="p">),</span> <span class="n">target</span><span class="p">,</span> <span class="n">lids</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_target</span><span class="p">(</span><span class="n">lids</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QueryBuilder.has_investigation">
@@ -190,7 +274,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;has investigation&quot; query filter applied.</span>
+<span class="sd">        This instance with the &quot;has investigation&quot; query filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clause</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ref_lid_investigation eq &quot;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
@@ -210,7 +294,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;before&quot; filter applied.</span>
+<span class="sd">        This instance with the &quot;before&quot; filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">iso8601_datetime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
@@ -231,7 +315,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;before&quot; filter applied.</span>
+<span class="sd">        This instance with the &quot;before&quot; filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">iso8601_datetime</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
@@ -252,7 +336,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;Parent Collection&quot; filter applied.</span>
+<span class="sd">        This instance with the &quot;Parent Collection&quot; filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clause</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ops:Provenance.ops:parent_collection_identifier eq &quot;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
@@ -267,7 +351,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;Observational Product&quot; filter applied.</span>
+<span class="sd">        This instance with the &quot;Observational Product&quot; filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clause</span> <span class="o">=</span> <span class="s1">&#39;product_class eq &quot;Product_Observational&quot;&#39;</span>
@@ -288,7 +372,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;Product Collection&quot; filter applied.</span>
+<span class="sd">        This instance with the &quot;Product Collection&quot; filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clause</span> <span class="o">=</span> <span class="s1">&#39;product_class eq &quot;Product_Collection&quot;&#39;</span>
@@ -308,11 +392,49 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;Product Bundle&quot; filter applied.</span>
+<span class="sd">        This instance with the &quot;Product Bundle&quot; filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clause</span> <span class="o">=</span> <span class="s1">&#39;product_class eq &quot;Product_Bundle&quot;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_clause</span><span class="p">(</span><span class="n">clause</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="QueryBuilder.contexts">
+<a class="viewcode-back" href="../../../reference.html#pds.peppi.query_builder.QueryBuilder.contexts">[docs]</a>
+    <span class="k">def</span> <span class="nf">contexts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keyword</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a query clause selecting only &quot;Context&quot; type products (targets, investigations, instruments, etc...).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        keyword : str, optional</span>
+<span class="sd">            Title of the context products. Automatically search for &quot;cannonicalized&quot; variations</span>
+<span class="sd">            (uppercase, lowercase, etc.) to cast a wider search across target names.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        This instance with the &quot;Product Context&quot; filter applied.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clause</span> <span class="o">=</span> <span class="s1">&#39;product_class eq &quot;Product_Context&quot;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_clause</span><span class="p">(</span><span class="n">clause</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">keyword</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">_canonicalize_string</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span> <span class="n">string</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">string</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+            <span class="k">def</span> <span class="nf">eq_cannonical_string_clause</span><span class="p">(</span><span class="n">property_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot; or &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">property_name</span><span class="si">}</span><span class="s1"> eq &quot;</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">_canonicalize_string</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+            <span class="n">q_string</span> <span class="o">=</span> <span class="n">eq_cannonical_string_clause</span><span class="p">(</span><span class="s2">&quot;pds:Identification_Area.pds:title&quot;</span><span class="p">,</span> <span class="n">keyword</span><span class="p">)</span>
+            <span class="n">q_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; or </span><span class="si">{</span><span class="n">eq_cannonical_string_clause</span><span class="p">(</span><span class="s1">&#39;pds:Alias.pds:alternate_title&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="c1"># add parenthesis to enforce the expected precedence on the or operator.</span>
+            <span class="n">q_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">q_string</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_clause</span><span class="p">(</span><span class="n">q_string</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
@@ -328,7 +450,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;has instrument&quot; filter applied.</span>
+<span class="sd">        This instance with the &quot;has instrument&quot; filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clause</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ref_lid_instrument eq &quot;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
@@ -348,7 +470,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;has instrument host&quot; filter applied.</span>
+<span class="sd">        This instance with the &quot;has instrument host&quot; filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clause</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;ref_lid_instrument_host eq &quot;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
@@ -369,7 +491,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;has processing level&quot; filter applied.</span>
+<span class="sd">        This instance with the &quot;has processing level&quot; filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clause</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;pds:Primary_Result_Summary.pds:processing_level eq &quot;</span><span class="si">{</span><span class="n">processing_level</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
@@ -441,10 +563,11 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the &quot;LIDVID identifier&quot; filter applied.</span>
+<span class="sd">        This instance with the &quot;LIDVID identifier&quot; filter applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_add_clause</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;lidvid like &quot;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+        <span class="c1"># Note: use of &quot;like&quot; is currently broken in the API when combined with other clauses</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_clause</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;lidvid eq &quot;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span> <span class="n">logical_join</span><span class="o">=</span><span class="s2">&quot;or&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
@@ -464,14 +587,75 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        clause : str</span>
-<span class="sd">            A custom query clause.</span>
+<span class="sd">            A query clause using the</span>
+<span class="sd">            `PDS API query syntax &lt;https://nasa-pds.github.io/pds-api/guides/search/endpoints.html#query-string-syntax&gt;`_</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        This Products instance with the provided filtering clause applied.</span>
+<span class="sd">        This instance with the provided filtering clause applied.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_clause</span><span class="p">(</span><span class="n">clause</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="QueryBuilder.as_dataframe">
+<a class="viewcode-back" href="../../../reference.html#pds.peppi.query_builder.QueryBuilder.as_dataframe">[docs]</a>
+    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the found products as a pandas DataFrame.</span>
+
+<span class="sd">        Loops on the products found and returns a pandas DataFrame with the product properties as columns</span>
+<span class="sd">        and their identifier as index.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        max_rows : int</span>
+<span class="sd">            Optional limit in the number of products returned in the dataframe. Convenient for test while developing.</span>
+<span class="sd">            Default is no limit (None)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        The products as a pandas dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result_as_dict_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">lidvid_index</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">result_as_dict_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">properties</span><span class="p">)</span>
+            <span class="n">lidvid_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">max_rows</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="n">max_rows</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">result_as_dict_list</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">lidvid_index</span><span class="p">)</span>
+
+            <span class="c1"># reduce useless arrays in dataframe columns</span>
+            <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">only_1_element</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">column</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># noqa</span>
+                <span class="k">if</span> <span class="n">only_1_element</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="n">column</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># noqa</span>
+            <span class="k">return</span> <span class="n">df</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Query with clause </span><span class="si">%s</span><span class="s2"> did not return any products.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span><span class="p">)</span>  <span class="c1"># noqa</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="QueryBuilder.reset">
+<a class="viewcode-back" href="../../../reference.html#pds.peppi.query_builder.QueryBuilder.reset">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets internal pagination state to default.</span>
+
+<span class="sd">        This method should be called before making any modifications to the</span>
+<span class="sd">        query clause stored by this QueryBuilder instance while still paginating</span>
+<span class="sd">        through the results of a previous query.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
 </div>
 
 </pre></div>
