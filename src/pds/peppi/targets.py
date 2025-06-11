@@ -36,8 +36,7 @@ class Targets:
 
     When the code of the target is know it can be accessed with the code:
 
-        client = pep.PDSRegistryClient()
-        context = pep.Context(client)
+        context = pep.Context()
         context.TARGETS.JUPITER
 
     When the code is not known yet, search with line:

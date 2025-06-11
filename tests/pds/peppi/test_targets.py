@@ -5,8 +5,7 @@ import pds.peppi as pep
 
 class TargetsTestCase(unittest.TestCase):
     def setUp(self) -> None:
-        client = pep.PDSRegistryClient()
-        context = pep.Context(client)
+        context = pep.Context()
         self.targets = context.TARGETS
 
     def test_targets(self):
