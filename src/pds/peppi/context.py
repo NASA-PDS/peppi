@@ -8,7 +8,7 @@ class Context:
     """Aggregation of all the context products  (targets, investigations, instruments...) known in the PDS."""
 
     def __init__(self, client: PDSRegistryClient = None):
-        """Contructor."""
+        """Constructor."""
         if client is None:
             client = PDSRegistryClient()
         self.__context_products__ = Products(client).contexts()

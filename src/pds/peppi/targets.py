@@ -14,22 +14,6 @@ class Target:
     type: str
     description: str
 
-    @property
-    def tokens(self):
-        """Not used.
-
-        Was proposed to search against all text available in the object
-        but it is not efficient as it created false match when the description
-        contains something like "unlike jupiter", it matches with jupiter
-        unless we had a semantically aware search, which we don't know.
-        :return:
-        """
-        tokens = set()
-        for value in vars(self).values():
-            for token in str(value).lower().split(" "):
-                tokens.add(token)
-        return tokens
-
 
 class Targets:
     """Searchable enumeration of the planetary bodies, called targets, described in the Planetary Data System.
