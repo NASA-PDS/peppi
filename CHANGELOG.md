@@ -1,8 +1,17 @@
 # Changelog
 
-## [release/0.6.0](https://github.com/NASA-PDS/peppi/tree/release/0.6.0) (2025-04-15)
+## [0.5.0](https://github.com/NASA-PDS/peppi/tree/0.5.0) (2025-06-25)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.5.0...release/0.6.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.6.0...0.5.0)
+
+**Requirements:**
+
+- As a user, I want to use predefined/constant/searchable objects for the known targets [\#99](https://github.com/NASA-PDS/peppi/issues/99)
+- As a developer, I want to install pds.peppi in a conda environment [\#63](https://github.com/NASA-PDS/peppi/issues/63)
+
+## [v0.6.0](https://github.com/NASA-PDS/peppi/tree/v0.6.0) (2025-04-15)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.5.0...v0.6.0)
 
 **Requirements:**
 
