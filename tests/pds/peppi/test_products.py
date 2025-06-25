@@ -270,15 +270,13 @@ class ProductsTestCase(unittest.TestCase):
                 break
 
     def test_has_target_mercury_observationals(self):
-        n = 0
-        for p in self.products.has_target("mercury").observationals():
-            n += 1
+        for i, p in enumerate(self.products.has_target("mercury").observationals()):
             assert p.properties["ref_lid_target"][0] == "urn:nasa:pds:context:target:planet.mercury"
             assert p.properties["product_class"][0] == "Product_Observational"
-            if n > self.MAX_ITERATIONS:
+            if i > self.MAX_ITERATIONS:
                 break
 
-        assert n == self.MAX_ITERATIONS + 1
+        assert i == self.MAX_ITERATIONS + 1
 
 
 if __name__ == "__main__":

@@ -17,3 +17,6 @@ for i, p in enumerate(products):
     # there a lot of there data, break after a couple of hundreds
     if i > 200:
         break
+
+
+pep.Context().TARGETS
