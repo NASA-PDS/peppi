@@ -6,7 +6,7 @@ Peppi is meant to be simple to start with.
 
 It brings you to the core of your research in a few lines of code.
 
-The following code has been tested with **Python 3.11**.
+The following code has been tested with **Python 3.13**.
 
 
 
@@ -46,12 +46,18 @@ Alternate filter methods can be found in the :doc:`reference`
     # mercury identifier in PDS, find it, in the type "target"
     # in the `PDS keyword search <https://pds.nasa.gov/datasearch/keyword-search/search.jsp>`_
     mercury_id = "urn:nasa:pds:context:target:planet.mercury"
-
     # filter here:
     products = pep.Products(client).has_target(mercury_id).before(date1).observationals()
 
 
-Iterate on the results:
+You can even simplify the last line, selecting the target from its name, as follows:
+
+.. code-block:: python
+
+    products = pep.Products(client).has_target("mercury").before(date1).observationals()
+
+
+Then iterate on the results:
 
 .. code-block:: python
 

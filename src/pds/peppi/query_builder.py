@@ -140,7 +140,6 @@ class QueryBuilder:
     def has_target(self, target: str):
         """Adds a query clause selecting products having a given target as a lid or a keyword.
 
-        Adds a query clause selecting products having a given target as a lid
         (for example `urn:nasa:pds:context:target:planet.mercury`) or a keyword, for example `Mercury`.
 
         Parameters
