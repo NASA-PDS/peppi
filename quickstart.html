@@ -86,7 +86,7 @@
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h1>
 <p>Peppi is meant to be simple to start with.</p>
 <p>It brings you to the core of your research in a few lines of code.</p>
-<p>The following code has been tested with <strong>Python 3.11</strong>.</p>
+<p>The following code has been tested with <strong>Python 3.13</strong>.</p>
 <section id="try-it">
 <h2>Try it<a class="headerlink" href="#try-it" title="Link to this heading"></a></h2>
 <p>Install:</p>
@@ -109,12 +109,15 @@ Alternate filter methods can be found in the <a class="reference internal" href=
 <span class="c1"># mercury identifier in PDS, find it, in the type &quot;target&quot;</span>
 <span class="c1"># in the `PDS keyword search &lt;https://pds.nasa.gov/datasearch/keyword-search/search.jsp&gt;`_</span>
 <span class="n">mercury_id</span> <span class="o">=</span> <span class="s2">&quot;urn:nasa:pds:context:target:planet.mercury&quot;</span>
-
 <span class="c1"># filter here:</span>
 <span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="n">mercury_id</span><span class="p">)</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Iterate on the results:</p>
+<p>You can even simplify the last line, selecting the target from its name, as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;mercury&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then iterate on the results:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">investigations</span><span class="p">)</span>
     <span class="c1"># there a lot of data there, break after a couple of hundreds</span>
