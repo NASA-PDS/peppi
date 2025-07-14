@@ -5,7 +5,7 @@ Access planetary datasets from the Planetary Data System (PDS)
 
 ## Prerequisites
 
-N/A
+Tested with python 3.13
 
 
 ## User Quickstart
