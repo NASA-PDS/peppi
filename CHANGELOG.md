@@ -1,8 +1,8 @@
 # Changelog
 
-## [0.5.0](https://github.com/NASA-PDS/peppi/tree/0.5.0) (2025-06-25)
+## [release/0.7.0](https://github.com/NASA-PDS/peppi/tree/release/0.7.0) (2025-07-14)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.6.0...0.5.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.6.0...release/0.7.0)
 
 **Requirements:**
 
@@ -11,7 +11,11 @@
 
 ## [v0.6.0](https://github.com/NASA-PDS/peppi/tree/v0.6.0) (2025-04-15)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.5.0...v0.6.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/release/0.6.0...v0.6.0)
+
+## [release/0.6.0](https://github.com/NASA-PDS/peppi/tree/release/0.6.0) (2025-04-15)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.5.0...release/0.6.0)
 
 **Requirements:**
 
