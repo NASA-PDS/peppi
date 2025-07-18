@@ -39,6 +39,20 @@ class ProductsTestCase(unittest.TestCase):
         for field in non_selected_fields_examples:
             assert field not in p.properties
 
+    def test_as_dataframe_with_missing_columns(self):
+        start_date = datetime.fromisoformat("1970-03-25T00:00:00")
+        end_date = datetime.fromisoformat("1970-04-01T23:59:59")
+        apollo12_data = (
+            self.products.has_instrument("urn:nasa:pds:context:instrument:pse.a12a")
+            .after(start_date)
+            .before(end_date)
+            .observationals()
+        )
+
+        # Convert to a pandas DataFrame to examine the results
+        df = apollo12_data.as_dataframe(max_rows=10)
+        assert len(df) == 10
+
     def test_as_dataframe(self):
         selected_fields = ["pds:Time_Coordinates.pds:start_date_time", "pds:Time_Coordinates.pds:stop_date_time"]
         df = (
