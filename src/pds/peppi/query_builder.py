@@ -5,6 +5,7 @@ Contains all the methods use to elaborate the PDS4 Information Model queries thr
 import logging
 from datetime import datetime
 from functools import cache
+from functools import partial
 from typing import Literal
 from typing import Optional
 from typing import Union
@@ -490,10 +491,14 @@ class QueryBuilder:
         if n > 0:
             df = pd.DataFrame.from_records(result_as_dict_list, index=lidvid_index)
 
+            def has_dimension(x: dict, column: str) -> bool:
+                return isinstance(x[column], list) and len(x[column]) <= 1
+
             # reduce useless arrays in dataframe columns
             for column in df.columns:
-                only_1_element = df.apply(lambda x: len(x[column]) <= 1, axis=1)  # noqa
-                if only_1_element.all():
+                logger.debug("reducing dimension for column %s", column)
+                need_dimension_reduction = df.apply(partial(has_dimension, column=column), axis=1)
+                if need_dimension_reduction.all():
                     df[column] = df.apply(lambda x: x[column][0], axis=1)  # noqa
             return df
         else:
