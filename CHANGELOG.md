@@ -1,8 +1,16 @@
 # Changelog
 
-## [release/0.7.0](https://github.com/NASA-PDS/peppi/tree/release/0.7.0) (2025-07-14)
+## [0.6.0](https://github.com/NASA-PDS/peppi/tree/0.6.0) (2025-08-13)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.6.0...release/0.7.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.7.0...0.6.0)
+
+**Defects:**
+
+- as\_dataframe method fails [\#102](https://github.com/NASA-PDS/peppi/issues/102) [[s.high](https://github.com/NASA-PDS/peppi/labels/s.high)]
+
+## [v0.7.0](https://github.com/NASA-PDS/peppi/tree/v0.7.0) (2025-07-14)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.6.0...v0.7.0)
 
 **Requirements:**
 
