@@ -56,3 +56,27 @@ This requirement is not impacted by the current version
 
 
 This requirement is not impacted by the current version
+## As a user, I want my query response as a Pandas DataFrame ([#57](https://github.com/NASA-PDS/peppi/issues/57)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to transform binary tables (.dat) in CSVs for all members of a collection ([#60](https://github.com/NASA-PDS/peppi/issues/60)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to read all tables within a collection into a pandas DataFrame ([#61](https://github.com/NASA-PDS/peppi/issues/61)) 
+
+
+This requirement is not impacted by the current version
+## As a developer, I want to install pds.peppi in a conda environment ([#63](https://github.com/NASA-PDS/peppi/issues/63)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to limit the number of fields returned ([#64](https://github.com/NASA-PDS/peppi/issues/64)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to use peppi with python 3.9  ([#66](https://github.com/NASA-PDS/peppi/issues/66)) 
+
+
+This requirement is not impacted by the current version

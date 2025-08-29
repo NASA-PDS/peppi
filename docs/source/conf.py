@@ -10,19 +10,14 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
-
-
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../src'))
 # -- Project information -----------------------------------------------------
 
-# TODO - Update with your project name
-project = 'My PDS Project'
-copyright = '2022 California Institute of Technology'
+project = 'Peppi'
+copyright = '2024 California Institute of Technology'
 author = 'NASA Planetary Data System'
-release = '0.0'
-version = '0.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -37,11 +32,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.autosummary',
-    'sphinx_rtd_theme'
 ]
-
-# Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -65,11 +56,10 @@ html_static_path = ['_static']
 
 html_logo = '_static/images/PDS_Planets.png'
 
-# TODO - Update with your user/org and repo
 html_context = {
     'display_github': True,
     "github_user": "nasa-pds",
-    "github_repo": "template-repo-python",
+    "github_repo": "peppi",
     "github_version": "main/docs/source/"
 }
 
@@ -79,8 +69,6 @@ html_css_files = [
 
 html_theme_options = {
     'canonical_url': '',
-    'logo_only': False,
-    'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
     # Toc options

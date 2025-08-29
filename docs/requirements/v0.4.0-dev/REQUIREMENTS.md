@@ -56,3 +56,15 @@ This requirement is not impacted by the current version
 
 
 This requirement is not impacted by the current version
+## As a user, I want my query response as a Pandas DataFrame ([#57](https://github.com/NASA-PDS/peppi/issues/57)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to transform binary tables (.dat) in CSVs for all members of a collection ([#60](https://github.com/NASA-PDS/peppi/issues/60)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to read all tables within a collection into a pandas DataFrame ([#61](https://github.com/NASA-PDS/peppi/issues/61)) 
+
+
+This requirement is not impacted by the current version
