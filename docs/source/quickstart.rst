@@ -1,6 +1,6 @@
-===========
-Quickstart
-===========
+============
+ Quickstart
+============
 
 Peppi is meant to be simple to start with.
 
