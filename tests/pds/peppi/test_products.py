@@ -1,3 +1,4 @@
+import logging
 import unittest
 from datetime import datetime
 from typing import get_args
@@ -5,8 +6,10 @@ from typing import get_args
 import pds.peppi as pep  # type: ignore
 from pds.api_client import PdsProduct
 
+# logger = logging.getLogger(__name__)
 
-class ClientTestCase(unittest.TestCase):
+
+class ProductsTestCase(unittest.TestCase):
     MAX_ITERATIONS = 1000
     """Maximum number of iterations over query results to perform before ending test."""
 
@@ -35,6 +38,20 @@ class ClientTestCase(unittest.TestCase):
 
         for field in non_selected_fields_examples:
             assert field not in p.properties
+
+    def test_as_dataframe_with_missing_columns(self):
+        start_date = datetime.fromisoformat("1970-03-25T00:00:00")
+        end_date = datetime.fromisoformat("1970-04-01T23:59:59")
+        apollo12_data = (
+            self.products.has_instrument("urn:nasa:pds:context:instrument:pse.a12a")
+            .after(start_date)
+            .before(end_date)
+            .observationals()
+        )
+
+        # Convert to a pandas DataFrame to examine the results
+        df = apollo12_data.as_dataframe(max_rows=10)
+        assert len(df) == 10
 
     def test_as_dataframe(self):
         selected_fields = ["pds:Time_Coordinates.pds:start_date_time", "pds:Time_Coordinates.pds:stop_date_time"]
@@ -78,13 +95,50 @@ class ClientTestCase(unittest.TestCase):
                 break
 
     def test_has_target(self):
-        lidvid = "urn:nasa:pds:context:target:asteroid.65803_didymos"
+        lid = "urn:nasa:pds:context:target:asteroid.65803_didymos"
         n = 0
-        for p in self.products.has_target(lidvid):
+        for p in self.products.has_target(lid):
             n += 1
-            assert lidvid in p.properties["ref_lid_target"]
+            assert lid in p.properties["ref_lid_target"]
             if n > self.MAX_ITERATIONS:
                 break
+
+        assert n > 0
+
+    def test_products_with_target(self):
+        test_cases = [
+            {"title": "mars", "expected_lid": "urn:nasa:pds:context:target:planet.mars"},
+            {"title": "moon", "expected_lid": "urn:nasa:pds:context:target:satellite.earth.moon"},
+            {"title": "saturn", "expected_lid": "urn:nasa:pds:context:target:planet.saturn"},
+        ]
+
+        for test_case in test_cases:
+            title = test_case["title"]
+            n = 0
+            self.products = self.products.has_target(title)
+
+            expected_lid = test_case["expected_lid"]
+            assert str(self.products) == f'((ref_lid_target eq "{expected_lid}"))'
+
+            for p in self.products:
+                n += 1
+                assert expected_lid in p.properties["ref_lid_target"]
+                if n > self.MAX_ITERATIONS:
+                    break
+
+            # Make sure we got at least one result back
+            assert n > 0
+
+            # Reset query builder for next iteration
+            self.products.reset()
+
+    def test_product_has_target_not_found_raise_warning(self):
+        with self.assertLogs(level="INFO") as log:
+            self.products = self.products.has_target("not_existing_target_title")
+            for _ in self.products:
+                break
+
+            self.assertTrue(any(item.startswith("WARNING") for item in log.output))
 
     def test_has_investigation(self):
         lid = "urn:nasa:pds:context:investigation:individual_investigation.lab.hydrocarbon_spectra"
@@ -228,6 +282,15 @@ class ClientTestCase(unittest.TestCase):
             assert node_name in p.properties["ops:Harvest_Info.ops:node_name"]
             if n > self.MAX_ITERATIONS:
                 break
+
+    def test_has_target_mercury_observationals(self):
+        for i, p in enumerate(self.products.has_target("mercury").observationals()):
+            assert p.properties["ref_lid_target"][0] == "urn:nasa:pds:context:target:planet.mercury"
+            assert p.properties["product_class"][0] == "Product_Observational"
+            if i > self.MAX_ITERATIONS:
+                break
+
+        assert i == self.MAX_ITERATIONS + 1
 
 
 if __name__ == "__main__":

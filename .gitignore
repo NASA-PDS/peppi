@@ -139,3 +139,7 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Sphinx output
+docs/html/
+docs/build/
