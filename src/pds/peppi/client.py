@@ -33,7 +33,7 @@ class PDSRegistryClient:
              the official production server, can be specified otherwise.
 
         """
-        self._base_url = base_url
+        self._base_url = base_url.rstrip("/")
         PDSRegistryClient._instances.append(self)
         configuration = Configuration()
         configuration.host = base_url

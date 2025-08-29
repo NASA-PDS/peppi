@@ -19,7 +19,7 @@ class ContextObject:
     def uri(self):
         """Get the URI where the full object can be retrieved."""
         base_url = PDSRegistryClient.get_base_url()
-        return base_url + "products/" + self.lid
+        return base_url + "/products/" + self.lid
 
     def keywords(self) -> str:
         """Specialized as needed to return the keywords used for text search on this object.

@@ -10,6 +10,13 @@ from .query_builder import PDSRegistryClient
 class Context:
     """Aggregation of all the context products  (targets, investigations, instruments...) known in the PDS."""
 
+    # We make this class a singleton.
+    def __new__(cls):
+        """Singleton management."""
+        if not hasattr(cls, "instance"):
+            cls.instance = super(Context, cls).__new__(cls)
+        return cls.instance
+
     def __init__(self, client: PDSRegistryClient = None):
         """Constructor."""
         self.__targets__ = Targets()
