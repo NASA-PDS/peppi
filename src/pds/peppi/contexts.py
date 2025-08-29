@@ -80,7 +80,7 @@ class Targets(ContextObjects):
         )
 
 
-class InstrumentHosts:
+class InstrumentHosts(ContextObjects):
     """Searchable enumeration of the spacecrafts or rovers, called instrument hosts, described in the Planetary Data System.
 
     When the code of the instrument host is know it can be accessed with the code:
