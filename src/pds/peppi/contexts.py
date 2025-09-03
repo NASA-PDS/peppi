@@ -27,9 +27,9 @@ class Context:
         context_products = Products(client).contexts()
 
         for api_item in context_products:
-            if "pds:Target.pds:name" in api_item.properties:
+            if Targets.NAME_PROPERTY in api_item.properties:
                 self.__targets__.add(api_item)
-            elif "pds:Instrument_Host.pds:name" in api_item.properties:
+            elif InstrumentHosts.NAME_PROPERTY in api_item.properties:
                 self.__instrument_hosts__.add(api_item)
 
     @property
@@ -80,16 +80,20 @@ class Targets(ContextObjects):
 
     """
 
+    NAME_PROPERTY = "pds:Target.pds:name"
+    TYPE_PROPERTY = "pds:Target.pds:type"
+    DESCRIPTION_PROPERTY = "pds:Target.pds:description"
+
     @staticmethod
     def api_to_obj(d: dict) -> Target:
         """Transform the RESTFul API product object into the Target object."""
-        code = d.properties["pds:Target.pds:name"][0].upper().replace(" ", "_")
+        code = d.properties[Targets.NAME_PROPERTY][0].upper().replace(" ", "_")
         return Target(
             lid=d.properties["lid"][0],
             code=code,
-            name=d.properties["pds:Target.pds:name"][0],
-            type=d.properties["pds:Target.pds:type"][0],
-            description=d.properties["pds:Target.pds:description"][0],
+            name=d.properties[Targets.NAME_PROPERTY][0],
+            type=d.properties[Targets.TYPE_PROPERTY][0],
+            description=d.properties[Targets.DESCRIPTION_PROPERTY][0],
         )
 
 
@@ -111,16 +115,20 @@ class InstrumentHosts(ContextObjects):
 
     """
 
+    NAME_PROPERTY = "pds:Instrument_Host.pds:name"
+    TYPE_PROPERTY = "pds:Instrument_Host.pds:type"
+    DESCRIPTION_PROPERTY = "pds:Instrument_Host.pds:description"
+
     @staticmethod
     def api_to_obj(instrument_host: dict) -> InstrumentHost:
         """Transform the RESTFul API product object into the Target object."""
-        code = instrument_host.properties["pds:Instrument_Host.pds:name"][0].upper().replace(" ", "_")
-        # TODO use this value as an alias when it exists
+        code = instrument_host.properties[InstrumentHosts.NAME_PROPERTY][0].upper().replace(" ", "_")
+        # TODO use the following value as an alias when it exists
         # code = instrument_host.properties["pds:Instrument_Host.pds:naif_host_id"][0].upper().replace(" ", "_")
         return InstrumentHost(
             lid=instrument_host.properties["lid"][0],
             code=code,
-            name=instrument_host.properties["pds:Instrument_Host.pds:name"][0],
-            type=instrument_host.properties["pds:Instrument_Host.pds:type"][0],
-            description=instrument_host.properties["pds:Instrument_Host.pds:description"][0],
+            name=instrument_host.properties[InstrumentHosts.NAME_PROPERTY][0],
+            type=instrument_host.properties[InstrumentHosts.TYPE_PROPERTY][0],
+            description=instrument_host.properties[InstrumentHosts.DESCRIPTION_PROPERTY][0],
         )

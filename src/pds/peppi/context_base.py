@@ -57,7 +57,7 @@ class ContextObjects:
         :return: similarity from 0.0 to 1.0, 1.0 is perfect match
 
         """
-        s2_tokens = [t for t in s2.split()]
+        s2_tokens = s2.split()
         s1_token_number = len(s1.split())
         # build the combination of tokens which could match the user request
         candidate_match = []
@@ -87,7 +87,6 @@ class ContextObjects:
         """
         scored_objs = []
         for obj in self.__objects__:
-            # search_score = max([difflib.SequenceMatcher(None, term.lower(), k).ratio() for k in obj.keywords().split(" ")])
             search_score = self._custom_similarity(term.lower(), obj.keywords())
             scored_objs.append((obj, search_score))
 

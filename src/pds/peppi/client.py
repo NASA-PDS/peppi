@@ -11,6 +11,11 @@ _DEFAULT_API_BASE_URL = "https://pds.nasa.gov/api/search/1"
 """Default URL used when querying PDS API"""
 
 
+class PDSRegistryClientError(Exception):
+    """PDS Registry Client Exception."""
+    pass
+
+
 class PDSRegistryClient:
     """Used to connect and interface with the PDS Registry.
 
@@ -49,4 +54,4 @@ class PDSRegistryClient:
             return cls._instances[0]._base_url
         else:
             logger.error("No instances found. Cannot find the base URL")
-            return None
+            raise PDSRegistryClientError("No instances found. Cannot find the base URL")

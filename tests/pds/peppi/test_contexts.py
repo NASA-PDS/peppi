@@ -59,11 +59,10 @@ class InstrumentHostsTestCase(unittest.TestCase):
         result = self.instrument_hosts.search("cruiosity", with_scores=True)
         assert result[0][0].lid == "urn:nasa:pds:context:instrument_host:spacecraft.msl"
 
-    @unittest.skip
+    @unittest.skip("not implemented yet")
     def test_search_alias(self):
-        pass
-        # result = self.targets.search("msl")
-        # assert result[0][0].lid == "urn:nasa:pds:context:instrument_host:spacecraft.msl"
+       result = self.instrument_hosts.search("msl")
+       assert result[0][0].lid == "urn:nasa:pds:context:instrument_host:spacecraft.msl"
 
 
 if __name__ == "__main__":
