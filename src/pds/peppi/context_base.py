@@ -40,7 +40,7 @@ class ContextObjects:
     @staticmethod
     def api_to_obj(d: dict) -> ContextObject:
         """Must be implemented in the specilized objects, Targets, InstrumentHosts, ...."""
-        pass
+        raise NotImplementedError("method must be implemented")
 
     def add(self, api_object: dict):
         """For internal use, adds target from the API response's objects into the enumeration."""
