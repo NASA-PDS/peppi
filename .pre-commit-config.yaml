@@ -18,14 +18,19 @@ repos:
     -   id: reorder-python-imports
         files: ^src/|tests/
 
--   repo: local
-    hooks:
-    -   id: black
-        name: black
-        entry: black
-        files: ^src/|tests/
-        language: system
-        types: [python]
+
+# Disabled "black" for now because it's conflicting with reorder_python_imports
+# has different ideas about whether there should be a blank line after the
+# module docstring and before the first import statement.
+#
+# -   repo: local
+#     hooks:
+#     -   id: black
+#         name: black
+#         entry: black
+#         files: ^src/|tests/
+#         language: system
+#         types: [python]
 
 -   repo: local
     hooks:
@@ -52,7 +57,10 @@ repos:
         args:
           - '--baseline'
           - '.secrets.baseline'
+          - '--disable-plugin'
+          - 'AbsolutePathDetectorExperimental'
           - --exclude-files '\.secrets..*'
+          - --exclude-files '\.pre-commit-config\.yaml'
           - --exclude-files '\.git.*'
           - --exclude-files '\.mypy_cache'
           - --exclude-files '\.pytest_cache'
