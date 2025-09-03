@@ -82,8 +82,8 @@ class ContextObjects:
         """Search entries in the enumeration. Tolerates typos.
 
         :param term: name to search for.
-        :param threshold: from 0 to 1, lower gives more results, higher only the exact match.
-        :return: a list of mathing targets sorted from the best match to the not-as-best matches.
+        :param limit: number of matching products returned
+        :return: a list of mathing context products sorted from the best match to the not-as-best matches.
         """
         scored_objs = []
         for obj in self.__objects__:

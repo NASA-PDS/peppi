@@ -34,12 +34,18 @@ class Context:
 
     @property
     def TARGETS(self):  # noqa
-        """Targets dynamically populated from the RESTFul API."""
+        """Targets or Planetary Objects context products: planets, satellites, asteroids or comets.
+
+        Dynamically populated from the RESTFul API.
+        """
         return self.__targets__
 
     @property
     def INSTRUMENT_HOSTS(self):  # noqa
-        """Instrument hosts dynamically populated from the RESTFul API."""
+        """Instrument hosts context products: spacecrafts, orbiter or rovers.
+
+        Dynamically populated from the RESTFul API.
+        """
         return self.__instrument_hosts__
 
 
