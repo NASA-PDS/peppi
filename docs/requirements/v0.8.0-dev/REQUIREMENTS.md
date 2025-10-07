@@ -128,3 +128,7 @@ This requirement is not impacted by the current version
 
 
 This requirement is not impacted by the current version
+## As a user, I want a MCP server setup for accessing peppi functions ([#114](https://github.com/NASA-PDS/peppi/issues/114)) 
+
+
+This requirement is not impacted by the current version
