@@ -1,4 +1,5 @@
 import logging
+import time
 import unittest
 from datetime import datetime
 from typing import get_args
@@ -291,6 +292,36 @@ class ProductsTestCase(unittest.TestCase):
                 break
 
         assert i == self.MAX_ITERATIONS + 1
+
+def test_performance():
+    # test created from an example which failed to revolved at some point
+    # see ticket https://github.com/NASA-PDS/peppi/issues/104
+
+    # Create a client connection to the PDS Registry
+    client = pep.PDSRegistryClient()
+
+    # Define context identifiers
+    pluto_target_id = "urn:nasa:pds:context:target:dwarf_planet.134340_pluto"
+    new_horizons_mission_id = "urn:nasa:pds:context:investigation:mission.new_horizons"
+
+    # Query for Pluto data from New Horizons
+    pluto_products = pep.Products(client).has_investigation(new_horizons_mission_id) \
+        .has_target(pluto_target_id) \
+        .observationals()
+    print(pluto_products)
+
+    # Display products
+    start_time = time.perf_counter()
+    for i, p in enumerate(pluto_products):
+        if i >= 1: break  # Just show first 5
+        print(f"{p.id}: {p.properties.get('ops:Label.ops:title', 'No title')}")
+
+    # Record the end time
+    end_time = time.perf_counter()
+
+    # Calculate and print the duration
+    duration = end_time - start_time
+    assert duration < 5
 
 
 if __name__ == "__main__":

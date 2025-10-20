@@ -1,5 +1,6 @@
 """Module of the ResultSet."""
 import logging
+import time
 
 from pds.api_client.api.all_products_api import AllProductsApi
 
@@ -71,7 +72,9 @@ class ResultSet:
 
             kwargs["fields"] = fields
 
+        start_time = time.perf_counter()
         results = self._products.product_list(**kwargs)
+        logger.debug(f"Page Query took {time.perf_counter() - start_time} seconds")
 
         # If this is the first page fetch, calculate total number of expected pages
         # based on hit count
