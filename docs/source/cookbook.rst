@@ -182,9 +182,9 @@ Recipe 6: Browse Available Targets
 
     context = pep.Context()
 
-    # Search returns top 10 matches
-    # Search for empty string to see top targets
-    targets = context.TARGETS.search("")
+    # Search with a broad term to see diverse targets
+    # (Searching with empty string can cause issues with fuzzy matching)
+    targets = context.TARGETS.search("planet")
 
     print("Available targets:")
     for target in targets:
@@ -765,7 +765,7 @@ Recipe 20: Build a Reusable Search Function
         query = query.observationals()
 
         # Return as DataFrame
-        return query.as_dataframe(max_results=max_results)
+        return query.as_dataframe(max_rows=max_results)
 
     # Example usage
     df = search_planetary_data(
@@ -773,7 +773,7 @@ Recipe 20: Build a Reusable Search Function
         spacecraft="curiosity",
         start_date=datetime(2020, 1, 1),
         processing_level="calibrated",
-        max_results=50
+        max_results=50  # This gets passed as max_rows to as_dataframe()
     )
 
     if df is not None:
