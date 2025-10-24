@@ -399,12 +399,19 @@ Recipe 12: Extract Specific Metadata Fields Only
 Advanced Recipes
 ================
 
-These recipes demonstrate complex queries and data processing workflows.
+These recipes demonstrate complex queries and data processing workflows. For each advanced recipe,
+we provide an overview here with key code snippets, and link to **interactive Jupyter notebooks**
+that include complete implementations, visualizations, and explanations.
+
+All interactive notebooks are available in the `NASA-PDS/search-api-notebook repository <https://github.com/NASA-PDS/search-api-notebook/tree/main/notebooks/peppi-advanced>`_.
 
 Recipe 13: Compare Data Coverage Across Multiple Targets
 ---------------------------------------------------------
 
-**Goal:** Analyze how much data is available for different planetary bodies.
+**Goal:** Programmatically compare data availability across different planetary bodies.
+
+This recipe shows how to query multiple targets in a loop, aggregate results, and create
+comparison DataFrames and visualizations.
 
 .. code-block:: python
 
@@ -414,83 +421,57 @@ Recipe 13: Compare Data Coverage Across Multiple Targets
     client = pep.PDSRegistryClient()
     context = pep.Context()
 
-    # Define targets to compare
     target_names = ["Mars", "Jupiter", "Saturn", "Venus", "Mercury"]
-
     results = []
 
     for target_name in target_names:
-        # Get target info
         targets = context.TARGETS.search(target_name)
-        if not targets:
-            continue
+        if targets:
+            products = pep.Products(client).has_target(targets[0].lid).observationals()
+            df = products.as_dataframe(max_rows=10)
+            results.append({'Target': targets[0].name, 'Sample Count': len(df) if df else 0})
 
-        target = targets[0]
-
-        # Count products (sample)
-        products = pep.Products(client) \
-            .has_target(target.lid) \
-            .observationals()
-
-        df = products.as_dataframe(max_rows=10)
-
-        count = len(df) if df is not None else 0
-
-        results.append({
-            'Target': target.name,
-            'Type': target.type,
-            'Sample Count': count
-        })
-
-    # Create comparison DataFrame
     comparison_df = pd.DataFrame(results)
-    print(comparison_df)
+
+.. note::
+   **Interactive Notebook:** For the complete implementation with visualizations, see
+   `recipe-13-compare-target-coverage.ipynb <https://github.com/NASA-PDS/search-api-notebook/blob/main/notebooks/peppi-advanced/recipe-13-compare-target-coverage.ipynb>`_
 
 Recipe 14: Build a Data Timeline
 ---------------------------------
 
-**Goal:** Analyze when data was collected for a target over time.
+**Goal:** Analyze temporal patterns in data collection over time.
+
+This recipe demonstrates how to extract temporal metadata, group by time periods,
+visualize timelines, and identify data gaps and mission phases.
 
 .. code-block:: python
 
     import pds.peppi as pep
     import pandas as pd
-    from datetime import datetime
 
     client = pep.PDSRegistryClient()
-
-    # Get Mars data
-    products = pep.Products(client) \
-        .has_target("Mars") \
-        .observationals()
-
-    # Convert to DataFrame
+    products = pep.Products(client).has_target("Mars").observationals()
     df = products.as_dataframe(max_rows=500)
 
     if df is not None and 'pds:Time_Coordinates.pds:start_date_time' in df.columns:
-        # Convert to datetime
-        df['start_date'] = pd.to_datetime(
-            df['pds:Time_Coordinates.pds:start_date_time'],
-            errors='coerce'
-        )
-
-        # Group by year
+        df['start_date'] = pd.to_datetime(df['pds:Time_Coordinates.pds:start_date_time'], errors='coerce')
         df['year'] = df['start_date'].dt.year
         timeline = df.groupby('year').size()
-
         print("Mars data products by year:")
         print(timeline)
 
-        # Find earliest and latest
-        print(f"\nEarliest: {df['start_date'].min()}")
-        print(f"Latest: {df['start_date'].max()}")
-    else:
-        print("No data available or no time coordinates")
+.. note::
+   **Interactive Notebook:** For complete timeline analysis with visualizations, see
+   `recipe-14-build-data-timeline.ipynb <https://github.com/NASA-PDS/search-api-notebook/blob/main/notebooks/peppi-advanced/recipe-14-build-data-timeline.ipynb>`_
 
 Recipe 15: Find Overlapping Observations
 -----------------------------------------
 
-**Goal:** Find products from different instruments that observed the same target at the same time.
+**Goal:** Discover multi-instrument campaigns and coordinated observations.
+
+This recipe shows how to use temporal windows to find products from different instruments
+that observed the same target simultaneously.
 
 .. code-block:: python
 
@@ -498,138 +479,88 @@ Recipe 15: Find Overlapping Observations
     from datetime import datetime, timedelta
 
     client = pep.PDSRegistryClient()
-
-    # Define a specific time window
     target_date = datetime(2020, 6, 15)
-    window = timedelta(days=1)  # +/- 1 day
+    window = timedelta(days=1)
 
-    # Search for Mars observations in this window
     products = pep.Products(client) \
         .has_target("Mars") \
         .after(target_date - window) \
         .before(target_date + window) \
         .observationals()
 
-    # Group by instrument
-    instruments = {}
-
+    # Group by instrument to find overlapping observations
     for product in products:
         inst = product.properties.get('ref_lid_instrument', ['Unknown'])[0]
-        start = product.properties.get('pds:Time_Coordinates.pds:start_date_time', ['N/A'])[0]
+        print(f"{inst}: {product.id}")
 
-        if inst not in instruments:
-            instruments[inst] = []
-
-        instruments[inst].append({
-            'id': product.id,
-            'start': start
-        })
-
-    # Display results
-    print(f"Observations of Mars around {target_date.date()}:")
-    for inst, obs_list in instruments.items():
-        print(f"\n{inst}: {len(obs_list)} observations")
-        for obs in obs_list[:3]:  # Show first 3
-            print(f"  {obs['start']}")
+.. note::
+   **Interactive Notebook:** For complete overlap analysis with grouping, see
+   `recipe-15-overlapping-observations.ipynb <https://github.com/NASA-PDS/search-api-notebook/blob/main/notebooks/peppi-advanced/recipe-15-overlapping-observations.ipynb>`_
 
 Recipe 16: Create a Custom Data Report
 ---------------------------------------
 
-**Goal:** Generate a formatted report about a dataset for documentation.
+**Goal:** Generate formatted reports about PDS data availability.
+
+This recipe demonstrates how to extract and format metadata programmatically and
+create reusable report templates.
 
 .. code-block:: python
 
     import pds.peppi as pep
-    from datetime import datetime
 
-    def create_data_report(target_name, output_file='report.txt'):
-        """Create a report about available data for a target."""
-
+    def create_data_report(target_name):
         client = pep.PDSRegistryClient()
         context = pep.Context()
 
-        # Find target
         target = context.TARGETS.search(target_name)[0]
-
-        # Get data
-        products = pep.Products(client) \
-            .has_target(target.lid) \
-            .observationals()
-
+        products = pep.Products(client).has_target(target.lid).observationals()
         df = products.as_dataframe(max_rows=100)
 
-        # Generate report
-        report_lines = [
-            f"PDS Data Report for {target.name}",
-            "=" * 50,
-            f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
-            f"\nTarget Information:",
-            f"  Name: {target.name}",
-            f"  Type: {target.type}",
-            f"  LID: {target.lid}",
-            f"\nData Summary:",
-            f"  Products found: {len(df) if df is not None else 0}",
-        ]
+        print(f"PDS Data Report for {target.name}")
+        print(f"Products found: {len(df) if df else 0}")
+        # Add more report sections...
 
-        if df is not None and len(df) > 0:
-            # Processing levels
-            if 'pds:Primary_Result_Summary.pds:processing_level' in df.columns:
-                levels = df['pds:Primary_Result_Summary.pds:processing_level'].value_counts()
-                report_lines.append("\n  By Processing Level:")
-                for level, count in levels.items():
-                    report_lines.append(f"    {level}: {count}")
+    create_data_report("Mars")
 
-            # Instruments
-            if 'ref_lid_instrument' in df.columns:
-                instruments = df['ref_lid_instrument'].value_counts()
-                report_lines.append("\n  By Instrument:")
-                for inst, count in instruments.head(5).items():
-                    report_lines.append(f"    {inst}: {count}")
-
-        # Write report
-        report_text = '\n'.join(report_lines)
-        with open(output_file, 'w') as f:
-            f.write(report_text)
-
-        print(report_text)
-        print(f"\nReport saved to {output_file}")
-
-    # Use it
-    create_data_report("Mars", "mars_report.txt")
+.. note::
+   **Interactive Notebook:** For the complete report generation function with formatting, see
+   `recipe-16-custom-data-report.ipynb <https://github.com/NASA-PDS/search-api-notebook/blob/main/notebooks/peppi-advanced/recipe-16-custom-data-report.ipynb>`_
 
 Recipe 17: Work with OSIRIS-REx Specialized Products
 -----------------------------------------------------
 
 **Goal:** Use mission-specific product classes for specialized functionality.
 
+This recipe shows how to leverage specialized product classes like ``OrexProducts`` that
+provide mission-specific features while inheriting standard Peppi filters.
+
 .. code-block:: python
 
     import pds.peppi as pep
 
     client = pep.PDSRegistryClient()
-
-    # Use the OSIRIS-REx (OREX) specialized products class
     orex_products = pep.OrexProducts(client)
 
-    # OrexProducts inherits all the standard filters
+    # Use standard filters with mission-specific class
     products = orex_products.has_target("Bennu").observationals()
 
-    print("OSIRIS-REx products about Bennu:")
     for i, product in enumerate(products):
-        title = product.properties.get('pds:Identification_Area.pds:title', ['N/A'])[0]
-        print(f"{i+1}. {title}")
-        if i >= 9:
+        print(product.properties.get('pds:Identification_Area.pds:title', ['N/A'])[0])
+        if i >= 4:
             break
 
 .. note::
-   Mission-specific product classes like ``OrexProducts`` can provide additional
-   methods and filters specific to that mission's data structure. Check the
-   :doc:`reference` for available specialized classes.
+   **Interactive Notebook:** For complete OSIRIS-REx examples, see
+   `recipe-17-orex-products.ipynb <https://github.com/NASA-PDS/search-api-notebook/blob/main/notebooks/peppi-advanced/recipe-17-orex-products.ipynb>`_
 
 Recipe 18: Handle Large Result Sets Efficiently
 ------------------------------------------------
 
-**Goal:** Process thousands of products without running out of memory.
+**Goal:** Process thousands of products without memory issues.
+
+This recipe demonstrates field filtering for efficiency, batch processing patterns,
+and manual pagination management.
 
 .. code-block:: python
 
@@ -637,9 +568,8 @@ Recipe 18: Handle Large Result Sets Efficiently
 
     client = pep.PDSRegistryClient()
 
-    # Get only the fields we need
+    # Request only needed fields for efficiency
     fields = ['lid', 'pds:Identification_Area.pds:title']
-
     products = pep.Products(client) \
         .has_target("Mars") \
         .observationals() \
@@ -647,35 +577,26 @@ Recipe 18: Handle Large Result Sets Efficiently
 
     # Process in batches
     batch_size = 100
-    processed = 0
-
     batch = []
+
     for product in products:
         batch.append(product.id)
-
         if len(batch) >= batch_size:
-            # Process this batch
-            print(f"Processing products {processed} to {processed + len(batch)}...")
-            # Do something with the batch
-            # save_to_database(batch)
-            # process_data(batch)
-
+            # Process batch
+            print(f"Processing {len(batch)} products...")
             batch = []
-            processed += batch_size
 
-        if processed >= 1000:  # Stop after 1000 for this example
-            break
-
-    # Process remaining products
-    if batch:
-        print(f"Processing final {len(batch)} products...")
-
-    print(f"Total processed: {processed + len(batch)}")
+.. note::
+   **Interactive Notebook:** For complete batch processing patterns, see
+   `recipe-18-large-result-sets.ipynb <https://github.com/NASA-PDS/search-api-notebook/blob/main/notebooks/peppi-advanced/recipe-18-large-result-sets.ipynb>`_
 
 Recipe 19: Fuzzy Search Across Multiple Terms
 ----------------------------------------------
 
-**Goal:** Use the Context's fuzzy search to handle uncertain or variant names.
+**Goal:** Leverage fuzzy search to handle typos and uncertain names.
+
+This recipe demonstrates the Context system's typo-tolerant search capabilities
+for handling spelling variations and uncertain names.
 
 .. code-block:: python
 
@@ -683,35 +604,25 @@ Recipe 19: Fuzzy Search Across Multiple Terms
 
     context = pep.Context()
 
-    # The search is typo-tolerant
-    search_terms = [
-        "jupyter",      # Typo of Jupiter
-        "curiousity",   # Typo of Curiosity
-        "venus",        # Correct
-        "satturn",      # Typo of Saturn
-    ]
+    # Fuzzy search handles typos
+    typos = ["jupyter", "curiousity", "satturn"]  # Misspellings
 
-    print("Fuzzy search results:\n")
-
-    for term in search_terms:
-        print(f"Searching for: '{term}'")
-
-        # Search targets
+    for term in typos:
         targets = context.TARGETS.search(term, limit=1)
         if targets:
-            print(f"  → Found target: {targets[0].name}")
+            print(f"'{term}' → Found: {targets[0].name}")
 
-        # Search spacecraft
-        spacecraft = context.INSTRUMENT_HOSTS.search(term, limit=1)
-        if spacecraft:
-            print(f"  → Found spacecraft: {spacecraft[0].name}")
-
-        print()
+.. note::
+   **Interactive Notebook:** For complete fuzzy search examples across targets and spacecraft, see
+   `recipe-19-fuzzy-search.ipynb <https://github.com/NASA-PDS/search-api-notebook/blob/main/notebooks/peppi-advanced/recipe-19-fuzzy-search.ipynb>`_
 
 Recipe 20: Build a Reusable Search Function
 --------------------------------------------
 
-**Goal:** Create a reusable function for common search patterns.
+**Goal:** Create flexible, parameterized search functions for common patterns.
+
+This recipe shows how to design reusable search functions with optional filters,
+type hints, and sensible defaults.
 
 .. code-block:: python
 
@@ -723,62 +634,31 @@ Recipe 20: Build a Reusable Search Function
         target: str,
         spacecraft: Optional[str] = None,
         start_date: Optional[datetime] = None,
-        end_date: Optional[datetime] = None,
         processing_level: Optional[str] = None,
-        max_results: Optional[int] = 100
+        max_results: int = 100
     ):
-        """
-        Flexible search function for planetary data.
-
-        Args:
-            target: Name of planetary body (e.g., "Mars", "Jupiter")
-            spacecraft: Optional spacecraft/rover name
-            start_date: Optional start date for temporal filter
-            end_date: Optional end date for temporal filter
-            processing_level: Optional processing level filter
-            max_results: Maximum number of results to return
-
-        Returns:
-            pandas DataFrame with results
-        """
+        """Flexible search function for planetary data."""
         client = pep.PDSRegistryClient()
         context = pep.Context()
 
-        # Start building query
         query = pep.Products(client).has_target(target)
 
-        # Add optional filters
         if spacecraft:
             host = context.INSTRUMENT_HOSTS.search(spacecraft)[0]
             query = query.has_instrument_host(host.lid)
-
         if start_date:
             query = query.after(start_date)
-
-        if end_date:
-            query = query.before(end_date)
-
         if processing_level:
             query = query.has_processing_level(processing_level)
 
-        # Get observational products
-        query = query.observationals()
+        return query.observationals().as_dataframe(max_rows=max_results)
 
-        # Return as DataFrame
-        return query.as_dataframe(max_rows=max_results)
+    # Use with different combinations
+    df = search_planetary_data("Mars", spacecraft="curiosity", max_results=50)
 
-    # Example usage
-    df = search_planetary_data(
-        target="Mars",
-        spacecraft="curiosity",
-        start_date=datetime(2020, 1, 1),
-        processing_level="calibrated",
-        max_results=50  # This gets passed as max_rows to as_dataframe()
-    )
-
-    if df is not None:
-        print(f"Found {len(df)} products")
-        print(df.head())
+.. note::
+   **Interactive Notebook:** For complete examples with multiple usage patterns, see
+   `recipe-20-reusable-search-function.ipynb <https://github.com/NASA-PDS/search-api-notebook/blob/main/notebooks/peppi-advanced/recipe-20-reusable-search-function.ipynb>`_
 
 Tips for Creating Your Own Recipes
 ===================================
