@@ -4,11 +4,11 @@ These tests verify that all Advanced recipes (13-20) in
 docs/source/cookbook.rst are functional and produce expected results.
 """
 import unittest
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
 from typing import Optional
 
 import pandas as pd
-
 import pds.peppi as pep
 
 
