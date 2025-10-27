@@ -1,11 +1,12 @@
 # Changelog
 
-## [«unknown»](https://github.com/NASA-PDS/peppi/tree/«unknown») (2025-10-13)
+## [«unknown»](https://github.com/NASA-PDS/peppi/tree/«unknown») (2025-10-27)
 
 [Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.7.0...«unknown»)
 
 **Defects:**
 
+- Simple Peppi query has long runtime [\#104](https://github.com/NASA-PDS/peppi/issues/104) [[s.medium](https://github.com/NASA-PDS/peppi/labels/s.medium)]
 - as\_dataframe method fails [\#102](https://github.com/NASA-PDS/peppi/issues/102) [[s.high](https://github.com/NASA-PDS/peppi/labels/s.high)]
 
 ## [v0.7.0](https://github.com/NASA-PDS/peppi/tree/v0.7.0) (2025-07-14)
