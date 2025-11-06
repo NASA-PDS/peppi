@@ -12,24 +12,32 @@ Access planetary datasets from the Planetary Data System (PDS)
 
 See https://nasa-pds.github.io/peppi/
 
+
 ### Use as MCP server with Claude (alpha)
 
-A specific command line can be used to connect peppi (and the PDS API to an LLM), this has been tested with Claude.
+Two commands enable the connection of AI apps with Peppi using the [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) using the MCP `stdio` transport:
 
-Use command: `pds-peppi-mcp-server`
+- `pds-peppi-mcp-server` is a proof-of-concept MCP server that enables natural-language based tools for searches for instrument hosts and targets
+- `pds-peppi-qb-mcp` is a general MCP server using the Peppi `QueryBuilder` to handle provide a tool for a wide range of queries for PDS data
 
-Connect it to Claude Desktop, for example, as described in https://modelcontextprotocol.io/quickstart/user#installing-the-filesystem-server, using the following configuration:
-
+To connect either of these, consult your AI app's instructions on Model Context Protocol. For example, to connect `pds-peppi-qb-mcp` to Claude Desktop, use a configuration similar to the following:
+```json
     {
       "mcpServers": {
         "pds_peppi": {
-          "command": "{whereever the package is installed}/bin/pds-peppi-mcp-server",
+          "command": "{whereever the package is installed}/bin/pds-peppi-qb-mcp",
           "args": []
          }
       }
     }
+```
+([More information is available](https://modelcontextprotocol.io/quickstart/user#installing-the-filesystem-server).) Once you've started Claude Desktop, you can enter requests like
 
-You can use a prompt like: "Can you find the URI for the planet Jupiter in the PDS ?"
+- "Find Mars data"
+- "Find calibrated Mars data"
+- "Find Mercury data from the year 2020 only"
+- Etc.
+
 
 
 ## Code of Conduct
