@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,25 +7,21 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quickstart &mdash; Peppi  documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=0c24fe83" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Library Reference" href="reference.html" />
-    <link rel="prev" title="PDS Peppi" href="index.html" /> 
+    <link rel="next" title="Contribute" href="support/contribute.html" />
+    <link rel="prev" title="Library Reference" href="reference.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,16 +44,23 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Library Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community &amp; Support</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#try-it">Try it</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-resources">Additional Resources</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="reference.html">Library Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="support/contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support/contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support/contact.html">Contact Us</a></li>
 </ul>
 
         </div>
@@ -84,8 +89,12 @@
              
   <section id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h1>
-<p>Peppi is meant to be simple to start with.</p>
-<p>It brings you to the core of your research in a few lines of code.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page provides a quick reference example. For a more detailed introduction,
+see <a class="reference internal" href="getting_started.html"><span class="doc">Getting Started</span></a>. For more examples, see the <a class="reference internal" href="cookbook.html"><span class="doc">Cookbook</span></a>.</p>
+</div>
+<p>Peppi is meant to be simple to start with. It brings you to the core of your research in a few lines of code.</p>
 <p>The following code has been tested with <strong>Python 3.13</strong>.</p>
 <section id="try-it">
 <h2>Try it<a class="headerlink" href="#try-it" title="Link to this heading"></a></h2>
@@ -95,8 +104,8 @@
 </div>
 <p>The following lines of code can be found in this <a class="reference external" href="https://github.com/NASA-PDS/peppi/tree/main/tests/pds/peppi/quickstart.py">file</a></p>
 <p>Import:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">import</span> <span class="nn">pds.peppi</span> <span class="k">as</span> <span class="nn">pep</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
 </pre></div>
 </div>
 <p>Get the connection to the PDS Web API (and the underlying Registry):</p>
@@ -128,11 +137,22 @@ Alternate filter methods can be found in the <a class="reference internal" href=
 <p>Numerous pre-defined filters are available, you can <a class="reference external" href="https://nasa-pds.github.io/peppi/reference.html#pds.peppi.query_builder.QueryBuilder">explore them</a>.</p>
 </section>
 <section id="next-steps">
-<h2>Next steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>Now that you’ve seen a quick example, explore the documentation:</p>
 <ul class="simple">
-<li><p>Full library <a class="reference internal" href="reference.html"><span class="doc">Library Reference</span></a></p></li>
-<li><p>Various Demo Use cases <a class="reference external" href="https://github.com/NASA-PDS/search-api-notebook">Jupyter notebooks</a> and <a class="reference external" href="https://github.com/civilinifr/cloud_testcase/">Seismic use case</a></p></li>
-<li><p>Missing a feature ? Request it, create a <a class="reference external" href="https://github.com/nasa-pds/peppi/issues">ticket</a> or start a <a class="reference external" href="https://github.com/NASA-PDS/peppi/discussions">discussion</a>.</p></li>
+<li><p><strong>New to Python or Peppi?</strong> Start with <a class="reference internal" href="getting_started.html"><span class="doc">Getting Started</span></a> for a gentle introduction</p></li>
+<li><p><strong>Want more examples?</strong> Check out the <a class="reference internal" href="cookbook.html"><span class="doc">Cookbook</span></a> with 20+ ready-to-use recipes</p></li>
+<li><p><strong>Need to understand concepts?</strong> Read the <a class="reference internal" href="user_guide.html"><span class="doc">User Guide</span></a> for comprehensive explanations</p></li>
+<li><p><strong>Looking for API details?</strong> See the full <a class="reference internal" href="reference.html"><span class="doc">Library Reference</span></a></p></li>
+</ul>
+</section>
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/NASA-PDS/search-api-notebook">Search API Jupyter Notebooks</a> - Real-world examples</p></li>
+<li><p><a class="reference external" href="https://nasa-pds.github.io/pds-api/">PDS Search API Docs</a> - Underlying API documentation</p></li>
+<li><p>Missing a feature? Request it via <a class="reference external" href="https://github.com/nasa-pds/peppi/issues">GitHub Issues</a></p></li>
+<li><p>Have questions? Start a <a class="reference external" href="https://github.com/NASA-PDS/peppi/discussions">discussion</a></p></li>
 </ul>
 </section>
 </section>
@@ -141,8 +161,8 @@ Alternate filter methods can be found in the <a class="reference internal" href=
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="PDS Peppi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="reference.html" class="btn btn-neutral float-right" title="Library Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="reference.html" class="btn btn-neutral float-left" title="Library Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="support/contribute.html" class="btn btn-neutral float-right" title="Contribute" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

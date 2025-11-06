@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,25 +7,21 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Library Reference &mdash; Peppi  documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=0c24fe83" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Contact Us" href="support/contact.html" />
-    <link rel="prev" title="Quickstart" href="quickstart.html" /> 
+    <link rel="next" title="Quickstart" href="quickstart.html" />
+    <link rel="prev" title="Cookbook" href="cookbook.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,13 +44,16 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Library Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient"><code class="docutils literal notranslate"><span class="pre">PDSRegistryClient</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient.__init__"><code class="docutils literal notranslate"><span class="pre">PDSRegistryClient.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient.__weakref__"><code class="docutils literal notranslate"><span class="pre">PDSRegistryClient.__weakref__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient.get_base_url"><code class="docutils literal notranslate"><span class="pre">PDSRegistryClient.get_base_url()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#pds.peppi.products.Products"><code class="docutils literal notranslate"><span class="pre">Products</span></code></a><ul>
@@ -98,8 +99,12 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="support/contact.html">Contact Us</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community &amp; Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support/contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support/contact.html">Contact Us</a></li>
 </ul>
 
         </div>
@@ -133,7 +138,7 @@
 <p id="module-pds.peppi.client">PDS Registry Client related classes.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pds.peppi.client.PDSRegistryClient">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pds.peppi.client.</span></span><span class="sig-name descname"><span class="pre">PDSRegistryClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://pds.nasa.gov/api/search/1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/client.html#PDSRegistryClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.client.PDSRegistryClient" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pds.peppi.client.</span></span><span class="sig-name descname"><span class="pre">PDSRegistryClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://pds.nasa.gov/api/search/1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/client.html#PDSRegistryClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.client.PDSRegistryClient" title="Link to this definition"></a></dt>
 <dd><p>Used to connect and interface with the PDS Registry.</p>
 <section id="attributes">
 <h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
@@ -160,7 +165,13 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pds.peppi.client.PDSRegistryClient.__weakref__">
 <span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pds.peppi.client.PDSRegistryClient.__weakref__" title="Link to this definition"></a></dt>
-<dd><p>list of weak references to the object (if defined)</p>
+<dd><p>list of weak references to the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pds.peppi.client.PDSRegistryClient.get_base_url">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_base_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pds/peppi/client.html#PDSRegistryClient.get_base_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.client.PDSRegistryClient.get_base_url" title="Link to this definition"></a></dt>
+<dd><p>Find the PDS API URL used in this context. If multiple ones were used only the first found is returned.</p>
 </dd></dl>
 
 </section>
@@ -169,7 +180,7 @@
 <p id="module-pds.peppi.products">Main class of the library in this module.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pds.peppi.products.Products">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pds.peppi.products.</span></span><span class="sig-name descname"><span class="pre">Products</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient" title="pds.peppi.client.PDSRegistryClient"><span class="pre">PDSRegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/products.html#Products"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.products.Products" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pds.peppi.products.</span></span><span class="sig-name descname"><span class="pre">Products</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient" title="pds.peppi.client.PDSRegistryClient"><span class="pre">PDSRegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/products.html#Products"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.products.Products" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder" title="pds.peppi.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryBuilder</span></code></a></p>
 <p>Use to access any class of planetary products via the PDS Registry API.</p>
 <p>This class is an inheritor of <a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder" title="pds.peppi.query_builder.QueryBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">query_builder.QueryBuilder</span></code></a>, which
@@ -194,7 +205,7 @@ converted to a pandas DataFrame.</p>
 <p>Contains all the methods use to elaborate the PDS4 Information Model queries through the PDS Search API.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pds.peppi.query_builder.QueryBuilder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pds.peppi.query_builder.</span></span><span class="sig-name descname"><span class="pre">QueryBuilder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient" title="pds.peppi.client.PDSRegistryClient"><span class="pre">PDSRegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/query_builder.html#QueryBuilder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.query_builder.QueryBuilder" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pds.peppi.query_builder.</span></span><span class="sig-name descname"><span class="pre">QueryBuilder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient" title="pds.peppi.client.PDSRegistryClient"><span class="pre">PDSRegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/query_builder.html#QueryBuilder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.query_builder.QueryBuilder" title="Link to this definition"></a></dt>
 <dd><p>QueryBuilder provides method to elaborate complex PDS queries.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pds.peppi.query_builder.QueryBuilder.__init__">
@@ -229,7 +240,7 @@ API.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pds.peppi.query_builder.QueryBuilder.__weakref__">
 <span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pds.peppi.query_builder.QueryBuilder.__weakref__" title="Link to this definition"></a></dt>
-<dd><p>list of weak references to the object (if defined)</p>
+<dd><p>list of weak references to the object</p>
 </dd></dl>
 
 <dl class="py method">
@@ -316,7 +327,7 @@ are included.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pds.peppi.query_builder.QueryBuilder.contexts">
-<span class="sig-name descname"><span class="pre">contexts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyword</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/query_builder.html#QueryBuilder.contexts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.query_builder.QueryBuilder.contexts" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">contexts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyword</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/query_builder.html#QueryBuilder.contexts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.query_builder.QueryBuilder.contexts" title="Link to this definition"></a></dt>
 <dd><p>Adds a query clause selecting only “Context” type products (targets, investigations, instruments, etc…).</p>
 <section id="id10">
 <h2>Parameters<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
@@ -553,7 +564,7 @@ support the notion of range to a given target.</p>
 <p id="module-pds.peppi.result_set">Module of the ResultSet.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pds.peppi.result_set.ResultSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pds.peppi.result_set.</span></span><span class="sig-name descname"><span class="pre">ResultSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient" title="pds.peppi.client.PDSRegistryClient"><span class="pre">PDSRegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/result_set.html#ResultSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.result_set.ResultSet" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pds.peppi.result_set.</span></span><span class="sig-name descname"><span class="pre">ResultSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient" title="pds.peppi.client.PDSRegistryClient"><span class="pre">PDSRegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/result_set.html#ResultSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.result_set.ResultSet" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>ResultSet of products on which a query has been applied.</p>
 <dl class="py method">
@@ -565,7 +576,7 @@ support the notion of range to a given target.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pds.peppi.result_set.ResultSet.__weakref__">
 <span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pds.peppi.result_set.ResultSet.__weakref__" title="Link to this definition"></a></dt>
-<dd><p>list of weak references to the object (if defined)</p>
+<dd><p>list of weak references to the object</p>
 </dd></dl>
 
 <dl class="py method">
@@ -612,7 +623,7 @@ API.</p>
 <p id="module-pds.peppi.orex.products">Main class of the Osiris Rex (OREX) Peppi package.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pds.peppi.orex.products.OrexProducts">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pds.peppi.orex.products.</span></span><span class="sig-name descname"><span class="pre">OrexProducts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient" title="pds.peppi.client.PDSRegistryClient"><span class="pre">PDSRegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/orex/products.html#OrexProducts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.orex.products.OrexProducts" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pds.peppi.orex.products.</span></span><span class="sig-name descname"><span class="pre">OrexProducts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient" title="pds.peppi.client.PDSRegistryClient"><span class="pre">PDSRegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/orex/products.html#OrexProducts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.orex.products.OrexProducts" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OrexQueryBuilder</span></code></p>
 <p>Specialized Products class used to query specfically for Osiris Rex (OREX) products.</p>
 <dl class="py method">
@@ -636,8 +647,8 @@ API.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="support/contact.html" class="btn btn-neutral float-right" title="Contact Us" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cookbook.html" class="btn btn-neutral float-left" title="Cookbook" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quickstart.html" class="btn btn-neutral float-right" title="Quickstart" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

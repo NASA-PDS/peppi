@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started &mdash; Peppi  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=0c24fe83" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User Guide" href="user_guide.html" />
+    <link rel="prev" title="PDS Peppi" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Peppi
+              <img src="_static/PDS_Planets.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-peppi">What is Peppi?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#your-first-search">Your First Search</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-import-peppi">Step 1: Import Peppi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-connect-to-the-pds">Step 2: Connect to the PDS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-find-products-about-mars">Step 3: Find Products About Mars</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-look-at-the-results">Step 4: Look at the Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#complete-first-example">Complete First Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#understanding-what-you-got">Understanding What You Got</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-installation-issues">Common Installation Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Library Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community &amp; Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support/contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support/contact.html">Contact Us</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Peppi</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/nasa-pds/peppi/blob/main/docs/source/getting_started.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
+<p>Welcome to Peppi! This guide will help you get started searching and accessing planetary data from NASA’s Planetary Data System (PDS), even if you’re new to Python.</p>
+<section id="what-is-peppi">
+<h2>What is Peppi?<a class="headerlink" href="#what-is-peppi" title="Link to this heading"></a></h2>
+<p>Peppi is a Python library that makes it easy to search and download planetary science data from NASA’s Planetary Data System. Think of it as a search engine for planetary data - but instead of clicking through web pages, you write simple Python code to find exactly what you need.</p>
+<p>No matter if you’re looking for:</p>
+<ul class="simple">
+<li><p>Images from Mars rovers</p></li>
+<li><p>Spectral data from asteroids</p></li>
+<li><p>Atmospheric measurements from Venus</p></li>
+<li><p>Surface maps of the Moon</p></li>
+<li><p>…or any other planetary data</p></li>
+</ul>
+<p>Peppi helps you find and access it programmatically.</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>Before you begin, you’ll need:</p>
+<ol class="arabic simple">
+<li><p><strong>Python 3.13 or newer</strong> installed on your computer</p>
+<ul class="simple">
+<li><p>Check if you have Python: Open a terminal/command prompt and type <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code> or <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">--version</span></code></p></li>
+<li><p>If you need to install Python, visit <a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></p></li>
+</ul>
+</li>
+<li><p><strong>Basic comfort with the command line</strong> (terminal on Mac/Linux, Command Prompt or PowerShell on Windows)</p></li>
+<li><p><strong>A text editor or Python environment</strong> like:</p>
+<ul class="simple">
+<li><p>VS Code (beginner-friendly)</p></li>
+<li><p>Jupyter Notebook/Lab (great for data exploration)</p></li>
+<li><p>PyCharm (full-featured IDE)</p></li>
+<li><p>Or even a simple text editor</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Open your terminal and install Peppi using pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pds.peppi
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you’re using a virtual environment (recommended!), make sure to activate it first.</p>
+</div>
+</section>
+<section id="your-first-search">
+<h2>Your First Search<a class="headerlink" href="#your-first-search" title="Link to this heading"></a></h2>
+<p>Let’s start with a simple example: finding data about Mars.</p>
+<section id="step-1-import-peppi">
+<h3>Step 1: Import Peppi<a class="headerlink" href="#step-1-import-peppi" title="Link to this heading"></a></h3>
+<p>Create a new Python file (e.g., <code class="docutils literal notranslate"><span class="pre">my_first_search.py</span></code>) or open a Jupyter notebook, and add:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+</pre></div>
+</div>
+<p>This imports the Peppi library and gives it a short nickname (<code class="docutils literal notranslate"><span class="pre">pep</span></code>) so we don’t have to type as much.</p>
+</section>
+<section id="step-2-connect-to-the-pds">
+<h3>Step 2: Connect to the PDS<a class="headerlink" href="#step-2-connect-to-the-pds" title="Link to this heading"></a></h3>
+<p>Next, create a connection to the PDS API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This connects to NASA’s public PDS server. You don’t need any credentials or API keys - it’s free and open to everyone!</p>
+</section>
+<section id="step-3-find-products-about-mars">
+<h3>Step 3: Find Products About Mars<a class="headerlink" href="#step-3-find-products-about-mars" title="Link to this heading"></a></h3>
+<p>Now let’s search for observational data (like images, spectra, or measurements) about Mars:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Search for observational products targeting Mars</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Let’s break this down:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pep.Products(client)</span></code> - This creates a search query</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.has_target(&quot;Mars&quot;)</span></code> - Filter for data about Mars</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.observationals()</span></code> - Only return observational data (actual measurements, not documentation)</p></li>
+</ul>
+</section>
+<section id="step-4-look-at-the-results">
+<h3>Step 4: Look at the Results<a class="headerlink" href="#step-4-look-at-the-results" title="Link to this heading"></a></h3>
+<p>Now let’s see what we found. We’ll look at just the first 5 products:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print information about the first 5 products</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ID: </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Title: </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Identification_Area.pds:title&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;N/A&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>  <span class="c1"># Stop after 5 products</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+<p>When you run this, you’ll see information about real Mars data in the PDS!</p>
+</section>
+</section>
+<section id="complete-first-example">
+<h2>Complete First Example<a class="headerlink" href="#complete-first-example" title="Link to this heading"></a></h2>
+<p>Here’s the complete code all together:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="c1"># Connect to PDS</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+
+<span class="c1"># Search for Mars observational data</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="c1"># Print information about the first 5 products</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ID: </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Title: </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Identification_Area.pds:title&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;N/A&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>  <span class="c1"># Stop after 5 products</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</section>
+<section id="understanding-what-you-got">
+<h2>Understanding What You Got<a class="headerlink" href="#understanding-what-you-got" title="Link to this heading"></a></h2>
+<p>Each <code class="docutils literal notranslate"><span class="pre">product</span></code> in your results contains metadata (information about the data):</p>
+<ul class="simple">
+<li><p><strong>product.id</strong> - A unique identifier for this product</p></li>
+<li><p><strong>product.properties</strong> - A dictionary containing all the metadata fields</p></li>
+<li><p><strong>product.type</strong> - What kind of product it is (observational, collection, bundle, etc.)</p></li>
+</ul>
+<p>The metadata tells you things like:</p>
+<ul class="simple">
+<li><p>What mission collected the data</p></li>
+<li><p>When it was collected</p></li>
+<li><p>What instrument was used</p></li>
+<li><p>How to cite the data</p></li>
+<li><p>Where to download the actual data files</p></li>
+</ul>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>Now that you’ve run your first search, you’re ready to:</p>
+<ol class="arabic simple">
+<li><p><strong>Explore different targets</strong> - Try searching for “Jupiter”, “Moon”, or “Bennu”</p></li>
+<li><p><strong>Add more filters</strong> - Learn about time ranges, instruments, and processing levels</p></li>
+<li><p><strong>Work with results</strong> - Export to pandas DataFrames, download data files, etc.</p></li>
+</ol>
+<p>Check out these sections next:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="user_guide.html"><span class="doc">User Guide</span></a> - Understand key concepts and how Peppi works</p></li>
+<li><p><a class="reference internal" href="cookbook.html"><span class="doc">Cookbook</span></a> - Copy and customize recipes for common tasks</p></li>
+<li><p><a class="reference internal" href="reference.html"><span class="doc">Library Reference</span></a> - Complete API documentation</p></li>
+</ul>
+</section>
+<section id="getting-help">
+<h2>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading"></a></h2>
+<p>If you get stuck:</p>
+<ol class="arabic simple">
+<li><p><strong>Read the error message</strong> - Python errors often tell you exactly what’s wrong</p></li>
+<li><p><strong>Check the cookbook</strong> - <a class="reference internal" href="cookbook.html"><span class="doc">Cookbook</span></a> has solutions to common tasks</p></li>
+<li><p><strong>Ask for help</strong>:</p>
+<ul class="simple">
+<li><p>Create a <a class="reference external" href="https://github.com/NASA-PDS/peppi/issues">GitHub issue</a></p></li>
+<li><p>Start a <a class="reference external" href="https://github.com/NASA-PDS/peppi/discussions">discussion</a></p></li>
+<li><p>Contact the <a class="reference external" href="mailto:pds-operator&#37;&#52;&#48;jpl&#46;nasa&#46;gov">PDS Help Desk</a></p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="common-installation-issues">
+<h2>Common Installation Issues<a class="headerlink" href="#common-installation-issues" title="Link to this heading"></a></h2>
+<dl>
+<dt><strong>“pip: command not found”</strong></dt><dd><p>Try <code class="docutils literal notranslate"><span class="pre">pip3</span></code> instead of <code class="docutils literal notranslate"><span class="pre">pip</span></code>, or install pip: <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">ensurepip</span></code></p>
+</dd>
+<dt><strong>“No module named ‘pds.peppi’”</strong></dt><dd><p>Make sure you installed it: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pds.peppi</span></code></p>
+<p>If using a virtual environment, make sure it’s activated.</p>
+</dd>
+<dt><strong>“ImportError: No module named ‘pandas’” or similar</strong></dt><dd><p>Peppi has dependencies that should install automatically. Try: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">pds.peppi</span></code></p>
+</dd>
+<dt><strong>Using Python 3.12 or earlier?</strong></dt><dd><p>Peppi requires Python 3.13+. Consider using <a class="reference external" href="https://github.com/pyenv/pyenv">pyenv</a> or <a class="reference external" href="https://docs.conda.io/">conda</a> to manage multiple Python versions.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="PDS Peppi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="user_guide.html" class="btn btn-neutral float-right" title="User Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 California Institute of Technology.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

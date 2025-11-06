@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pds.peppi.client &mdash; Peppi  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/theme_overrides.css?v=0c24fe83" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -43,12 +41,18 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cookbook.html">Cookbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference.html">Library Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community &amp; Support</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../reference.html">Library Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../support/contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../support/contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support/contact.html">Contact Us</a></li>
 </ul>
 
         </div>
@@ -77,10 +81,10 @@
              
   <h1>Source code for pds.peppi.client</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;PDS Registry Client related classes.&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">pds.api_client</span> <span class="kn">import</span> <span class="n">ApiClient</span>
-<span class="kn">from</span> <span class="nn">pds.api_client</span> <span class="kn">import</span> <span class="n">Configuration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pds.api_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApiClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pds.api_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Configuration</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -89,9 +93,14 @@
 <span class="sd">&quot;&quot;&quot;Default URL used when querying PDS API&quot;&quot;&quot;</span>
 
 
+<span class="k">class</span><span class="w"> </span><span class="nc">PDSRegistryClientError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;PDS Registry Client Exception.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+
 <div class="viewcode-block" id="PDSRegistryClient">
 <a class="viewcode-back" href="../../../reference.html#pds.peppi.client.PDSRegistryClient">[docs]</a>
-<span class="k">class</span> <span class="nc">PDSRegistryClient</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PDSRegistryClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Used to connect and interface with the PDS Registry.</span>
 
 <span class="sd">    Attributes</span>
@@ -101,9 +110,11 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">_instances</span> <span class="o">=</span> <span class="p">[]</span>
+
 <div class="viewcode-block" id="PDSRegistryClient.__init__">
 <a class="viewcode-back" href="../../../reference.html#pds.peppi.client.PDSRegistryClient.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="n">_DEFAULT_API_BASE_URL</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="n">_DEFAULT_API_BASE_URL</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a new instance of PDSRegistryClient.</span>
 
 <span class="sd">        Parameters</span>
@@ -113,9 +124,26 @@
 <span class="sd">             the official production server, can be specified otherwise.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_base_url</span> <span class="o">=</span> <span class="n">base_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">PDSRegistryClient</span><span class="o">.</span><span class="n">_instances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">configuration</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">()</span>
         <span class="n">configuration</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">base_url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api_client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PDSRegistryClient.get_base_url">
+<a class="viewcode-back" href="../../../reference.html#pds.peppi.client.PDSRegistryClient.get_base_url">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_base_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the PDS API URL used in this context. If multiple ones were used only the first found is returned.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_instances</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instances</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_base_url</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_instances</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Multiple instances found, using first one.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instances</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_base_url</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No instances found. Cannot find the base URL&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PDSRegistryClientError</span><span class="p">(</span><span class="s2">&quot;No instances found. Cannot find the base URL&quot;</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

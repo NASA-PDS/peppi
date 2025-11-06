@@ -1,10 +1,12 @@
-===========
-Quickstart
-===========
+============
+ Quickstart
+============
 
-Peppi is meant to be simple to start with.
+.. note::
+   This page provides a quick reference example. For a more detailed introduction,
+   see :doc:`getting_started`. For more examples, see the :doc:`cookbook`.
 
-It brings you to the core of your research in a few lines of code.
+Peppi is meant to be simple to start with. It brings you to the core of your research in a few lines of code.
 
 The following code has been tested with **Python 3.13**.
 
@@ -70,9 +72,21 @@ Then iterate on the results:
 
 Numerous pre-defined filters are available, you can `explore them <https://nasa-pds.github.io/peppi/reference.html#pds.peppi.query_builder.QueryBuilder>`_.
 
-Next steps
+
+Next Steps
 ~~~~~~~~~~~
 
-- Full library :doc:`reference`
-- Various Demo Use cases `Jupyter notebooks <https://github.com/NASA-PDS/search-api-notebook>`_ and `Seismic use case <https://github.com/civilinifr/cloud_testcase/>`_
-- Missing a feature ? Request it, create a `ticket <https://github.com/nasa-pds/peppi/issues>`_ or start a `discussion <https://github.com/NASA-PDS/peppi/discussions>`_.
+Now that you've seen a quick example, explore the documentation:
+
+- **New to Python or Peppi?** Start with :doc:`getting_started` for a gentle introduction
+- **Want more examples?** Check out the :doc:`cookbook` with 20+ ready-to-use recipes
+- **Need to understand concepts?** Read the :doc:`user_guide` for comprehensive explanations
+- **Looking for API details?** See the full :doc:`reference`
+
+Additional Resources
+~~~~~~~~~~~~~~~~~~~~
+
+- `Search API Jupyter Notebooks <https://github.com/NASA-PDS/search-api-notebook>`_ - Real-world examples
+- `PDS Search API Docs <https://nasa-pds.github.io/pds-api/>`_ - Underlying API documentation
+- Missing a feature? Request it via `GitHub Issues <https://github.com/nasa-pds/peppi/issues>`_
+- Have questions? Start a `discussion <https://github.com/NASA-PDS/peppi/discussions>`_

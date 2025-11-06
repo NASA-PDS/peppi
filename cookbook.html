@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cookbook &mdash; Peppi  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=0c24fe83" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Library Reference" href="reference.html" />
+    <link rel="prev" title="User Guide" href="user_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Peppi
+              <img src="_static/PDS_Planets.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started-recipes">Getting Started Recipes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-1-find-all-data-about-a-specific-target">Recipe 1: Find All Data About a Specific Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-2-search-by-mission-spacecraft">Recipe 2: Search by Mission/Spacecraft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-3-find-data-from-a-specific-time-period">Recipe 3: Find Data from a Specific Time Period</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-4-get-calibrated-data-only">Recipe 4: Get Calibrated Data Only</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-5-export-results-to-a-spreadsheet-csv">Recipe 5: Export Results to a Spreadsheet (CSV)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#intermediate-recipes">Intermediate Recipes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-6-find-mission-specific-data-in-a-date-range">Recipe 6: Find Mission-Specific Data in a Date Range</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-7-find-data-and-get-doi-for-citation">Recipe 7: Find Data and Get DOI for Citation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-8-extract-specific-metadata-fields-only">Recipe 8: Extract Specific Metadata Fields Only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-recipes">Advanced Recipes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-9-work-with-osiris-rex-specialized-products">Recipe 9: Work with OSIRIS-REx Specialized Products</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tips-for-creating-your-own-recipes">Tips for Creating Your Own Recipes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#need-more-help">Need More Help?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Library Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community &amp; Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support/contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support/contact.html">Contact Us</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Peppi</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Cookbook</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/nasa-pds/peppi/blob/main/docs/source/cookbook.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cookbook">
+<h1>Cookbook<a class="headerlink" href="#cookbook" title="Link to this heading"></a></h1>
+<p>This cookbook provides ready-to-use recipes for common tasks with Peppi. Copy and customize these examples for your own needs.
+Beware, that most recipes may return large result sets. When testing, always limit the number of results using <code class="docutils literal notranslate"><span class="pre">max_rows</span></code> or breaking after a few iterations.
+But when you combined the multiple filters for your use case, making your own recipes, you may remove those limits to get the full results.</p>
+<p>The recipes are organized by experience level:</p>
+<ul class="simple">
+<li><p><strong>Getting Started Recipes</strong> - Simple, single-task examples for beginners</p></li>
+<li><p><strong>Intermediate Recipes</strong> - Combining multiple filters and working with results</p></li>
+<li><p><strong>Advanced Recipes</strong> - Complex queries and data processing</p></li>
+</ul>
+<nav class="contents local" id="recipe-index">
+<p class="topic-title">Recipe Index</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#getting-started-recipes" id="id1">Getting Started Recipes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#recipe-1-find-all-data-about-a-specific-target" id="id2">Recipe 1: Find All Data About a Specific Target</a></p></li>
+<li><p><a class="reference internal" href="#recipe-2-search-by-mission-spacecraft" id="id3">Recipe 2: Search by Mission/Spacecraft</a></p></li>
+<li><p><a class="reference internal" href="#recipe-3-find-data-from-a-specific-time-period" id="id4">Recipe 3: Find Data from a Specific Time Period</a></p></li>
+<li><p><a class="reference internal" href="#recipe-4-get-calibrated-data-only" id="id5">Recipe 4: Get Calibrated Data Only</a></p></li>
+<li><p><a class="reference internal" href="#recipe-5-export-results-to-a-spreadsheet-csv" id="id6">Recipe 5: Export Results to a Spreadsheet (CSV)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#intermediate-recipes" id="id7">Intermediate Recipes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#recipe-6-find-mission-specific-data-in-a-date-range" id="id8">Recipe 6: Find Mission-Specific Data in a Date Range</a></p></li>
+<li><p><a class="reference internal" href="#recipe-7-find-data-and-get-doi-for-citation" id="id9">Recipe 7: Find Data and Get DOI for Citation</a></p></li>
+<li><p><a class="reference internal" href="#recipe-8-extract-specific-metadata-fields-only" id="id10">Recipe 8: Extract Specific Metadata Fields Only</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#advanced-recipes" id="id11">Advanced Recipes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#recipe-9-work-with-osiris-rex-specialized-products" id="id12">Recipe 9: Work with OSIRIS-REx Specialized Products</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tips-for-creating-your-own-recipes" id="id13">Tips for Creating Your Own Recipes</a></p></li>
+<li><p><a class="reference internal" href="#need-more-help" id="id14">Need More Help?</a></p></li>
+</ul>
+</nav>
+<section id="getting-started-recipes">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Getting Started Recipes</a><a class="headerlink" href="#getting-started-recipes" title="Link to this heading"></a></h2>
+<p>These recipes are perfect if you’re new to Peppi or just want to accomplish a simple task quickly.</p>
+<section id="recipe-1-find-all-data-about-a-specific-target">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Recipe 1: Find All Data About a Specific Target</a><a class="headerlink" href="#recipe-1-find-all-data-about-a-specific-target" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Search for all observational data about a specific planetary body.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="c1"># Connect to PDS</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+
+<span class="c1"># Search for Mars data</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="c1"># Print first 5 results</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+<p><strong>Try it with other targets:</strong></p>
+<ul class="simple">
+<li><p>“Jupiter”</p></li>
+<li><p>“Moon”</p></li>
+<li><p>“Bennu”</p></li>
+<li><p>“Enceladus”</p></li>
+<li><p>“Venus”</p></li>
+</ul>
+</section>
+<section id="recipe-2-search-by-mission-spacecraft">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Recipe 2: Search by Mission/Spacecraft</a><a class="headerlink" href="#recipe-2-search-by-mission-spacecraft" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Find data from a specific mission or spacecraft.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+
+<span class="c1"># Find the spacecraft (fuzzy search)</span>
+<span class="n">curiosity</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">INSTRUMENT_HOSTS</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;curiosity&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found: </span><span class="si">{</span><span class="n">curiosity</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LID: </span><span class="si">{</span><span class="n">curiosity</span><span class="o">.</span><span class="n">lid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get observational data from this spacecraft</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_instrument_host</span><span class="p">(</span><span class="n">curiosity</span><span class="o">.</span><span class="n">lid</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="c1"># Show first 5</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+<p><strong>Other spacecraft to try:</strong></p>
+<ul class="simple">
+<li><p>“Perseverance”</p></li>
+<li><p>“Juno”</p></li>
+<li><p>“Cassini”</p></li>
+<li><p>“Messenger”</p></li>
+<li><p>“New Horizons”</p></li>
+</ul>
+</section>
+<section id="recipe-3-find-data-from-a-specific-time-period">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Recipe 3: Find Data from a Specific Time Period</a><a class="headerlink" href="#recipe-3-find-data-from-a-specific-time-period" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Search for data collected within a specific date range.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+
+<span class="c1"># Define date range</span>
+<span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
+
+<span class="c1"># Find Mercury data from 2020</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mercury&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="c1"># Print results with dates</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Time_Coordinates.pds:start_date_time&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;N/A&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Start: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</section>
+<section id="recipe-4-get-calibrated-data-only">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Recipe 4: Get Calibrated Data Only</a><a class="headerlink" href="#recipe-4-get-calibrated-data-only" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Find only calibrated (processed) data, not raw measurements.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+
+<span class="c1"># Get calibrated Mars data</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_processing_level</span><span class="p">(</span><span class="s2">&quot;calibrated&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="n">processing</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Primary_Result_Summary.pds:processing_level&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;N/A&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Processing Level: </span><span class="si">{</span><span class="n">processing</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+<p><strong>Processing levels:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;telemetry&quot;</span></code> - Raw transmission</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;raw&quot;</span></code> - Unprocessed data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;partially-processed&quot;</span></code> - Some processing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;calibrated&quot;</span></code> - Fully calibrated</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;derived&quot;</span></code> - Higher-level products</p></li>
+</ul>
+</section>
+<section id="recipe-5-export-results-to-a-spreadsheet-csv">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Recipe 5: Export Results to a Spreadsheet (CSV)</a><a class="headerlink" href="#recipe-5-export-results-to-a-spreadsheet-csv" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Save search results to a CSV file for use in Excel, Google Sheets, etc.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+
+<span class="c1"># Search for Mars data</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collections</span><span class="p">()</span>
+
+<span class="c1"># Convert to pandas DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">products</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">(</span><span class="n">max_rows</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># Limit to 100 rows for testing</span>
+
+<span class="c1"># Save to CSV</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;mars_data.csv&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> products to mars_data.csv&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="intermediate-recipes">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Intermediate Recipes</a><a class="headerlink" href="#intermediate-recipes" title="Link to this heading"></a></h2>
+<p>These recipes combine multiple filters and show you how to work with results more effectively.</p>
+<section id="recipe-6-find-mission-specific-data-in-a-date-range">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Recipe 6: Find Mission-Specific Data in a Date Range</a><a class="headerlink" href="#recipe-6-find-mission-specific-data-in-a-date-range" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Get data from a specific spacecraft about a specific target during a specific time period.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+
+<span class="c1"># Find the Messenger spacecraft</span>
+<span class="n">messenger</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">INSTRUMENT_HOSTS</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;messenger&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Get Mercury data from Messenger before January 2012</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mercury&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_instrument_host</span><span class="p">(</span><span class="n">messenger</span><span class="o">.</span><span class="n">lid</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">23</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="c1"># Convert to DataFrame for analysis</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">products</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">(</span><span class="n">max_rows</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> products&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Sample:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;pds:Time_Coordinates.pds:start_date_time&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No products found&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="recipe-7-find-data-and-get-doi-for-citation">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Recipe 7: Find Data and Get DOI for Citation</a><a class="headerlink" href="#recipe-7-find-data-and-get-doi-for-citation" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Find data products and get their DOI for proper citation in papers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+
+<span class="c1"># Search for Bennu data from OSIRIS-REx</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Bennu&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">bundles</span><span class="p">()</span>
+
+<span class="c1"># Look for DOIs in the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Products with DOIs:&quot;</span><span class="p">)</span>
+<span class="n">found</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Citation_Information.pds:doi&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">doi</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Identification_Area.pds:title&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;N/A&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Title: </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DOI: </span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product: </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">found</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">found</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="k">break</span>
+
+<span class="k">if</span> <span class="n">found</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No products with DOIs found in initial results&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="recipe-8-extract-specific-metadata-fields-only">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Recipe 8: Extract Specific Metadata Fields Only</a><a class="headerlink" href="#recipe-8-extract-specific-metadata-fields-only" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> For better performance, only retrieve the metadata fields you need.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+
+<span class="c1"># Specify only the fields we want</span>
+<span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;lid&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pds:Identification_Area.pds:title&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;pds:Time_Coordinates.pds:start_date_time&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ref_lid_target&#39;</span>
+<span class="p">]</span>
+
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">observationals</span><span class="p">()</span> \
+    <span class="o">.</span><span class="n">fields</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+
+<span class="c1"># Results will only contain the specified fields</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Identification_Area.pds:title&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;N/A&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Start: </span><span class="si">{</span><span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Time_Coordinates.pds:start_date_time&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;N/A&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-recipes">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Advanced Recipes</a><a class="headerlink" href="#advanced-recipes" title="Link to this heading"></a></h2>
+<p>These recipes demonstrate complex queries and data processing workflows. For each advanced recipe,
+we provide an overview here with key code snippets, and link to <strong>interactive Jupyter notebooks</strong>
+that include complete implementations, visualizations, and explanations.</p>
+<p>All interactive notebooks are available in the <a class="reference external" href="https://github.com/NASA-PDS/search-api-notebook/tree/main/notebooks/peppi-advanced">NASA-PDS/search-api-notebook repository</a>.</p>
+<section id="recipe-9-work-with-osiris-rex-specialized-products">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Recipe 9: Work with OSIRIS-REx Specialized Products</a><a class="headerlink" href="#recipe-9-work-with-osiris-rex-specialized-products" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Use mission-specific product classes for specialized functionality.</p>
+<p>This recipe shows how to leverage specialized product classes like <code class="docutils literal notranslate"><span class="pre">OrexProducts</span></code> that
+provide mission-specific features while inheriting standard Peppi filters.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+<span class="n">orex_products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">OrexProducts</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Use standard filters with mission-specific class</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">orex_products</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Bennu&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">within_range</span><span class="p">(</span><span class="mf">100.0</span><span class="p">)</span>   \
+    <span class="o">.</span><span class="n">within_bbox</span><span class="p">(</span><span class="mf">9.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">,</span> <span class="mf">21.0</span><span class="p">,</span> <span class="mf">27.0</span><span class="p">)</span>  \
+    <span class="o">.</span><span class="n">observationals</span><span class="p">()</span>  \
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Identification_Area.pds:title&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;N/A&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tips-for-creating-your-own-recipes">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Tips for Creating Your Own Recipes</a><a class="headerlink" href="#tips-for-creating-your-own-recipes" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Start Simple</strong>: Begin with a basic query and add complexity gradually</p></li>
+<li><p><strong>Test Small</strong>: Always use <code class="docutils literal notranslate"><span class="pre">max_rows</span></code> or <code class="docutils literal notranslate"><span class="pre">enumerate</span></code> with breaks when testing</p></li>
+<li><p><strong>Check Fields</strong>: Use <code class="docutils literal notranslate"><span class="pre">.properties.keys()</span></code> to see what metadata is available</p></li>
+<li><p><strong>Handle None</strong>: Always check if DataFrames are None before processing</p></li>
+<li><p><strong>Use Context</strong>: Leverage fuzzy search to find IDs instead of guessing</p></li>
+<li><p><strong>Read Errors</strong>: Python error messages usually tell you exactly what’s wrong</p></li>
+</ol>
+</section>
+<section id="need-more-help">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">Need More Help?</a><a class="headerlink" href="#need-more-help" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Can’t find what you’re looking for? Check the <a class="reference internal" href="reference.html"><span class="doc">Library Reference</span></a> for all available methods</p></li>
+<li><p>Need to understand a concept better? See the <a class="reference internal" href="user_guide.html"><span class="doc">User Guide</span></a></p></li>
+<li><p>Have a recipe to share? Open a <a class="reference external" href="https://github.com/NASA-PDS/peppi/discussions">discussion</a></p></li>
+<li><p>Found a bug? Create an <a class="reference external" href="https://github.com/NASA-PDS/peppi/issues">issue</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="user_guide.html" class="btn btn-neutral float-left" title="User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="reference.html" class="btn btn-neutral float-right" title="Library Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 California Institute of Technology.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

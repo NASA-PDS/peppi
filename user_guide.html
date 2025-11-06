@@ -1,0 +1,636 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Guide &mdash; Peppi  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=0c24fe83" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Cookbook" href="cookbook.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Peppi
+              <img src="_static/PDS_Planets.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#key-concepts">Key Concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pds-products">PDS Products</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#understanding-pds-identifiers">Understanding PDS Identifiers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#core-components">Core Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pdsregistryclient">PDSRegistryClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#products">Products</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#context">Context</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#building-queries">Building Queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-query-builder-pattern">The Query Builder Pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lazy-evaluation">Lazy Evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-pagination">Automatic Pagination</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#available-filters">Available Filters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#by-target">By Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#by-time">By Time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#by-mission-spacecraft">By Mission/Spacecraft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#by-instrument">By Instrument</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#by-investigation">By Investigation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#by-collection">By Collection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#by-processing-level">By Processing Level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#by-product-type">By Product Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-filters">Custom Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-results">Working with Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#iterating-over-products">Iterating Over Products</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limiting-results">Limiting Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#converting-to-dataframe">Converting to DataFrame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accessing-metadata">Accessing Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reducing-returned-fields">Reducing Returned Fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resetting-a-query">Resetting a Query</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#combining-filters">Combining Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#understanding-data-organization">Understanding Data Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tips-and-best-practices">Tips and Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#start-broad-then-narrow">Start Broad, Then Narrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-context-for-discovery">Use Context for Discovery</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-with-small-result-sets">Test with Small Result Sets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#common-pds-metadata-fields">Common PDS Metadata Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Library Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community &amp; Support</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support/contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support/contact.html">Contact Us</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Peppi</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">User Guide</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/nasa-pds/peppi/blob/main/docs/source/user_guide.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="user-guide">
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading"></a></h1>
+<p>This guide explains the key concepts and components of Peppi to help you understand how to effectively search and access PDS data.</p>
+<section id="key-concepts">
+<h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Link to this heading"></a></h2>
+<section id="pds-products">
+<h3>PDS Products<a class="headerlink" href="#pds-products" title="Link to this heading"></a></h3>
+<p>The Planetary Data System organizes data into <strong>products</strong>. There are different types of products:</p>
+<dl class="simple">
+<dt><strong>Observational Products</strong></dt><dd><p>The actual science data - images, spectra, measurements, etc. This is usually what you want.</p>
+</dd>
+<dt><strong>Collections</strong></dt><dd><p>Groups of related products (e.g., all images from a particular Mars rover camera for a specific mission phase).</p>
+</dd>
+<dt><strong>Bundles</strong></dt><dd><p>Groups of collections (e.g., all data from a complete mission).</p>
+</dd>
+<dt><strong>Context Products</strong></dt><dd><p>Metadata describing targets (planets, moons), instruments, missions, and spacecraft. These help you search for the data you want.</p>
+</dd>
+</dl>
+</section>
+<section id="understanding-pds-identifiers">
+<h3>Understanding PDS Identifiers<a class="headerlink" href="#understanding-pds-identifiers" title="Link to this heading"></a></h3>
+<p>Every product in the PDS has a unique identifier called a <strong>LID</strong> (Logical Identifier). It looks like:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>urn:nasa:pds:mission.instrument:collection:product
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>urn:nasa:pds:context:target:planet.mars
+</pre></div>
+</div>
+<p>Some products also have versions, making them <strong>LIDVIDs</strong> (LID + Version ID):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>urn:nasa:pds:mission.instrument:collection:product::1.0
+</pre></div>
+</div>
+<p>You usually don’t need to know the exact LID - Peppi lets you search by name (like “Mars”) and it finds the LID for you.</p>
+</section>
+</section>
+<section id="core-components">
+<h2>Core Components<a class="headerlink" href="#core-components" title="Link to this heading"></a></h2>
+<section id="pdsregistryclient">
+<h3>PDSRegistryClient<a class="headerlink" href="#pdsregistryclient" title="Link to this heading"></a></h3>
+<p>The <strong>PDSRegistryClient</strong> connects your Python code to the PDS API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>By default, it connects to NASA’s production PDS server (<code class="docutils literal notranslate"><span class="pre">https://pds.nasa.gov/api/search/1</span></code>).</p>
+<p>If you need to connect to a different server (e.g., for testing):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://pds.nasa.gov/api/search/1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="products">
+<h3>Products<a class="headerlink" href="#products" title="Link to this heading"></a></h3>
+<p>The <strong>Products</strong> class is your main tool for searching. It uses a “fluent” interface where you chain methods together:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_instrument_host</span><span class="p">(</span><span class="s2">&quot;urn:nasa:pds:context:instrument_host:spacecraft.msl&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Each method returns the Products object, so you can keep adding filters.</p>
+</section>
+<section id="context">
+<h3>Context<a class="headerlink" href="#context" title="Link to this heading"></a></h3>
+<p>The <strong>Context</strong> gives you access to searchable catalogs of targets and spacecraft:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+
+<span class="c1"># Search for a target (with fuzzy matching!)</span>
+<span class="n">jupiter</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">TARGETS</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;jupiter&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jupiter</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># &quot;Jupiter&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jupiter</span><span class="o">.</span><span class="n">lid</span><span class="p">)</span>   <span class="c1"># &quot;urn:nasa:pds:context:target:planet.jupiter&quot;</span>
+
+<span class="c1"># Search for a spacecraft</span>
+<span class="n">curiosity</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">INSTRUMENT_HOSTS</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;curiosity&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">curiosity</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># &quot;Mars Science Laboratory&quot;</span>
+</pre></div>
+</div>
+<p>The search is typo-tolerant, so <code class="docutils literal notranslate"><span class="pre">context.TARGETS.search(&quot;jupyter&quot;)</span></code> will still find Jupiter!</p>
+</section>
+</section>
+<section id="building-queries">
+<h2>Building Queries<a class="headerlink" href="#building-queries" title="Link to this heading"></a></h2>
+<section id="the-query-builder-pattern">
+<h3>The Query Builder Pattern<a class="headerlink" href="#the-query-builder-pattern" title="Link to this heading"></a></h3>
+<p>Peppi uses a “query builder” pattern. You start with <code class="docutils literal notranslate"><span class="pre">Products(client)</span></code> and add filters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>            <span class="c1"># Start with all products</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span>        <span class="c1"># Filter by target</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>          <span class="c1"># Filter by product type</span>
+
+<span class="c1"># Now execute by iterating</span>
+<span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">query</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or chain it all together:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="lazy-evaluation">
+<h3>Lazy Evaluation<a class="headerlink" href="#lazy-evaluation" title="Link to this heading"></a></h3>
+<p><strong>Important:</strong> Queries don’t execute until you iterate over the results or convert to a DataFrame.</p>
+<p>This means you can build up complex queries step by step:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># No API call happens yet</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span>
+
+<span class="c1"># Still no API call</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="c1"># NOW the API is called, as we start iterating</span>
+<span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">query</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="automatic-pagination">
+<h3>Automatic Pagination<a class="headerlink" href="#automatic-pagination" title="Link to this heading"></a></h3>
+<p>When searching, the PDS API returns results in pages (typically 100 at a time). Peppi automatically handles this for you:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="c1"># This will automatically fetch multiple pages as needed</span>
+<span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You don’t need to worry about pagination - just iterate and Peppi handles the rest!</p>
+</section>
+</section>
+<section id="available-filters">
+<h2>Available Filters<a class="headerlink" href="#available-filters" title="Link to this heading"></a></h2>
+<p>Here are the main filtering methods you can use:</p>
+<section id="by-target">
+<h3>By Target<a class="headerlink" href="#by-target" title="Link to this heading"></a></h3>
+<p>Filter by celestial body (planet, moon, asteroid, comet):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># By name (Peppi finds the LID for you)</span>
+<span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span>
+
+<span class="c1"># Or by LID if you know it</span>
+<span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;urn:nasa:pds:context:target:planet.mars&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="by-time">
+<h3>By Time<a class="headerlink" href="#by-time" title="Link to this heading"></a></h3>
+<p>Filter by when data was collected:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="n">date1</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">date2</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
+
+<span class="c1"># Data collected before a date</span>
+<span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span>
+
+<span class="c1"># Data collected after a date</span>
+<span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span>
+
+<span class="c1"># Combine for a range</span>
+<span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">date2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="by-mission-spacecraft">
+<h3>By Mission/Spacecraft<a class="headerlink" href="#by-mission-spacecraft" title="Link to this heading"></a></h3>
+<p>Filter by instrument host (spacecraft or rover):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># By LID</span>
+<span class="o">.</span><span class="n">has_instrument_host</span><span class="p">(</span><span class="s2">&quot;urn:nasa:pds:context:instrument_host:spacecraft.msl&quot;</span><span class="p">)</span>
+
+<span class="c1"># Or find it with Context</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+<span class="n">curiosity</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">INSTRUMENT_HOSTS</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;curiosity&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">products</span><span class="o">.</span><span class="n">has_instrument_host</span><span class="p">(</span><span class="n">curiosity</span><span class="o">.</span><span class="n">lid</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="by-instrument">
+<h3>By Instrument<a class="headerlink" href="#by-instrument" title="Link to this heading"></a></h3>
+<p>Filter by the specific instrument that collected the data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">has_instrument</span><span class="p">(</span><span class="s2">&quot;urn:nasa:pds:context:instrument:instrument_lid&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="by-investigation">
+<h3>By Investigation<a class="headerlink" href="#by-investigation" title="Link to this heading"></a></h3>
+<p>Filter by mission or investigation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">has_investigation</span><span class="p">(</span><span class="s2">&quot;urn:nasa:pds:context:investigation:mission.msl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="by-collection">
+<h3>By Collection<a class="headerlink" href="#by-collection" title="Link to this heading"></a></h3>
+<p>Get products from a specific collection:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">of_collection</span><span class="p">(</span><span class="s2">&quot;urn:nasa:pds:mission.instrument:collection::1.0&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="by-processing-level">
+<h3>By Processing Level<a class="headerlink" href="#by-processing-level" title="Link to this heading"></a></h3>
+<p>Filter by how processed the data is:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Available levels: &quot;telemetry&quot;, &quot;raw&quot;, &quot;partially-processed&quot;, &quot;calibrated&quot;, &quot;derived&quot;</span>
+<span class="o">.</span><span class="n">has_processing_level</span><span class="p">(</span><span class="s2">&quot;calibrated&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Processing levels explained:</strong></p>
+<ul class="simple">
+<li><p><strong>telemetry</strong>: Raw transmission from spacecraft</p></li>
+<li><p><strong>raw</strong>: Unprocessed instrument data</p></li>
+<li><p><strong>partially-processed</strong>: Some processing applied</p></li>
+<li><p><strong>calibrated</strong>: Converted to physical units with corrections applied</p></li>
+<li><p><strong>derived</strong>: Higher-level products created from processed data</p></li>
+</ul>
+</section>
+<section id="by-product-type">
+<h3>By Product Type<a class="headerlink" href="#by-product-type" title="Link to this heading"></a></h3>
+<p>Filter by the class of product:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>           <span class="c1"># Actual science data</span>
+<span class="o">.</span><span class="n">collections</span><span class="p">()</span>              <span class="c1"># Collection products</span>
+<span class="o">.</span><span class="n">bundles</span><span class="p">()</span>                  <span class="c1"># Bundle products</span>
+<span class="o">.</span><span class="n">contexts</span><span class="p">()</span>                 <span class="c1"># Context products (targets, instruments, etc.)</span>
+
+<span class="c1"># For collections, you can specify the type</span>
+<span class="o">.</span><span class="n">collections</span><span class="p">(</span><span class="n">collection_type</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-filters">
+<h3>Custom Filters<a class="headerlink" href="#custom-filters" title="Link to this heading"></a></h3>
+<p>For advanced use cases, you can write custom query clauses using the PDS API syntax:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter by any PDS4 property</span>
+<span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s1">&#39;pds:Identification_Area.pds:title like &quot;*Mars*&quot;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See the <a class="reference external" href="https://nasa-pds.github.io/pds-api/">PDS API documentation</a> for the query syntax.</p>
+</section>
+</section>
+<section id="working-with-results">
+<h2>Working with Results<a class="headerlink" href="#working-with-results" title="Link to this heading"></a></h2>
+<section id="iterating-over-products">
+<h3>Iterating Over Products<a class="headerlink" href="#iterating-over-products" title="Link to this heading"></a></h3>
+<p>The simplest way to work with results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="p">)</span>  <span class="c1"># Dictionary of all metadata</span>
+    <span class="k">break</span>  <span class="c1"># Remove this to see all results</span>
+</pre></div>
+</div>
+</section>
+<section id="limiting-results">
+<h3>Limiting Results<a class="headerlink" href="#limiting-results" title="Link to this heading"></a></h3>
+<p>To avoid iterating over thousands of products while testing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">9</span><span class="p">:</span>  <span class="c1"># Stop after 10 products</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</section>
+<section id="converting-to-dataframe">
+<h3>Converting to DataFrame<a class="headerlink" href="#converting-to-dataframe" title="Link to this heading"></a></h3>
+<p>For data analysis, convert results to a pandas DataFrame:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="c1"># Convert to DataFrame (automatically handles all pages)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">products</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+<span class="c1"># Limit rows for testing</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">products</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">(</span><span class="n">max_rows</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="accessing-metadata">
+<h3>Accessing Metadata<a class="headerlink" href="#accessing-metadata" title="Link to this heading"></a></h3>
+<p>Each product has a <code class="docutils literal notranslate"><span class="pre">properties</span></code> dictionary containing all PDS4 metadata:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
+    <span class="c1"># Access specific properties</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Identification_Area.pds:title&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;N/A&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pds:Time_Coordinates.pds:start_date_time&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;N/A&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Title: </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Start Time: </span><span class="si">{</span><span class="n">start_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Most properties are returned as lists (even single values) for consistency. Use <code class="docutils literal notranslate"><span class="pre">[0]</span></code> to get the first value.</p>
+</div>
+</section>
+<section id="reducing-returned-fields">
+<h3>Reducing Returned Fields<a class="headerlink" href="#reducing-returned-fields" title="Link to this heading"></a></h3>
+<p>For better performance, especially with large result sets, you can limit which fields are returned:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">observationals</span><span class="p">()</span> \
+    <span class="o">.</span><span class="n">fields</span><span class="p">([</span><span class="s1">&#39;lid&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;pds:Time_Coordinates.pds:start_date_time&#39;</span><span class="p">])</span>
+
+<span class="c1"># Now products will only include the specified fields</span>
+</pre></div>
+</div>
+</section>
+<section id="resetting-a-query">
+<h3>Resetting a Query<a class="headerlink" href="#resetting-a-query" title="Link to this heading"></a></h3>
+<p>If you’re iterating and want to start over or build a new query:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="c1"># Iterate through some results</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="k">break</span>
+
+<span class="c1"># Reset to use the same query again</span>
+<span class="n">products</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+<span class="c1"># Or build a new query</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Jupiter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="combining-filters">
+<h2>Combining Filters<a class="headerlink" href="#combining-filters" title="Link to this heading"></a></h2>
+<p>You can combine multiple filters to narrow your search:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pds.peppi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pep</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">PDSRegistryClient</span><span class="p">()</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+
+<span class="c1"># Find Curiosity rover</span>
+<span class="n">curiosity</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">INSTRUMENT_HOSTS</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;curiosity&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Complex query: Mars data from Curiosity, in 2020, calibrated</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_instrument_host</span><span class="p">(</span><span class="n">curiosity</span><span class="o">.</span><span class="n">lid</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">has_processing_level</span><span class="p">(</span><span class="s2">&quot;calibrated&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">products</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">(</span><span class="n">max_rows</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="understanding-data-organization">
+<h2>Understanding Data Organization<a class="headerlink" href="#understanding-data-organization" title="Link to this heading"></a></h2>
+<p>PDS data is organized hierarchically:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Bundle (e.g., entire mission)
+└── Collection (e.g., one instrument&#39;s data)
+    └── Observational Products (e.g., individual images)
+</pre></div>
+</div>
+<p>When you search for observational products, you’re searching at the most detailed level.</p>
+<p>To understand what collection or bundle a product belongs to, look at its properties:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ops:Provenance.ops:parent_collection_identifier&#39;</span><span class="p">)</span>
+<span class="n">product</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ops:Provenance.ops:parent_bundle_identifier&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="tips-and-best-practices">
+<h2>Tips and Best Practices<a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
+<section id="start-broad-then-narrow">
+<h3>Start Broad, Then Narrow<a class="headerlink" href="#start-broad-then-narrow" title="Link to this heading"></a></h3>
+<p>When exploring new data:</p>
+<ol class="arabic simple">
+<li><p>Start with a broad search to see what’s available</p></li>
+<li><p>Look at the results to understand the data structure</p></li>
+<li><p>Add more specific filters based on what you learned</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start broad</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+
+<span class="c1"># Look at first few results</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>  <span class="c1"># See what metadata is available</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">break</span>
+
+<span class="c1"># Now refine based on what you learned</span>
+<span class="n">products</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Products</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_target</span><span class="p">(</span><span class="s2">&quot;Mars&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">has_processing_level</span><span class="p">(</span><span class="s2">&quot;calibrated&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">observationals</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="use-context-for-discovery">
+<h3>Use Context for Discovery<a class="headerlink" href="#use-context-for-discovery" title="Link to this heading"></a></h3>
+<p>Don’t know the exact name of a target or spacecraft? Use Context:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+
+<span class="c1"># See all available targets (returns top 10 matches)</span>
+<span class="n">mars_related</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">TARGETS</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;mars&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">mars_related</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">lid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Find spacecraft (handles typos!)</span>
+<span class="n">spacecraft</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">INSTRUMENT_HOSTS</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;curiousity&quot;</span><span class="p">)</span>  <span class="c1"># Typo on purpose!</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">spacecraft</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># Still finds &quot;Mars Science Laboratory&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="test-with-small-result-sets">
+<h3>Test with Small Result Sets<a class="headerlink" href="#test-with-small-result-sets" title="Link to this heading"></a></h3>
+<p>Always test with limited results before processing large datasets:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use max_rows when creating DataFrames</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">products</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">(</span><span class="n">max_rows</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Or break out of loops early</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">product</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">products</span><span class="p">):</span>
+    <span class="c1"># Your processing here</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">9</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="common-pds-metadata-fields">
+<h2>Common PDS Metadata Fields<a class="headerlink" href="#common-pds-metadata-fields" title="Link to this heading"></a></h2>
+<p>Here are some commonly used metadata fields:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Identification</span>
+<span class="s1">&#39;lid&#39;</span>                                          <span class="c1"># Product identifier</span>
+<span class="s1">&#39;title&#39;</span>                                        <span class="c1"># Human-readable title</span>
+<span class="s1">&#39;pds:Identification_Area.pds:title&#39;</span>           <span class="c1"># Full title</span>
+<span class="s1">&#39;pds:Identification_Area.pds:logical_identifier&#39;</span>  <span class="c1"># LID</span>
+
+<span class="c1"># Time</span>
+<span class="s1">&#39;pds:Time_Coordinates.pds:start_date_time&#39;</span>    <span class="c1"># When observation started</span>
+<span class="s1">&#39;pds:Time_Coordinates.pds:stop_date_time&#39;</span>     <span class="c1"># When observation ended</span>
+
+<span class="c1"># References</span>
+<span class="s1">&#39;ref_lid_target&#39;</span>                              <span class="c1"># Target (planet, moon, etc.)</span>
+<span class="s1">&#39;ref_lid_instrument&#39;</span>                          <span class="c1"># Instrument used</span>
+<span class="s1">&#39;ref_lid_instrument_host&#39;</span>                     <span class="c1"># Spacecraft/rover</span>
+<span class="s1">&#39;ref_lid_investigation&#39;</span>                       <span class="c1"># Mission/investigation</span>
+
+<span class="c1"># Processing</span>
+<span class="s1">&#39;pds:Primary_Result_Summary.pds:processing_level&#39;</span>  <span class="c1"># Processing level</span>
+
+<span class="c1"># Provenance</span>
+<span class="s1">&#39;ops:Provenance.ops:parent_collection_identifier&#39;</span>  <span class="c1"># Parent collection</span>
+<span class="s1">&#39;ops:Provenance.ops:parent_bundle_identifier&#39;</span>      <span class="c1"># Parent bundle</span>
+
+<span class="c1"># Citation</span>
+<span class="s1">&#39;pds:Citation_Information.pds:doi&#39;</span>            <span class="c1"># DOI for citing</span>
+</pre></div>
+</div>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>Now that you understand the key concepts, check out:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="cookbook.html"><span class="doc">Cookbook</span></a> - Ready-to-use recipes for common tasks</p></li>
+<li><p><a class="reference internal" href="reference.html"><span class="doc">Library Reference</span></a> - Complete API documentation</p></li>
+<li><p><a class="reference external" href="https://nasa-pds.github.io/pds-api/">PDS Search API Documentation</a> - Understanding the underlying API</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cookbook.html" class="btn btn-neutral float-right" title="Cookbook" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 California Institute of Technology.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
