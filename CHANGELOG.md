@@ -1,21 +1,17 @@
 # Changelog
 
-## [0.8.0](https://github.com/NASA-PDS/peppi/tree/0.8.0) (2025-11-06)
+## [v0.8.0](https://github.com/NASA-PDS/peppi/tree/v0.8.0) (2025-11-06)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/release/0.8.0...0.8.0)
-
-**Other closed issues:**
-
-- Need significantly more robust documentation for usable methods [\#113](https://github.com/NASA-PDS/peppi/issues/113)
-
-## [release/0.8.0](https://github.com/NASA-PDS/peppi/tree/release/0.8.0) (2025-11-06)
-
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.7.0...release/0.8.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.7.0...v0.8.0)
 
 **Defects:**
 
 - Simple Peppi query has long runtime [\#104](https://github.com/NASA-PDS/peppi/issues/104) [[s.medium](https://github.com/NASA-PDS/peppi/labels/s.medium)]
 - as\_dataframe method fails [\#102](https://github.com/NASA-PDS/peppi/issues/102) [[s.high](https://github.com/NASA-PDS/peppi/labels/s.high)]
+
+**Other closed issues:**
+
+- Need significantly more robust documentation for usable methods [\#113](https://github.com/NASA-PDS/peppi/issues/113)
 
 ## [v0.7.0](https://github.com/NASA-PDS/peppi/tree/v0.7.0) (2025-07-14)
 
