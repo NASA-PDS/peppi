@@ -10,9 +10,26 @@ Access planetary datasets from the Planetary Data System (PDS)
 
 ## User Quickstart
 
-Install with:
+See https://nasa-pds.github.io/peppi/
 
-    pip install pds.peppi
+### Use as MCP server with Claude (alpha)
+
+A specific command line can be used to connect peppi (and the PDS API to an LLM), this has been tested with Claude.
+
+Use command: `pds-peppi-mcp-server`
+
+Connect it to Claude Desktop, for example, as described in https://modelcontextprotocol.io/quickstart/user#installing-the-filesystem-server, using the following configuration:
+
+    {
+      "mcpServers": {
+        "pds_peppi": {
+          "command": "{whereever the package is installed}/bin/pds-peppi-mcp-server",
+          "args": []
+         }
+      }
+    }
+
+You can use a prompt like: "Can you find the URI for the planet Jupiter in the PDS ?"
 
 
 ## Code of Conduct
