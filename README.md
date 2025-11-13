@@ -13,14 +13,16 @@ Access planetary datasets from the Planetary Data System (PDS)
 See https://nasa-pds.github.io/peppi/
 
 
-### Use as MCP server with Claude (alpha)
+### Use as an MCP server with an LLM
 
-Two commands enable the connection of AI apps with Peppi using the [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) using the MCP `stdio` transport:
+[Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro) (MCP) servers enable natural language–based tools (such as [Claude Desktop](https://claude.ai/)) to interact with the PDS Registry through Peppi.
 
-- `pds-peppi-mcp-server` is a proof-of-concept MCP server that enables natural-language based tools for searches for instrument hosts and targets
-- `pds-peppi-qb-mcp` is a general MCP server using the Peppi `QueryBuilder` to handle provide a tool for a wide range of queries for PDS data
+Two commands enable the connection of AI apps with Peppi using the Model Context Protocol (MCP) using the MCP `stdio` transport:
 
-To connect either of these, consult your AI app's instructions on Model Context Protocol. For example, to connect `pds-peppi-qb-mcp` to Claude Desktop, use a configuration similar to the following:
+- `pds-peppi-qb-mcp` — a comprehensive MCP server that supports a wide range of query types for accessing PDS data.
+- `pds-peppi-mcp-server` — a proof-of-concept MCP server that provides access to a limited subset of Peppi features (such as searches for instrument hosts and targets). It reuses the docstrings from Peppi methods, which reduces the integration overhead for each method.
+
+Select one command and connect it to your LLM (such as Claude Desktop), for example, as described in [these instructions](https://modelcontextprotocol.io/quickstart/user#installing-the-filesystem-server); for example to connect `pds-peppi-qb-mcp` to Claude Desktop, use a configuration similar to the following:
 ```json
     {
       "mcpServers": {
@@ -31,13 +33,12 @@ To connect either of these, consult your AI app's instructions on Model Context 
       }
     }
 ```
-([More information is available](https://modelcontextprotocol.io/quickstart/user#installing-the-filesystem-server).) Once you've started Claude Desktop, you can enter requests like
+Once you've started Claude Desktop, you can enter requests like
 
 - "Find Mars data"
 - "Find calibrated Mars data"
 - "Find Mercury data from the year 2020 only"
 - Etc.
-
 
 
 ## Code of Conduct
