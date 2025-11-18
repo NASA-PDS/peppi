@@ -12,24 +12,33 @@ Access planetary datasets from the Planetary Data System (PDS)
 
 See https://nasa-pds.github.io/peppi/
 
-### Use as MCP server with Claude (alpha)
 
-A specific command line can be used to connect peppi (and the PDS API to an LLM), this has been tested with Claude.
+### Use as an MCP server with an LLM
 
-Use command: `pds-peppi-mcp-server`
+[Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro) (MCP) servers enable natural language–based tools (such as [Claude Desktop](https://claude.ai/)) to interact with the PDS Registry through Peppi.
 
-Connect it to Claude Desktop, for example, as described in https://modelcontextprotocol.io/quickstart/user#installing-the-filesystem-server, using the following configuration:
+Two commands enable the connection of AI apps with Peppi using the Model Context Protocol (MCP) using the MCP `stdio` transport:
 
+- `pds-peppi-qb-mcp` — a comprehensive MCP server that supports a wide range of query types for accessing PDS data.
+- `pds-peppi-mcp-server` — a proof-of-concept MCP server that provides access to a limited subset of Peppi features (such as searches for instrument hosts and targets). It reuses the docstrings from Peppi methods, which reduces the integration overhead for each method.
+
+Select one command and connect it to your LLM (such as Claude Desktop), for example, as described in [these instructions](https://modelcontextprotocol.io/quickstart/user#installing-the-filesystem-server); for example to connect `pds-peppi-qb-mcp` to Claude Desktop, use a configuration similar to the following:
+```json
     {
       "mcpServers": {
         "pds_peppi": {
-          "command": "{whereever the package is installed}/bin/pds-peppi-mcp-server",
+          "command": "{whereever the package is installed}/bin/pds-peppi-qb-mcp",
           "args": []
          }
       }
     }
+```
+Once you've started Claude Desktop, you can enter requests like
 
-You can use a prompt like: "Can you find the URI for the planet Jupiter in the PDS ?"
+- "Find Mars data"
+- "Find calibrated Mars data"
+- "Find Mercury data from the year 2020 only"
+- Etc.
 
 
 ## Code of Conduct
