@@ -19,7 +19,7 @@ See https://nasa-pds.github.io/peppi/
 
 Two commands enable the connection of AI apps with Peppi using the Model Context Protocol (MCP) using the MCP `stdio` transport:
 
-- `pds-peppi-qb-mcp` — a comprehensive MCP server that supports a wide range of query types for accessing PDS data.
+- `pds-peppi-qb-mcp` — a comprehensive MCP server that supports a wide range of query types for accessing PDS data using the Peppi "Query Builder" (QB)
 - `pds-peppi-mcp-server` — a proof-of-concept MCP server that provides access to a limited subset of Peppi features (such as searches for instrument hosts and targets). It reuses the docstrings from Peppi methods, which reduces the integration overhead for each method.
 
 Select one command and connect it to your LLM (such as Claude Desktop), for example, as described in [these instructions](https://modelcontextprotocol.io/quickstart/user#installing-the-filesystem-server); for example to connect `pds-peppi-qb-mcp` to Claude Desktop, use a configuration similar to the following:
@@ -39,6 +39,8 @@ Once you've started Claude Desktop, you can enter requests like
 - "Find calibrated Mars data"
 - "Find Mercury data from the year 2020 only"
 - Etc.
+
+👉 **Note:** On macOS, "sandboxing" may interfere with Claude's ability to run either MCP server described above. If Claude's MCP log shows "Operation not permitted", try moving the `peppi` folder or the Python virtual environment to the `$HOME` directory or other location _not_ in `Documents`, `Downloads`, or `Desktop`.
 
 
 ## Code of Conduct
