@@ -1,5 +1,13 @@
 # Changelog
 
+## [«unknown»](https://github.com/NASA-PDS/peppi/tree/«unknown») (2026-01-27)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.8.0...«unknown»)
+
+**Other closed issues:**
+
+- MCP comprehensive server: optimize the overhead for new query builder method integration. [\#134](https://github.com/NASA-PDS/peppi/issues/134)
+
 ## [v0.8.0](https://github.com/NASA-PDS/peppi/tree/v0.8.0) (2025-11-06)
 
 [Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.7.0...v0.8.0)
