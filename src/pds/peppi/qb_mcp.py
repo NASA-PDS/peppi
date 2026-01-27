@@ -1,153 +1,317 @@
 # encoding: utf-8
 """Model Context Protocol (MCP) server for natural language PDS queries using the Peppi QueryBuilder."""
+import inspect
 import logging
 import re
 from datetime import datetime
 from typing import Any
+from typing import get_args
 
 import pds.peppi as pep
 from fastmcp import FastMCP
+from pds.peppi.query_builder import PROCESSING_LEVELS
+from pds.peppi.query_builder import QueryBuilder
 
 logger = logging.getLogger(__name__)
 
+# Common targets for searches that include search terms like "find Mars data"
+_targets = [
+    "mars", "jupiter", "moon", "bennu", "enceladus", "venus", "mercury", "earth", "saturn",
+    "neptune", "uranus", "pluto", "ceres", "vesta", "eros", "ida"
+]
 
-def query_pds_data(query: str, max_results: int = 50) -> dict[str, Any]:
+# Mission names. This may not be needed since they identical for all missions right now, but
+# it's here for future use if there's ever any need.
+_missions = {
+    "curiosity": "curiosity",
+    "perseverance": "perseverance",
+    "juno": "juno",
+    "cassini": "cassini",
+    "messenger": "messenger",
+    "new horizons": "new horizons",
+    "osiris-rex": "osiris-rex",
+    "orex": "osiris-rex",
+    "maven": "maven",
+    "insight": "insight",
+}
+
+# Category configuration: organizes specific QueryBuilder methods into logical groups with
+# descriptions for the LLM to better understand method usage. Methods listed here appear
+# under their category headings in the generated documentation. Methods not included here
+# are STILL CAPTURED automatically and appear in an "Other Methods" section, but can be
+# added to this dictionary to provide better categorization and context for the LLM.
+_categories: dict[str, dict[str, object]] = {
+    "Target Filtering": {
+        "methods": ["has_target"],
+        "description": "Filter by planetary body, moon, or asteroid",
+    },
+    "Mission/Spacecraft Filtering": {
+        "methods": ["has_instrument_host"],
+        "description": "Filter by spacecraft/mission (requires LID from Context search)",
+    },
+    "Instrument Filtering": {
+        "methods": ["has_instrument"],
+        "description": "Filter by instrument (requires LID)",
+    },
+    "Investigation Filtering": {
+        "methods": ["has_investigation"],
+        "description": "Filter by investigation/mission",
+    },
+    "Date Filtering": {
+        "methods": ["after", "before"],
+        "description": "Filter by date/time ranges",
+    },
+    "Product Type Filtering": {
+        "methods": ["observationals", "collections", "bundles", "contexts"],
+        "description": "Filter by product class type",
+    },
+    "Processing Level Filtering": {
+        "methods": ["has_processing_level"],
+        "description": "Filter by processing level",
+    },
+    "Collection Filtering": {
+        "methods": ["of_collection"],
+        "description": "Filter by parent collection",
+    },
+    "Spatial Filtering": {
+        "methods": ["within_range", "within_bbox"],
+        "description": "Filter by spatial constraints (product-specific)",
+    },
+    "Product Lookup": {
+        "methods": ["get"],
+        "description": "Get specific product by identifier",
+    },
+    "Field Selection": {
+        "methods": ["fields"],
+        "description": "Limit returned fields for efficiency",
+    },
+    "Custom Filtering": {
+        "methods": ["filter"],
+        "description": "Add custom PDS API query clause",
+    },
+    "Result Methods": {
+        "methods": ["as_dataframe", "reset"],
+        "description": "Convert results or reset query state",
+    },
+}
+
+
+def _generatequerybuilderdocumentation() -> str:
+    """Dynamically generate documentation for QueryBuilder methods using introspection.
+
+    The goal is to create a full docstring for the LLM to use to understand the QueryBuilder methods,
+    and to automatically generate that the QueryBuilder class changes.
+
+    The "_categories" dictionary can be used to fine-tune the documentation per-method if necessary.
+
+    • Uses `inspect.getmembers(…, predicate=inspect.isfunction)` for reliable method discovery.
+    • Documents configured categories first, then adds an "Other Methods" section for any
+      newly added public methods not explicitly categorized; this can be fine-tuned as needed.
+    • Produces compact, LLM-friendly signatures and examples.
+    """
+    def _formatannotation(ann: object) -> str:
+        """Best-effort, human/LLM-friendly annotation formatting."""
+        if ann is inspect._empty:
+            return ""
+
+        # typing constructs often stringify as "typing.X[…]"; remove prefix
+        s = str(ann).replace("typing.", "")
+
+        # Clean common Python 3.10+ union formatting like "X | None"
+        s = s.replace("NoneType", "None")
+
+        # Make Optional[…] more readable if it appears in string form
+        # (Don't aggressively strip brackets; just a light normalization)
+        s = s.replace("Optional[", "").rstrip("]") if s.startswith("Optional[") else s
+
+        # C'est tout pour maintenant
+        return s
+
+    def _formatdefault(val: object) -> str:
+        """Readable default values (quote strings)."""
+        if val is inspect._empty:
+            return ""
+        if isinstance(val, str):
+            return f' = "{val}"'
+        return f" = {repr(val)}"
+
+    def _methodsignaturestr(name: str, fn: object) -> str:
+        """Return `name(param: Type = default, …)`."""
+        try:
+            sig = inspect.signature(fn)
+        except (TypeError, ValueError):
+            return f"{name}(...)"  # Note: do not use ellipsis here as LLMs are trained to recognize three periods
+
+        parts: list[str] = []
+        for p in sig.parameters.values():
+            if p.name == "self":
+                continue
+
+            piece, ann = p.name, _formatannotation(p.annotation)
+            if ann:
+                piece += f": {ann}"
+            piece += _formatdefault(p.default)
+
+            # Keep *args/**kwargs readable
+            if p.kind == inspect.Parameter.VAR_POSITIONAL:
+                piece = "*" + piece
+            elif p.kind == inspect.Parameter.VAR_KEYWORD:
+                piece = "**" + piece
+            parts.append(piece)
+        return f"{name}({', '.join(parts)})"
+
+    def _docsummary(fn: object) -> str:
+        """Provide the first non-empty line of docstring, lightly cleaned for LLM use."""
+        doc = inspect.getdoc(fn) or ""
+        for line in doc.splitlines():
+            s = line.strip()
+            if s:
+                # KISS principle (keep it short) and remove the trailing period
+                return s[:-1] if s.endswith(".") else s
+        return ""
+
+    def _examplefor(name: str, fn: object) -> str:
+        """Generate a simple chaining example.
+
+        This adds `.method(…)` and related boilerplate to the example.
+        """
+        # Use signature to guess something sensible
+        try:
+            sig = inspect.signature(fn)
+            params = [p for p in sig.parameters.values() if p.name != "self"]
+        except (TypeError, ValueError):
+            return f".{name}()"
+
+        # No args
+        if not params:
+            return f".{name}()"
+
+        # First parameter heuristics
+        p0 = params[0]
+        p0_name = p0.name.lower()
+        p0_ann = str(p0.annotation).lower() if p0.annotation is not inspect._empty else ""
+
+        # These provide useful examples to the LLM to help understand the parameters and possibilities
+        if "target" in name.lower() or "target" in p0_name:
+            return f'.{name}("Mars")'
+        if "instrument_host" in name.lower():
+            return f'.{name}("urn:nasa:pds:context:...")'  # See earlier note about ellipsis; also applies here
+        if "instrument" in name.lower() and "host" not in name.lower():
+            return f'.{name}("urn:nasa:pds:context:...")'  # And here, and below…
+        if "investigation" in name.lower():
+            return f'.{name}("urn:nasa:pds:context:...")'
+        if "processing_level" in name.lower() or "processing" in p0_name:
+            return f'.{name}("calibrated")'
+        if "after" == name.lower() or "before" == name.lower() or "datetime" in p0_ann:
+            return f".{name}(datetime(2020, 1, 1))"
+        if "fields" in name.lower() or "fields" in p0_name:
+            return f'.{name}(["lid", "pds:Identification_Area.pds:title"])'
+        if "filter" == name.lower() or "clause" in p0_name:
+            return f'.{name}(\'product_class eq "Product_Observational"\')'
+        if "collection" in name.lower() or "collection" in p0_name:
+            return f'.{name}("urn:nasa:pds:...")'
+        if "bbox" in name.lower():
+            return f".{name}((-5.0, -5.0, 5.0, 5.0))"
+        if "range" in name.lower():
+            return f".{name}(0.0, 10.0)"
+
+        # Fallback based on likely primitive type
+        if "int" in p0_ann or "max" in p0_name or "limit" in p0_name:
+            return f".{name}(100)"
+        if "float" in p0_ann:
+            return f".{name}(1.0)"
+        if "str" in p0_ann:
+            return f'.{name}("...")'
+
+        # Fallback to just the name if we can't guess anything better
+        return f".{name}()"
+
+    # Discover public methods reliably
+    all_methods: dict[str, object] = {}
+    for name, fn in inspect.getmembers(QueryBuilder, predicate=inspect.isfunction):
+        if name.startswith("_"):
+            continue
+        all_methods[name] = fn
+
+    lines: list[str] = []
+    lines.append("QueryBuilder Methods Available:")
+    lines.append("=" * 30)
+    lines.append("")
+
+    # Track which methods we have documented explicitly
+    documented: set[str] = set()
+
+    for category_name, info in _categories.items():
+        method_names = [m for m in info.get("methods", []) if m in all_methods]
+        if not method_names:
+            continue
+
+        base_desc = str(info.get("description", "")).strip()
+        lines.append(f"{category_name}:")
+
+        for method_name in method_names:
+            fn = all_methods[method_name]
+            documented.add(method_name)
+
+            sig_str = _methodsignaturestr(method_name, fn)
+            summary = _docsummary(fn)
+            example = _examplefor(method_name, fn)
+
+            desc = base_desc
+            if method_name == "has_processing_level":
+                # Include valid values if available
+                try:
+                    processing_levels = list(get_args(PROCESSING_LEVELS))
+                except Exception:
+                    processing_levels = ["telemetry", "raw", "partially-processed", "calibrated", "derived"]
+                desc = f"Filter by processing level. Valid values: {', '.join(map(str, processing_levels))}"
+            elif method_name == "has_instrument_host":
+                desc = f'{desc}. Use context.INSTRUMENT_HOSTS.search("curiosity") to find LIDs'
+
+            lines.append(f"  - {sig_str} - {desc}")
+            if summary and summary != desc:
+                lines.append(f"    {summary}")
+            lines.append(f"    Example: {example}")
+
+        lines.append("")
+
+    # Add uncategorized methods so new API surface shows up automatically
+    other_methods = sorted(set(all_methods) - documented)
+    if other_methods:
+        lines.append("Other Methods:")
+        lines.append("  (Public methods not explicitly categorized above)")
+        for method_name in other_methods:
+            fn = all_methods[method_name]
+            sig_str = _methodsignaturestr(method_name, fn)
+            summary = _docsummary(fn)
+            example = _examplefor(method_name, fn)
+
+            lines.append(f"  - {sig_str}")
+            if summary:
+                lines.append(f"    {summary}")
+            lines.append(f"    Example: {example}")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
+# Generate the base documentation once at module load time
+_QUERYBUILDERDOCS = _generatequerybuilderdocumentation()
+
+
+def querypdsdata(query: str, max_results: int = 50) -> dict[str, Any]:
+    # Note: at module load time, we generate the docstring for this function by replacing
+    # the {querybuilder_docs} placeholder with the dynamically generated documentation.
+    #
+    # The MCP framework uses the docstring for this function to guide the LLM.
     """Query PDS data using natural language.
 
     This tool allows you to query the Planetary Data System (PDS) using natural language.
     Translate the user's natural language query into appropriate QueryBuilder method calls.
 
-    QueryBuilder Methods Available:
-    ===============================
+    {querybuilder_docs}
 
-    Target Filtering:
-    - has_target(target: str) - Filter by planetary body (e.g., "Mars", "Jupiter", "Moon", "Bennu", "Enceladus", "Venus", "Mercury")
-      Example: .has_target("Mars")
-
-    Mission/Spacecraft Filtering:
-    - has_instrument_host(identifier: str) - Filter by spacecraft/mission (requires LID from Context search)
-      Example: .has_instrument_host("urn:nasa:pds:context:instrument_host:spacecraft.msl")
-      Use context.INSTRUMENT_HOSTS.search("curiosity") to find LIDs
-
-    Instrument Filtering:
-    - has_instrument(identifier: str) - Filter by instrument (requires LID)
-      Example: .has_instrument("urn:nasa:pds:context:instrument:...")
-
-    Investigation Filtering:
-    - has_investigation(identifier: str) - Filter by investigation/mission
-      Example: .has_investigation("urn:nasa:pds:context:investigation:mission.orex")
-
-    Date Filtering:
-    - after(dt: datetime) - Products with start date after given datetime
-      Example: .after(datetime(2020, 1, 1))
-    - before(dt: datetime) - Products with start date before given datetime
-      Example: .before(datetime(2020, 12, 31))
-
-    Product Type Filtering:
-    - observationals() - Only observational products (actual data)
-      Example: .observationals()
-    - collections(collection_type: Optional[str] = None) - Only collection products
-      Example: .collections() or .collections("Data")
-    - bundles() - Only bundle products
-      Example: .bundles()
-
-    Processing Level Filtering:
-    - has_processing_level(processing_level: str) - Filter by processing level
-      Valid values: "telemetry", "raw", "partially-processed", "calibrated", "derived"
-      Example: .has_processing_level("calibrated")
-
-    Collection Filtering:
-    - of_collection(identifier: str) - Products belonging to a specific collection
-      Example: .of_collection("urn:nasa:pds:orex.bennu.regolith:...")
-
-    Product Lookup:
-    - get(identifier: str) - Get specific product by LIDVID
-      Example: .get("urn:nasa:pds:orex.bennu.regolith::1.0")
-
-    Field Selection:
-    - fields(fields: list[str]) - Limit returned fields for efficiency
-      Example: .fields(['lid', 'pds:Identification_Area.pds:title', 'pds:Time_Coordinates.pds:start_date_time'])
-
-    Custom Filtering:
-    - filter(clause: str) - Add custom PDS API query clause
-      Example: .filter('product_class eq "Product_Observational"')
-
-    Result Methods:
-    - as_dataframe(max_rows: Optional[int] = None) - Convert results to pandas DataFrame
-    - Iterate directly: for product in products: ...
-
-    Common Query Patterns:
-    ======================
-
-    1. Find all data about a target:
-       pep.Products(client).has_target("Mars").observationals()
-
-    2. Find data from a specific mission:
-       context = pep.Context()
-       curiosity = context.INSTRUMENT_HOSTS.search("curiosity")[0]
-       pep.Products(client).has_instrument_host(curiosity.lid).observationals()
-
-    3. Find data in a date range:
-       pep.Products(client).has_target("Mercury").after(datetime(2020, 1, 1)).before(datetime(2020, 12, 31)).observationals()
-
-    4. Find calibrated data:
-       pep.Products(client).has_target("Mars").has_processing_level("calibrated").observationals()
-
-    5. Find collections:
-       pep.Products(client).has_target("Mars").collections()
-
-    6. Find bundles:
-       pep.Products(client).has_target("Bennu").bundles()
-
-    7. Complex query (mission + target + date):
-       context = pep.Context()
-       messenger = context.INSTRUMENT_HOSTS.search("messenger")[0]
-       pep.Products(client).has_target("Mercury").has_instrument_host(messenger.lid).before(datetime(2012, 1, 23)).observationals()
-
-    Translation Guidelines:
-    ======================
-
-    When translating natural language to QueryBuilder calls:
-
-    1. Identify the target (planet/moon/asteroid) - use has_target()
-    2. Identify mission/spacecraft - use Context to search, then has_instrument_host()
-    3. Identify date ranges - use after() and before() with datetime objects
-    4. Identify product type - use observationals(), collections(), or bundles()
-    5. Identify processing level - use has_processing_level()
-    6. Chain methods together - methods return self, so you can chain them
-
-    Example translations:
-    - "Find Mars data" → .has_target("Mars").observationals()
-    - "Find calibrated Mars data" → .has_target("Mars").has_processing_level("calibrated").observationals()
-    - "Find Curiosity rover data" → Search for "curiosity" in INSTRUMENT_HOSTS, then .has_instrument_host(lid).observationals()
-    - "Find Mercury data from 2020" → .has_target("Mercury").after(datetime(2020, 1, 1))
-        .before(datetime(2020, 12, 31)).observationals()
-    - "Find Mars collections" → .has_target("Mars").collections()
-
-    Parameters
-    ----------
-    query : str
-        Natural language query describing what PDS data to find. Examples include "Find all Mars observational data",
-        "Find calibrated data from Jupiter", "Find data from the Curiosity rover", "Find Mercury data from 2020",
-        "Find Mars collections", and "Find Bennu bundles".
-    max_results : int, optional
-        Maximum number of results to return. Default is 50.
-
-    Returns
-    -------
-    dict
-        Dictionary containing:
-        - "query": The natural language query that was processed
-        - "query_builder_calls": Description of QueryBuilder methods used
-        - "count": Number of results found
-        - "results": List of products, each containing:
-          - "id": Product LIDVID
-          - "title": Product title
-          - "start_date": Start date if available
-          - "target": Target if available
-          - "processing_level": Processing level if available
-          - "product_class": Product class type
-          - "properties": Full product properties dictionary
+    Iterate directly: for product in products: …
     """
     try:
         # Initialize client and context
@@ -165,7 +329,7 @@ def query_pds_data(query: str, max_results: int = 50) -> dict[str, Any]:
         try:
             context = pep.Context()
         except Exception as e:
-            logger.warning("Failed to initialize Context (continuing without mission search: %s", e)
+            logger.warning("Failed to initialize Context (continuing without mission search): %s", e)
             context = None
 
         products = pep.Products(client)
@@ -175,11 +339,7 @@ def query_pds_data(query: str, max_results: int = 50) -> dict[str, Any]:
         query_builder_calls = []
 
         # Check for target mentions
-        targets = [
-            "mars", "jupiter", "moon", "bennu", "enceladus", "venus", "mercury", "earth", "saturn",
-            "neptune", "uranus", "pluto", "ceres", "vesta", "eros", "ida"
-        ]
-        for target in targets:
+        for target in _targets:
             if target in query_lower:
                 try:
                     products = products.has_target(target.capitalize())
@@ -191,20 +351,7 @@ def query_pds_data(query: str, max_results: int = 50) -> dict[str, Any]:
 
         # Check for mission/spacecraft mentions
         if context is not None:
-            # May not need this mapping since the key and name are identical for most missions
-            missions = {
-                "curiosity": "curiosity",
-                "perseverance": "perseverance",
-                "juno": "juno",
-                "cassini": "cassini",
-                "messenger": "messenger",
-                "new horizons": "new horizons",
-                "osiris-rex": "osiris-rex",
-                "orex": "osiris-rex",
-                "maven": "maven",
-                "insight": "insight",
-            }
-            for mission_key, mission_name in missions.items():
+            for mission_key, mission_name in _missions.items():
                 if mission_key in query_lower:
                     try:
                         instrument_hosts = context.INSTRUMENT_HOSTS.search(mission_name)
@@ -220,11 +367,13 @@ def query_pds_data(query: str, max_results: int = 50) -> dict[str, Any]:
 
         # Check for date mentions (simple patterns)
         # Look for year patterns like "2020", "from 2020", "in 2020"
+        #
+        # Potential future enhancement is to allow full date ranges and not just years.
         try:
-            full_years = re.findall(r'\b(19|20)\d{2}\b', query)
+            full_years = re.findall(r'\b(19|21)\d{2}\b', query)
             if full_years:
                 # Extract first 4-digit year found
-                year_match = re.search(r'\b(19|20)\d{2}\b', query)
+                year_match = re.search(r"\b(?:19|21)\d{2}\b", query)
                 if year_match:
                     year_str = year_match.group(0)
                     year = int(year_str)
@@ -350,6 +499,11 @@ def query_pds_data(query: str, max_results: int = 50) -> dict[str, Any]:
         }
 
 
+# Assign the dynamically generated documentation to __doc__
+if querypdsdata.__doc__:
+    querypdsdata.__doc__ = querypdsdata.__doc__.format(querybuilder_docs=_QUERYBUILDERDOCS)
+
+
 def main():
     """Main entry point to launch the MCP server.
 
@@ -360,7 +514,7 @@ def main():
     mcp = FastMCP("Planetary Data System (PDS) Query Builder Model Context Protocol (MCP) Server")
 
     # Register the natural language query tool
-    mcp.tool(query_pds_data)
+    mcp.tool(querypdsdata)
 
     # Run the server with stdio transport
     mcp.run(transport="stdio")
