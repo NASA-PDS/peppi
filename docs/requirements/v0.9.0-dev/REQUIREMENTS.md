@@ -132,3 +132,7 @@ This requirement is not impacted by the current version
 
 
 This requirement is not impacted by the current version
+## As a LLM user, I want to have an idea of the number of result returned ([#140](https://github.com/NASA-PDS/peppi/issues/140)) 
+
+
+This requirement is not impacted by the current version
