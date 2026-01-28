@@ -61,24 +61,24 @@ Then start your claude session:
 
 Whenever the PEPPI MCP tool is used, you will get prompted, something like:
 
-`❯ What PDS dataset target the planet Mars ?
+    ❯ What PDS dataset target the planet Mars ?
 
-⏺ I'll search the Planetary Data System (PDS) for datasets related to Mars.
+     ⏺ I'll search the Planetary Data System (PDS) for datasets related to Mars.
 
-⏺ peppi - querypdsdata (MCP)(query: "has_target(\"Mars\").as_dataframe(50)")
+     ⏺ peppi - querypdsdata (MCP)(query: "has_target(\"Mars\").as_dataframe(50)")
 
-───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
- Tool use
+    ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────    
+     Tool use
 
-   peppi - querypdsdata(query: "has_target(\"Mars\").as_dataframe(50)") (MCP)
-   Query PDS data using natural language.
+       peppi - querypdsdata(query: "has_target(\"Mars\").as_dataframe(50)") (MCP)
+       Query PDS data using natural language.
 
-   This tool allows you to query the Planetary Data System (PDS) using natural language.…
+       This tool allows you to query the Planetary Data System (PDS) using natural language.…
 
- Do you want to proceed?
- ❯ 1. Yes
-   2. Yes, and don't ask again for peppi - querypdsdata commands in /Users/loubrieu/PycharmProjects/updart
-   3. No
+     Do you want to proceed?
+     ❯ 1. Yes
+       2. Yes, and don't ask again for peppi - querypdsdata commands in /Users/loubrieu/PycharmProjects/updart
+       3. No
 `
 You can say yes to proceed and get the results.
 
