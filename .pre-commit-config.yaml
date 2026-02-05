@@ -56,6 +56,7 @@ repos:
     -   id: tests
         name: Tests
         entry: pytest
+        args: [ "-n", "2" ]
         language: system
         stages: [push]
         pass_filenames: false
@@ -81,3 +82,5 @@ repos:
           - --exclude-files 'dist'
           - --exclude-files 'build'
           - --exclude-files '.*\.egg-info'
+          - --exclude-files '.*\.token'
+          - --exclude-files '\.idea'

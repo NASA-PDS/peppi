@@ -15,6 +15,8 @@ See https://nasa-pds.github.io/peppi/
 
 ### Use as an MCP server with an LLM
 
+#### Claude Desktop
+
 [Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro) (MCP) servers enable natural language–based tools (such as [Claude Desktop](https://claude.ai/)) to interact with the PDS Registry through Peppi.
 
 Two commands enable the connection of AI apps with Peppi using the Model Context Protocol (MCP) using the MCP `stdio` transport:
@@ -42,6 +44,43 @@ Once you've started Claude Desktop, you can enter requests like
 
 👉 **Note:** On macOS, "sandboxing" may interfere with Claude's ability to run either MCP server described above. If Claude's MCP log shows "Operation not permitted", try moving the `peppi` folder or the Python virtual environment to the `$HOME` directory or other location _not_ in `Documents`, `Downloads`, or `Desktop`.
 
+
+#### Claude code
+
+To use the peppi MCP service with Claude code, you first need to start the MCP server as an HTTP API:
+
+    pds-peppi-qb-mcp --transport http
+
+Then connect it to you claude code configuration, for example for a server started on localhost port 8000, runn the following command:
+
+    claude mcp add --transport http peppi http://127.0.0.1:8000/mcp
+
+Then start your claude session:
+
+    claude
+
+Whenever the PEPPI MCP tool is used, you will get prompted, something like:
+
+    ❯ What PDS dataset target the planet Mars ?
+
+     ⏺ I'll search the Planetary Data System (PDS) for datasets related to Mars.
+
+     ⏺ peppi - querypdsdata (MCP)(query: "has_target(\"Mars\").as_dataframe(50)")
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+     Tool use
+
+       peppi - querypdsdata(query: "has_target(\"Mars\").as_dataframe(50)") (MCP)
+       Query PDS data using natural language.
+
+       This tool allows you to query the Planetary Data System (PDS) using natural language.…
+
+     Do you want to proceed?
+     ❯ 1. Yes
+       2. Yes, and don't ask again for peppi - querypdsdata commands in /Users/loubrieu/PycharmProjects/updart
+       3. No
+`
+You can say yes to proceed and get the results.
 
 ## Code of Conduct
 

@@ -1,5 +1,6 @@
 # encoding: utf-8
 """Model Context Protocol (MCP) server for natural language PDS queries using the Peppi QueryBuilder."""
+import argparse
 import inspect
 import logging
 import re
@@ -504,20 +505,54 @@ if querypdsdata.__doc__:
     querypdsdata.__doc__ = querypdsdata.__doc__.format(querybuilder_docs=_QUERYBUILDERDOCS)
 
 
+def parse_args():
+    # Create argument parser
+    parser = argparse.ArgumentParser(description="Run PDS Query Builder MCP server")
+    parser.add_argument("--transport", default="stdio", help="Transport method (http, stdio, etc)")
+    parser.add_argument("--host", help="Host for HTTP transport")
+    parser.add_argument("--port", type=int, help="Port for HTTP transport")
+
+    # Parse command line arguments
+    args = parser.parse_args()
+
+    # Create dictionary of keyword arguments for mcp.run()
+    kwargs = {}
+
+    # Add transport if provided
+    if args.transport:
+        kwargs["transport"] = args.transport
+
+    # Add host if provided
+    if args.host:
+        kwargs["host"] = args.host
+
+    # Add port if provided
+    if args.port:
+        kwargs["port"] = args.port
+
+    return kwargs
+
 def main():
     """Main entry point to launch the MCP server.
 
     This server exposes a natural language query tool for PDS data.
     The tool delegates query translation to the MCP client (Claude) by providing
     comprehensive documentation in the tool description.
+
+    Command-line arguments are parsed and passed as keyword arguments to the mcp.run() call.
     """
+
+    run_kwargs = parse_args()
+
+
+
     mcp = FastMCP("Planetary Data System (PDS) Query Builder Model Context Protocol (MCP) Server")
 
     # Register the natural language query tool
     mcp.tool(querypdsdata)
 
-    # Run the server with stdio transport
-    mcp.run(transport="stdio")
+    # Run the server with provided arguments
+    mcp.run(**run_kwargs)
 
 
 if __name__ == "__main__":
