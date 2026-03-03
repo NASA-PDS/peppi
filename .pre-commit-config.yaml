@@ -55,8 +55,8 @@ repos:
     hooks:
     -   id: tests
         name: Tests
-        entry: pytest
-        args: [ "-n", "2" ]
+        entry: tox
+        args: [ "-e", "py312", "--", "-n", "2" ]
         language: system
         stages: [push]
         pass_filenames: false
