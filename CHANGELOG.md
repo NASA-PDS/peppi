@@ -1,8 +1,8 @@
 # Changelog
 
-## [«unknown»](https://github.com/NASA-PDS/peppi/tree/«unknown») (2026-03-05)
+## [release/0.8.1](https://github.com/NASA-PDS/peppi/tree/release/0.8.1) (2026-03-05)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.8.0...«unknown»)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.8.0...release/0.8.1)
 
 **Other closed issues:**
 
@@ -10,20 +10,28 @@
 
 ## [v0.8.0](https://github.com/NASA-PDS/peppi/tree/v0.8.0) (2025-11-06)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.7.0...v0.8.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/release/0.8.0...v0.8.0)
+
+**Other closed issues:**
+
+- Need significantly more robust documentation for usable methods [\#113](https://github.com/NASA-PDS/peppi/issues/113)
+
+## [release/0.8.0](https://github.com/NASA-PDS/peppi/tree/release/0.8.0) (2025-11-06)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.7.0...release/0.8.0)
 
 **Defects:**
 
 - Simple Peppi query has long runtime [\#104](https://github.com/NASA-PDS/peppi/issues/104) [[s.medium](https://github.com/NASA-PDS/peppi/labels/s.medium)]
 - as\_dataframe method fails [\#102](https://github.com/NASA-PDS/peppi/issues/102) [[s.high](https://github.com/NASA-PDS/peppi/labels/s.high)]
 
-**Other closed issues:**
-
-- Need significantly more robust documentation for usable methods [\#113](https://github.com/NASA-PDS/peppi/issues/113)
-
 ## [v0.7.0](https://github.com/NASA-PDS/peppi/tree/v0.7.0) (2025-07-14)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.6.0...v0.7.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/release/0.7.0...v0.7.0)
+
+## [release/0.7.0](https://github.com/NASA-PDS/peppi/tree/release/0.7.0) (2025-07-14)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.6.0...release/0.7.0)
 
 **Requirements:**
 
@@ -32,7 +40,11 @@
 
 ## [v0.6.0](https://github.com/NASA-PDS/peppi/tree/v0.6.0) (2025-04-15)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.5.0...v0.6.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/release/0.6.0...v0.6.0)
+
+## [release/0.6.0](https://github.com/NASA-PDS/peppi/tree/release/0.6.0) (2025-04-15)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.5.0...release/0.6.0)
 
 **Requirements:**
 
@@ -54,7 +66,18 @@
 
 ## [v0.5.0](https://github.com/NASA-PDS/peppi/tree/v0.5.0) (2024-12-08)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.4.0...v0.5.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/release/0.5.0...v0.5.0)
+
+**Other closed issues:**
+
+- Update cloud testcase from Francesco for AGU [\#67](https://github.com/NASA-PDS/peppi/issues/67)
+- Provide support documentation for user \(Surya\) [\#50](https://github.com/NASA-PDS/peppi/issues/50)
+- Provide Support documentation to end user \(Onur\) [\#49](https://github.com/NASA-PDS/peppi/issues/49)
+- Create a PR on seismic use case to use the new peppi name [\#48](https://github.com/NASA-PDS/peppi/issues/48)
+
+## [release/0.5.0](https://github.com/NASA-PDS/peppi/tree/release/0.5.0) (2024-12-03)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.4.0...release/0.5.0)
 
 **Requirements:**
 
@@ -64,10 +87,6 @@
 **Other closed issues:**
 
 - Add quickstart to the doc [\#68](https://github.com/NASA-PDS/peppi/issues/68)
-- Update cloud testcase from Francesco for AGU [\#67](https://github.com/NASA-PDS/peppi/issues/67)
-- Provide support documentation for user \(Surya\) [\#50](https://github.com/NASA-PDS/peppi/issues/50)
-- Provide Support documentation to end user \(Onur\) [\#49](https://github.com/NASA-PDS/peppi/issues/49)
-- Create a PR on seismic use case to use the new peppi name [\#48](https://github.com/NASA-PDS/peppi/issues/48)
 
 ## [v0.4.0](https://github.com/NASA-PDS/peppi/tree/v0.4.0) (2024-11-14)
 
@@ -83,7 +102,11 @@
 
 ## [v0.3.0](https://github.com/NASA-PDS/peppi/tree/v0.3.0) (2024-11-04)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.1.0...v0.3.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/release/0.3.0...v0.3.0)
+
+## [release/0.3.0](https://github.com/NASA-PDS/peppi/tree/release/0.3.0) (2024-11-04)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.1.0...release/0.3.0)
 
 **Requirements:**
 
@@ -103,7 +126,11 @@
 
 ## [v0.1.0](https://github.com/NASA-PDS/peppi/tree/v0.1.0) (2024-02-29)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/c5c69cbf9b198d2eb7b10d86c1c765fda90d7494...v0.1.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/release/0.1.0...v0.1.0)
+
+## [release/0.1.0](https://github.com/NASA-PDS/peppi/tree/release/0.1.0) (2024-02-29)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/c5c69cbf9b198d2eb7b10d86c1c765fda90d7494...release/0.1.0)
 
 
 
