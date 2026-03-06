@@ -374,6 +374,24 @@ class QueryBuilder:
         self._add_clause(clause)
         return self
 
+    def with_doi(self, doi: str):
+        """Filters products with a specific DOI.
+
+        Parameters
+        ----------
+        doi : str
+            The DOI to filter on, e.g. 10.17189/1522910.
+
+        Returns
+        -------
+        This instance with the "with DOI" filter applied.
+
+        """
+        clause = f'pds:Citation_Information.pds:doi eq "{doi}"'
+        self._add_clause(clause)
+        return self
+
+
     def within_range(self, range_in_km: float):
         """Adds a query clause selecting products within the provided range value.
 

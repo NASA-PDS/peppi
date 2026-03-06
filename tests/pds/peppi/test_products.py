@@ -262,6 +262,17 @@ class ProductsTestCase(unittest.TestCase):
                     self.products.reset()
                     break
 
+    def test_with_doi(self):
+        doi = "10.17189/1522910"
+        n = 0
+        for p in self.products.with_doi(doi):
+            n += 1
+            assert doi in p.properties["pds:Citation_Information.pds:doi"]
+            if n > self.MAX_ITERATIONS:
+                break
+        assert n > 0
+
+
     def test_get(self):
         lid = "urn:nasa:pds:lab.hydrocarbon_spectra:document:n2h2202k295k"
         vid = "1.0"
