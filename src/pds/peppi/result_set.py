@@ -24,6 +24,7 @@ class ResultSet:
         self._latest_harvest_time = None
         self._page_counter = None
         self._expected_pages = None
+        self._count = None
 
     def init_new_page(self, query_string="", fields=None):
         """Queries the PDS API for the next page of results.
@@ -73,16 +74,17 @@ class ResultSet:
             kwargs["fields"] = fields
 
         start_time = time.perf_counter()
+
         results = self._products.product_list(**kwargs)
         logger.debug(f"Page Query took {time.perf_counter() - start_time} seconds")
 
         # If this is the first page fetch, calculate total number of expected pages
         # based on hit count
         if self._expected_pages is None:
-            hits = results.summary.hits
+            self._count = results.summary.hits
 
-            self._expected_pages = hits // self._PAGE_SIZE
-            if hits % self._PAGE_SIZE:
+            self._expected_pages = self._count // self._PAGE_SIZE
+            if self._count % self._PAGE_SIZE:
                 self._expected_pages += 1
 
             self._page_counter = 0

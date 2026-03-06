@@ -533,3 +533,22 @@ class QueryBuilder:
         """
         self._result_set.reset()
         self._q_string = ""
+
+    def count(self) -> int:
+        """Returns the number of products returned by this query.
+
+        This requires fetching the first page of results from the PDS Registry API to get the total hit count, but does not require iterating through all results to get a count. If the count has already been fetched during a previous iteration over results, this method will return the cached count value without making an additional API request.
+
+        """
+
+        if self._result_set._count is None:
+            # if not done yet, init a new page to get the count
+            self._result_set.init_new_page(query_string=self._q_string, fields=self._fields)
+            # reset pagination so that the next iteration starts from the beginning of the results
+            self._result_set.reset()
+        return self._result_set._count
+
+
+
+
+        return
