@@ -306,6 +306,18 @@ class ProductsTestCase(unittest.TestCase):
                 break
         assert n > 0
 
+    def test_with_doi_url(self):
+        doi_identifier = "10.17189/1522910"
+        doi_url = f"https://doi.org/{doi_identifier}"
+        n = 0
+        for p in self.products.with_doi(doi_url):
+            n += 1
+            # Verify that the identifier (not the full URL) is in the properties
+            assert doi_identifier in p.properties["pds:Citation_Information.pds:doi"]
+            if n > self.MAX_ITERATIONS:
+                break
+        assert n > 0
+
     def test_get(self):
         lid = "urn:nasa:pds:lab.hydrocarbon_spectra:document:n2h2202k295k"
         vid = "1.0"

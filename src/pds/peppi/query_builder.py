@@ -375,19 +375,36 @@ class QueryBuilder:
         return self
 
     def with_doi(self, doi: str):
-        """Filters products with a specific DOI.
+        """Adds a query clause selecting products with a specific DOI.
+
+        The DOI can be provided either as a full URL or as just the identifier.
+        If provided as a URL, the identifier will be automatically extracted.
 
         Parameters
         ----------
         doi : str
-            The DOI to filter on, e.g. 10.17189/1522910.
+            The DOI to filter on. Can be provided in either format:
+            - Full URL: "https://doi.org/10.26033/v138-0v94"
+            - Identifier only: "10.26033/v138-0v94"
 
         Returns
         -------
         This instance with the "with DOI" filter applied.
 
+        Examples
+        --------
+        >>> qb.with_doi("https://doi.org/10.26033/v138-0v94")
+        >>> qb.with_doi("10.26033/v138-0v94")  # equivalent to above
+
         """
-        clause = f'pds:Citation_Information.pds:doi eq "{doi}"'
+        # Extract the DOI identifier from URL format if needed
+        doi_identifier = doi
+        if doi.startswith(("http://", "https://")):
+            # Extract the identifier part after "doi.org/"
+            if "doi.org/" in doi:
+                doi_identifier = doi.split("doi.org/", 1)[1]
+
+        clause = f'pds:Citation_Information.pds:doi eq "{doi_identifier}"'
         self._add_clause(clause)
         return self
 
