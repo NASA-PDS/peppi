@@ -99,14 +99,6 @@ class ProductsTestCase(unittest.TestCase):
         # check that the count still matches after doing some pagination
         assert my_products.count() == first_count
 
-
-
-
-
-
-
-
-
     def test_query_modification_during_pagination(self):
         for i, p in enumerate(self.products):
             i += 1
