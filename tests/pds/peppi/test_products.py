@@ -81,7 +81,7 @@ class ProductsTestCase(unittest.TestCase):
 
         # get first product fist as a reference to make sure count does not have side effect on the query results
         for p in my_products:
-            first_product_lidivid = p.id
+            first_product_lidvid = p.id
             break
 
         # do the regular scenario of getting the count of products
@@ -93,7 +93,7 @@ class ProductsTestCase(unittest.TestCase):
 
         for p in my_products:
             # check that pagination was properly reset
-            assert first_product_lidivid == p.id
+            assert first_product_lidvid == p.id
             break
 
         # check that the count still matches after doing some pagination
