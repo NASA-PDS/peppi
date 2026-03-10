@@ -563,9 +563,5 @@ class QueryBuilder:
             self._result_set.init_new_page(query_string=self._q_string, fields=self._fields)
             # reset pagination so that the next iteration starts from the beginning of the results
             self._result_set.reset()
+
         return self._result_set._count
-
-
-
-
-        return
