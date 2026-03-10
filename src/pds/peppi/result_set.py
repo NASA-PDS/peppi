@@ -101,3 +101,4 @@ class ResultSet:
         self._expected_pages = None
         self._page_counter = None
         self._latest_harvest_time = None
+        self._count = None
