@@ -79,7 +79,7 @@ class ProductsTestCase(unittest.TestCase):
         lidvid = "urn:nasa:pds:apollo_pse:data_seed::1.0"
         my_products = self.products.of_collection(lidvid)
 
-        # get first product fist as a reference to make sure count does not have side effect on the query results
+        # get first product first as a reference to make sure count does not have side effect on the query results
         for p in my_products:
             first_product_lidivid = p.id
             break
