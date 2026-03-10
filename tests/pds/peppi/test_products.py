@@ -73,6 +73,33 @@ class ProductsTestCase(unittest.TestCase):
         df = self.products.of_collection("non_existing_collection").as_dataframe()
         assert df is None
 
+    def test_count(self):
+
+        # do a random query first
+        lidvid = "urn:nasa:pds:apollo_pse:data_seed::1.0"
+        my_products = self.products.of_collection(lidvid)
+
+        # get first product first as a reference to make sure count does not have side effect on the query results
+        for p in my_products:
+            first_product_lidvid = p.id
+            break
+
+        # do the regular scenario of getting the count of products
+        # with the previously done query
+        my_products = self.products.of_collection(lidvid)
+        first_count = my_products.count()
+
+        assert first_count == 42742
+
+        for p in my_products:
+            # check that pagination was properly reset
+            assert first_product_lidvid == p.id
+            break
+
+        # check that the count still matches after doing some pagination
+        assert my_products.count() == first_count
+
+
     def test_query_modification_during_pagination(self):
         for i, p in enumerate(self.products):
             i += 1
@@ -261,6 +288,28 @@ class ProductsTestCase(unittest.TestCase):
                 if n > self.MAX_ITERATIONS:
                     self.products.reset()
                     break
+
+    def test_with_doi(self):
+        doi = "10.17189/1522910"
+        n = 0
+        for p in self.products.with_doi(doi):
+            n += 1
+            assert doi in p.properties["pds:Citation_Information.pds:doi"]
+            if n > self.MAX_ITERATIONS:
+                break
+        assert n > 0
+
+    def test_with_doi_url(self):
+        doi_identifier = "10.17189/1522910"
+        doi_url = f"https://doi.org/{doi_identifier}"
+        n = 0
+        for p in self.products.with_doi(doi_url):
+            n += 1
+            # Verify that the identifier (not the full URL) is in the properties
+            assert doi_identifier in p.properties["pds:Citation_Information.pds:doi"]
+            if n > self.MAX_ITERATIONS:
+                break
+        assert n > 0
 
     def test_get(self):
         lid = "urn:nasa:pds:lab.hydrocarbon_spectra:document:n2h2202k295k"
