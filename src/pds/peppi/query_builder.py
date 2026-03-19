@@ -374,6 +374,41 @@ class QueryBuilder:
         self._add_clause(clause)
         return self
 
+    def with_doi(self, doi: str):
+        """Adds a query clause selecting products with a specific DOI.
+
+        The DOI can be provided either as a full URL or as just the identifier.
+        If provided as a URL, the identifier will be automatically extracted.
+
+        Parameters
+        ----------
+        doi : str
+            The DOI to filter on. Can be provided in either format:
+            - Full URL: "https://doi.org/10.26033/v138-0v94"
+            - Identifier only: "10.26033/v138-0v94"
+
+        Returns
+        -------
+        This instance with the "with DOI" filter applied.
+
+        Examples
+        --------
+        >>> qb.with_doi("https://doi.org/10.26033/v138-0v94")
+        >>> qb.with_doi("10.26033/v138-0v94")  # equivalent to above
+
+        """
+        # Extract the DOI identifier from URL format if needed
+        doi_identifier = doi
+        if doi.startswith(("http://", "https://")):
+            # Extract the identifier part after "doi.org/"
+            if "doi.org/" in doi:
+                doi_identifier = doi.split("doi.org/", 1)[1]
+
+        clause = f'pds:Citation_Information.pds:doi eq "{doi_identifier}"'
+        self._add_clause(clause)
+        return self
+
+
     def within_range(self, range_in_km: float):
         """Adds a query clause selecting products within the provided range value.
 
@@ -515,3 +550,19 @@ class QueryBuilder:
         """
         self._result_set.reset()
         self._q_string = ""
+
+    def count(self) -> int:
+        """Returns the number of products returned by this query.
+
+        This requires fetching the first page of results from the PDS Registry API to get the total hit count, but does not require iterating through all results to get a count. If the count has already been fetched during a previous iteration over results, this method will return the cached count value without making an additional API request.
+
+        """
+
+        if self._result_set._count is None:
+            # if not done yet, init a new page to get the count
+            # next() is used to advance the generator so that the function body executes and _count is set
+            next(self._result_set.init_new_page(query_string=self._q_string, fields=self._fields), None)
+            # reset pagination so that the next iteration starts from the beginning of the results
+            self._result_set.reset()
+
+        return self._result_set._count
