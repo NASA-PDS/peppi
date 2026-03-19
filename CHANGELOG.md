@@ -1,8 +1,20 @@
 # Changelog
 
-## [release/0.8.1](https://github.com/NASA-PDS/peppi/tree/release/0.8.1) (2026-03-05)
+## [0.8.0](https://github.com/NASA-PDS/peppi/tree/0.8.0) (2026-03-19)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.8.0...release/0.8.1)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.8.1...0.8.0)
+
+**Requirements:**
+
+- As a data user, I want to search for products by DOI [\#158](https://github.com/NASA-PDS/peppi/issues/158)
+- As a user, I want field discovery, search, and validation capabilities [\#150](https://github.com/NASA-PDS/peppi/issues/150)
+- As a user, I want to export results as CSV with extracted/flattened spatial columns [\#149](https://github.com/NASA-PDS/peppi/issues/149)
+- As a user, I want to search for products by DOI [\#143](https://github.com/NASA-PDS/peppi/issues/143)
+- As a LLM user, I want to have an idea of the number of result returned [\#140](https://github.com/NASA-PDS/peppi/issues/140)
+
+## [v0.8.1](https://github.com/NASA-PDS/peppi/tree/v0.8.1) (2026-03-05)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.8.0...v0.8.1)
 
 **Other closed issues:**
 
