@@ -26,7 +26,7 @@ class ContextObject:
 
         :return: the keywords to match for search query
         """
-        return self.name.lower()
+        return self.name.lower() + " " + self.code.replace("_", " ").lower()
 
 
 class ContextObjects:

@@ -65,5 +65,24 @@ class InstrumentHostsTestCase(unittest.TestCase):
        assert result[0][0].lid == "urn:nasa:pds:context:instrument_host:spacecraft.msl"
 
 
+class InstrumentsTestCase(unittest.TestCase):
+    def setUp(self) -> None:
+        context = pep.Context()
+        self.instruments = context.INSTRUMENTS
+
+    def test_instrument(self):
+        assert hasattr(self.instruments, "CIRS_CO") == True
+        assert (
+            self.instruments.CIRS_CO.name
+            == "Cassini Oribiter Composite Infrared Spectrometer"
+        )
+
+    @unittest.skip("too bad results, we need to improve the API text search capabilities.")
+    def test_search(self):
+        result = self.instruments.search("Cassini CIRS", with_scores=True)
+        assert result[0][0].lid == "urn:nasa:pds:context:instrument:instrument.cassini_orbiter.cirs"
+
+
+
 if __name__ == "__main__":
     unittest.main()
