@@ -503,6 +503,44 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
+<div class="viewcode-block" id="QueryBuilder.with_doi">
+<a class="viewcode-back" href="../../../reference.html#pds.peppi.query_builder.QueryBuilder.with_doi">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_doi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a query clause selecting products with a specific DOI.</span>
+
+<span class="sd">        The DOI can be provided either as a full URL or as just the identifier.</span>
+<span class="sd">        If provided as a URL, the identifier will be automatically extracted.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        doi : str</span>
+<span class="sd">            The DOI to filter on. Can be provided in either format:</span>
+<span class="sd">            - Full URL: &quot;https://doi.org/10.26033/v138-0v94&quot;</span>
+<span class="sd">            - Identifier only: &quot;10.26033/v138-0v94&quot;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        This instance with the &quot;with DOI&quot; filter applied.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; qb.with_doi(&quot;https://doi.org/10.26033/v138-0v94&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; qb.with_doi(&quot;10.26033/v138-0v94&quot;)  # equivalent to above</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Extract the DOI identifier from URL format if needed</span>
+        <span class="n">doi_identifier</span> <span class="o">=</span> <span class="n">doi</span>
+        <span class="k">if</span> <span class="n">doi</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="s2">&quot;https://&quot;</span><span class="p">)):</span>
+            <span class="c1"># Extract the identifier part after &quot;doi.org/&quot;</span>
+            <span class="k">if</span> <span class="s2">&quot;doi.org/&quot;</span> <span class="ow">in</span> <span class="n">doi</span><span class="p">:</span>
+                <span class="n">doi_identifier</span> <span class="o">=</span> <span class="n">doi</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;doi.org/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">clause</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;pds:Citation_Information.pds:doi eq &quot;</span><span class="si">{</span><span class="n">doi_identifier</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_clause</span><span class="p">(</span><span class="n">clause</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+
 <div class="viewcode-block" id="QueryBuilder.within_range">
 <a class="viewcode-back" href="../../../reference.html#pds.peppi.query_builder.QueryBuilder.within_range">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">within_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">range_in_km</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
@@ -664,6 +702,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="QueryBuilder.count">
+<a class="viewcode-back" href="../../../reference.html#pds.peppi.query_builder.QueryBuilder.count">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of products returned by this query.</span>
+
+<span class="sd">        This requires fetching the first page of results from the PDS Registry API to get the total hit count, but does not require iterating through all results to get a count. If the count has already been fetched during a previous iteration over results, this method will return the cached count value without making an additional API request.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="o">.</span><span class="n">_count</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># if not done yet, init a new page to get the count</span>
+            <span class="c1"># next() is used to advance the generator so that the function body executes and _count is set</span>
+            <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="o">.</span><span class="n">init_new_page</span><span class="p">(</span><span class="n">query_string</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_q_string</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="c1"># reset pagination so that the next iteration starts from the beginning of the results</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="o">.</span><span class="n">_count</span></div>
 </div>
 
 </pre></div>

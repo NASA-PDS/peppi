@@ -109,7 +109,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_products</span> <span class="o">=</span> <span class="n">AllProductsApi</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">api_client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_latest_harvest_time</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_page_counter</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_expected_pages</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_expected_pages</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="ResultSet.init_new_page">
@@ -162,16 +163,17 @@
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
 
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_products</span><span class="o">.</span><span class="n">product_list</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Page Query took </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
 
         <span class="c1"># If this is the first page fetch, calculate total number of expected pages</span>
         <span class="c1"># based on hit count</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expected_pages</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">hits</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">hits</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">hits</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_expected_pages</span> <span class="o">=</span> <span class="n">hits</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PAGE_SIZE</span>
-            <span class="k">if</span> <span class="n">hits</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PAGE_SIZE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_expected_pages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PAGE_SIZE</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PAGE_SIZE</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_expected_pages</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_page_counter</span> <span class="o">=</span> <span class="mi">0</span>
@@ -190,7 +192,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets internal pagination state to default.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_expected_pages</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_page_counter</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_latest_harvest_time</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_latest_harvest_time</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="kc">None</span></div>
 </div>
 
 </pre></div>

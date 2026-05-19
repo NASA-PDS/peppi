@@ -71,6 +71,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.bundles"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.bundles()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.collections"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.collections()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.contexts"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.contexts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.count"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.count()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.fields"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.fields()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.filter"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.filter()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.get"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.get()</span></code></a></li>
@@ -82,6 +83,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.observationals"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.observationals()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.of_collection"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.of_collection()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.reset"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.reset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.with_doi"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.with_doi()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.within_bbox"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.within_bbox()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pds.peppi.query_builder.QueryBuilder.within_range"><code class="docutils literal notranslate"><span class="pre">QueryBuilder.within_range()</span></code></a></li>
 </ul>
@@ -344,6 +346,13 @@ are included.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pds.peppi.query_builder.QueryBuilder.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/pds/peppi/query_builder.html#QueryBuilder.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.query_builder.QueryBuilder.count" title="Link to this definition"></a></dt>
+<dd><p>Returns the number of products returned by this query.</p>
+<p>This requires fetching the first page of results from the PDS Registry API to get the total hit count, but does not require iterating through all results to get a count. If the count has already been fetched during a previous iteration over results, this method will return the cached count value without making an additional API request.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pds.peppi.query_builder.QueryBuilder.fields">
 <span class="sig-name descname"><span class="pre">fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/query_builder.html#QueryBuilder.fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.query_builder.QueryBuilder.fields" title="Link to this definition"></a></dt>
 <dd><p>Reduce the list of fields returned, for improved efficiency.</p>
@@ -510,6 +519,34 @@ through the results of a previous query.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pds.peppi.query_builder.QueryBuilder.with_doi">
+<span class="sig-name descname"><span class="pre">with_doi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/query_builder.html#QueryBuilder.with_doi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.query_builder.QueryBuilder.with_doi" title="Link to this definition"></a></dt>
+<dd><p>Adds a query clause selecting products with a specific DOI.</p>
+<p>The DOI can be provided either as a full URL or as just the identifier.
+If provided as a URL, the identifier will be automatically extracted.</p>
+<section id="id29">
+<h2>Parameters<a class="headerlink" href="#id29" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>doi<span class="classifier">str</span></dt><dd><p>The DOI to filter on. Can be provided in either format:
+- Full URL: “<a class="reference external" href="https://doi.org/10.26033/v138-0v94">https://doi.org/10.26033/v138-0v94</a>”
+- Identifier only: “10.26033/v138-0v94”</p>
+</dd>
+</dl>
+</section>
+<section id="id30">
+<h2>Returns<a class="headerlink" href="#id30" title="Link to this heading"></a></h2>
+<p>This instance with the “with DOI” filter applied.</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qb</span><span class="o">.</span><span class="n">with_doi</span><span class="p">(</span><span class="s2">&quot;https://doi.org/10.26033/v138-0v94&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qb</span><span class="o">.</span><span class="n">with_doi</span><span class="p">(</span><span class="s2">&quot;10.26033/v138-0v94&quot;</span><span class="p">)</span>  <span class="c1"># equivalent to above</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pds.peppi.query_builder.QueryBuilder.within_bbox">
 <span class="sig-name descname"><span class="pre">within_bbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/query_builder.html#QueryBuilder.within_bbox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.query_builder.QueryBuilder.within_bbox" title="Link to this definition"></a></dt>
 <dd><p>Adds a query clause selecting products which fall within the bounds of the provided bounding box.</p>
@@ -518,8 +555,8 @@ through the results of a previous query.</p>
 <p>This method should be implemented by product-specific inheritors that
 support the notion of bounding box to filter results by.</p>
 </section>
-<section id="id29">
-<h2>Parameters<a class="headerlink" href="#id29" title="Link to this heading"></a></h2>
+<section id="id31">
+<h2>Parameters<a class="headerlink" href="#id31" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>lat_min<span class="classifier">float</span></dt><dd><p>Minimum latitude boundary.</p>
 </dd>
@@ -541,20 +578,20 @@ support the notion of bounding box to filter results by.</p>
 <dt class="sig sig-object py" id="pds.peppi.query_builder.QueryBuilder.within_range">
 <span class="sig-name descname"><span class="pre">within_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">range_in_km</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/query_builder.html#QueryBuilder.within_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.query_builder.QueryBuilder.within_range" title="Link to this definition"></a></dt>
 <dd><p>Adds a query clause selecting products within the provided range value.</p>
-<section id="id30">
-<h2>Notes<a class="headerlink" href="#id30" title="Link to this heading"></a></h2>
+<section id="id32">
+<h2>Notes<a class="headerlink" href="#id32" title="Link to this heading"></a></h2>
 <p>This method should be implemented by product-specific inheritors that
 support the notion of range to a given target.</p>
 </section>
-<section id="id31">
-<h2>Parameters<a class="headerlink" href="#id31" title="Link to this heading"></a></h2>
+<section id="id33">
+<h2>Parameters<a class="headerlink" href="#id33" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>range_in_km<span class="classifier">float</span></dt><dd><p>The range in kilometers to use with the query.</p>
 </dd>
 </dl>
 </section>
-<section id="id32">
-<h2>Raises<a class="headerlink" href="#id32" title="Link to this heading"></a></h2>
+<section id="id34">
+<h2>Raises<a class="headerlink" href="#id34" title="Link to this heading"></a></h2>
 <p>NotImplementedError</p>
 </section>
 </dd></dl>
@@ -586,8 +623,8 @@ support the notion of range to a given target.</p>
 <p>Any query clauses associated to this Products instance are included here.</p>
 <p>If there are results remaining from the previously acquired page,
 they are yieled on each subsequent call to this method.</p>
-<section id="id33">
-<h2>Parameters<a class="headerlink" href="#id33" title="Link to this heading"></a></h2>
+<section id="id35">
+<h2>Parameters<a class="headerlink" href="#id35" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>query_string<span class="classifier">str, optional</span></dt><dd><p>The query string to submit to the PDS API.</p>
 </dd>
@@ -595,16 +632,16 @@ they are yieled on each subsequent call to this method.</p>
 </dd>
 </dl>
 </section>
-<section id="id34">
-<h2>Yields<a class="headerlink" href="#id34" title="Link to this heading"></a></h2>
+<section id="id36">
+<h2>Yields<a class="headerlink" href="#id36" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>product<span class="classifier">pds.api_client.models.pds_product.PDSProduct</span></dt><dd><p>The next product within the current page fetched from the PDS Registry
 API.</p>
 </dd>
 </dl>
 </section>
-<section id="id35">
-<h2>Raises<a class="headerlink" href="#id35" title="Link to this heading"></a></h2>
+<section id="id37">
+<h2>Raises<a class="headerlink" href="#id37" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>StopIteration</dt><dd><p>Once all available pages of query results have been exhausted.</p>
 </dd>
@@ -630,8 +667,8 @@ API.</p>
 <dt class="sig sig-object py" id="pds.peppi.orex.products.OrexProducts.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pds.peppi.client.PDSRegistryClient" title="pds.peppi.client.PDSRegistryClient"><span class="pre">PDSRegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pds/peppi/orex/products.html#OrexProducts.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pds.peppi.orex.products.OrexProducts.__init__" title="Link to this definition"></a></dt>
 <dd><p>Creates a new instance of OrexProducts.</p>
-<section id="id36">
-<h2>Parameters<a class="headerlink" href="#id36" title="Link to this heading"></a></h2>
+<section id="id38">
+<h2>Parameters<a class="headerlink" href="#id38" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>client<span class="classifier">PDSRegistryClient</span></dt><dd><p>Client defining the connection with the PDS Search API.</p>
 </dd>
