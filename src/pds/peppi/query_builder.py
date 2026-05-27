@@ -559,10 +559,9 @@ class QueryBuilder:
         """
 
         if self._result_set._count is None:
-            # if not done yet, init a new page to get the count
-            # next() is used to advance the generator so that the function body executes and _count is set
             next(self._result_set.init_new_page(query_string=self._q_string, fields=self._fields), None)
-            # reset pagination so that the next iteration starts from the beginning of the results
+            count = self._result_set._count
             self._result_set.reset()
+            return count
 
         return self._result_set._count
