@@ -456,20 +456,29 @@ class QueryBuilder:
         raise NotImplementedError("within_bbox is not available for base QueryBuilder")
 
     def get(self, identifier: str):
-        """Adds a query clause selecting the product with a LIDVID matching the provided value.
+        """Adds a query clause selecting product(s) matching the provided identifier.
 
         Parameters
         ----------
         identifier : str
-            LIDVID of the product to filter for.
+            Product identifier to filter for. Supports:
+            - LID (for example: ``urn:nasa:pds:context:target:planet.mars``)
+            - LIDVID (for example: ``urn:nasa:pds:context:target:planet.mars::1.0``)
+            - DOI (for example: ``10.17189/1522910``)
 
         Returns
         -------
-        This instance with the "LIDVID identifier" filter applied.
+        This instance with the identifier filter applied.
 
         """
+        if identifier.startswith("10."):
+            return self.with_doi(identifier)
+
         # Note: use of "like" is currently broken in the API when combined with other clauses
-        self._add_clause(f'lidvid eq "{identifier}"', logical_join="or")
+        if identifier.startswith("urn:") and "::" not in identifier:
+            self._add_clause(f'lid eq "{identifier}"', logical_join="or")
+        else:
+            self._add_clause(f'lidvid eq "{identifier}"', logical_join="or")
         return self
 
     def fields(self, fields: list):
