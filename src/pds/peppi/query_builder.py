@@ -3,6 +3,7 @@
 Contains all the methods use to elaborate the PDS4 Information Model queries through the PDS Search API.
 """
 import logging
+import re
 from datetime import datetime
 from functools import cache
 from functools import partial
@@ -19,6 +20,8 @@ logger = logging.getLogger(__name__)
 
 PROCESSING_LEVELS = Literal["telemetry", "raw", "partially-processed", "calibrated", "derived"]
 """Processing level values that can be used with has_processing_level()"""
+
+DOI_REGEX = re.compile(r"^10\.\d{4,9}/[-._;()/:A-Z0-9]+$", re.IGNORECASE)
 
 
 class QueryBuilder:
@@ -470,16 +473,30 @@ class QueryBuilder:
         -------
         This instance with the identifier filter applied.
 
+        Raises
+        ------
+        ValueError
+            If the identifier is not a valid LID, LIDVID, or DOI.
+
         """
-        if identifier.startswith("10."):
+        if DOI_REGEX.match(identifier):
             return self.with_doi(identifier)
 
         # Note: use of "like" is currently broken in the API when combined with other clauses
-        if identifier.startswith("urn:") and "::" not in identifier:
-            self._add_clause(f'lid eq "{identifier}"', logical_join="or")
-        else:
+        if identifier.startswith("urn:") and "::" in identifier:
+            lid, vid = identifier.rsplit("::", 1)
+            if not lid or not vid:
+                raise ValueError(
+                    f'Invalid identifier "{identifier}". Expected a valid LID, LIDVID, or DOI.'
+                )
             self._add_clause(f'lidvid eq "{identifier}"', logical_join="or")
-        return self
+            return self
+
+        if identifier.startswith("urn:"):
+            self._add_clause(f'lid eq "{identifier}"', logical_join="or")
+            return self
+
+        raise ValueError(f'Invalid identifier "{identifier}". Expected a valid LID, LIDVID, or DOI.')
 
     def fields(self, fields: list):
         """Reduce the list of fields returned, for improved efficiency."""

@@ -335,6 +335,14 @@ class ProductsTestCase(unittest.TestCase):
         doi = "10.17189/1522910"
         assert str(self.products.get(doi)) == f'(pds:Citation_Information.pds:doi eq "{doi}")'
 
+    def test_get_raises_for_invalid_doi(self):
+        with self.assertRaises(ValueError):
+            self.products.get("10.12/not-a-valid-doi")
+
+    def test_get_raises_for_unknown_identifier(self):
+        with self.assertRaises(ValueError):
+            self.products.get("not-a-valid-identifier")
+
     def test_filter(self):
         node_name = "PDS_ATM"
         clause = f'ops:Harvest_Info.ops:node_name eq "{node_name}"'
