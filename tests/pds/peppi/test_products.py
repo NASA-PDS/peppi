@@ -99,6 +99,12 @@ class ProductsTestCase(unittest.TestCase):
         # check that the count still matches after doing some pagination
         assert my_products.count() == first_count
 
+    def test_count_returns_integer(self):
+        """Regression test for #168: count() returned None because reset() was called before the return value was captured."""
+        count = self.products.count()
+        assert count is not None
+        assert isinstance(count, int)
+        assert count > 0
 
     def test_query_modification_during_pagination(self):
         for i, p in enumerate(self.products):
