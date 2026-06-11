@@ -1,8 +1,16 @@
 # Changelog
 
-## [release/0.9.0](https://github.com/NASA-PDS/peppi/tree/release/0.9.0) (2026-03-19)
+## [«unknown»](https://github.com/NASA-PDS/peppi/tree/«unknown») (2026-06-11)
 
-[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.8.1...release/0.9.0)
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.9.0...«unknown»)
+
+**Defects:**
+
+- count\(\) does not return the total hit count [\#168](https://github.com/NASA-PDS/peppi/issues/168) [[s.medium](https://github.com/NASA-PDS/peppi/labels/s.medium)]
+
+## [v0.9.0](https://github.com/NASA-PDS/peppi/tree/v0.9.0) (2026-05-19)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.8.1...v0.9.0)
 
 **Requirements:**
 
