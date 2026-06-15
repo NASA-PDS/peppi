@@ -1,8 +1,12 @@
 # Changelog
 
-## [«unknown»](https://github.com/NASA-PDS/peppi/tree/«unknown») (2026-06-11)
+## [«unknown»](https://github.com/NASA-PDS/peppi/tree/«unknown») (2026-06-15)
 
 [Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.9.0...«unknown»)
+
+**Requirements:**
+
+- As a data user, I want to search for products by DOI [\#158](https://github.com/NASA-PDS/peppi/issues/158)
 
 **Defects:**
 
