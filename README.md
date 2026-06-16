@@ -5,32 +5,82 @@ Access planetary datasets from the Planetary Data System (PDS)
 
 ## Prerequisites
 
-- Python 3.13 or newer
+- Python 3.12 or newer
 
 
 ## User Quickstart
 
 See https://nasa-pds.github.io/peppi/
 
-### Use as MCP server with Claude (alpha)
 
-A specific command line can be used to connect peppi (and the PDS API to an LLM), this has been tested with Claude.
+### Use as an MCP server with an LLM
 
-Use command: `pds-peppi-mcp-server`
+#### Claude Desktop
 
-Connect it to Claude Desktop, for example, as described in https://modelcontextprotocol.io/quickstart/user#installing-the-filesystem-server, using the following configuration:
+[Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro) (MCP) servers enable natural language–based tools (such as [Claude Desktop](https://claude.ai/)) to interact with the PDS Registry through Peppi.
 
+Two commands enable the connection of AI apps with Peppi using the Model Context Protocol (MCP) using the MCP `stdio` transport:
+
+- `pds-peppi-qb-mcp` — a comprehensive MCP server that supports a wide range of query types for accessing PDS data using the Peppi "Query Builder" (QB)
+- `pds-peppi-mcp-server` — a proof-of-concept MCP server that provides access to a limited subset of Peppi features (such as searches for instrument hosts and targets). It reuses the docstrings from Peppi methods, which reduces the integration overhead for each method.
+
+Select one command and connect it to your LLM (such as Claude Desktop), for example, as described in [these instructions](https://modelcontextprotocol.io/quickstart/user#installing-the-filesystem-server); for example to connect `pds-peppi-qb-mcp` to Claude Desktop, use a configuration similar to the following:
+```json
     {
       "mcpServers": {
         "pds_peppi": {
-          "command": "{whereever the package is installed}/bin/pds-peppi-mcp-server",
+          "command": "{whereever the package is installed}/bin/pds-peppi-qb-mcp",
           "args": []
          }
       }
     }
+```
+Once you've started Claude Desktop, you can enter requests like
 
-You can use a prompt like: "Can you find the URI for the planet Jupiter in the PDS ?"
+- "Find Mars data"
+- "Find calibrated Mars data"
+- "Find Mercury data from the year 2020 only"
+- Etc.
 
+👉 **Note:** On macOS, "sandboxing" may interfere with Claude's ability to run either MCP server described above. If Claude's MCP log shows "Operation not permitted", try moving the `peppi` folder or the Python virtual environment to the `$HOME` directory or other location _not_ in `Documents`, `Downloads`, or `Desktop`.
+
+
+#### Claude code
+
+To use the peppi MCP service with Claude code, you first need to start the MCP server as an HTTP API:
+
+    pds-peppi-qb-mcp --transport http
+
+Then connect it to you claude code configuration, for example for a server started on localhost port 8000, runn the following command:
+
+    claude mcp add --transport http peppi http://127.0.0.1:8000/mcp
+
+Then start your claude session:
+
+    claude
+
+Whenever the PEPPI MCP tool is used, you will get prompted, something like:
+
+    ❯ What PDS dataset target the planet Mars ?
+
+     ⏺ I'll search the Planetary Data System (PDS) for datasets related to Mars.
+
+     ⏺ peppi - querypdsdata (MCP)(query: "has_target(\"Mars\").as_dataframe(50)")
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+     Tool use
+
+       peppi - querypdsdata(query: "has_target(\"Mars\").as_dataframe(50)") (MCP)
+       Query PDS data using natural language.
+
+       This tool allows you to query the Planetary Data System (PDS) using natural language.…
+
+     Do you want to proceed?
+     ❯ 1. Yes
+       2. Yes, and don't ask again for peppi - querypdsdata commands in /Users/loubrieu/PycharmProjects/updart
+       3. No
+`
+You can say yes to proceed and get the results.
 
 ## Code of Conduct
 

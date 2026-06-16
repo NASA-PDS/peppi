@@ -3,6 +3,7 @@
 Contains all the methods use to elaborate the PDS4 Information Model queries through the PDS Search API.
 """
 import logging
+import re
 from datetime import datetime
 from functools import cache
 from functools import partial
@@ -19,6 +20,8 @@ logger = logging.getLogger(__name__)
 
 PROCESSING_LEVELS = Literal["telemetry", "raw", "partially-processed", "calibrated", "derived"]
 """Processing level values that can be used with has_processing_level()"""
+
+DOI_REGEX = re.compile(r"^10\.\d{4,9}/[-._;()/:A-Z0-9]+$", re.IGNORECASE)
 
 
 class QueryBuilder:
@@ -374,6 +377,41 @@ class QueryBuilder:
         self._add_clause(clause)
         return self
 
+    def with_doi(self, doi: str):
+        """Adds a query clause selecting products with a specific DOI.
+
+        The DOI can be provided either as a full URL or as just the identifier.
+        If provided as a URL, the identifier will be automatically extracted.
+
+        Parameters
+        ----------
+        doi : str
+            The DOI to filter on. Can be provided in either format:
+            - Full URL: "https://doi.org/10.26033/v138-0v94"
+            - Identifier only: "10.26033/v138-0v94"
+
+        Returns
+        -------
+        This instance with the "with DOI" filter applied.
+
+        Examples
+        --------
+        >>> qb.with_doi("https://doi.org/10.26033/v138-0v94")
+        >>> qb.with_doi("10.26033/v138-0v94")  # equivalent to above
+
+        """
+        # Extract the DOI identifier from URL format if needed
+        doi_identifier = doi
+        if doi.startswith(("http://", "https://")):
+            # Extract the identifier part after "doi.org/"
+            if "doi.org/" in doi:
+                doi_identifier = doi.split("doi.org/", 1)[1]
+
+        clause = f'pds:Citation_Information.pds:doi eq "{doi_identifier}"'
+        self._add_clause(clause)
+        return self
+
+
     def within_range(self, range_in_km: float):
         """Adds a query clause selecting products within the provided range value.
 
@@ -421,21 +459,44 @@ class QueryBuilder:
         raise NotImplementedError("within_bbox is not available for base QueryBuilder")
 
     def get(self, identifier: str):
-        """Adds a query clause selecting the product with a LIDVID matching the provided value.
+        """Adds a query clause selecting product(s) matching the provided identifier.
 
         Parameters
         ----------
         identifier : str
-            LIDVID of the product to filter for.
+            Product identifier to filter for. Supports:
+            - LID (for example: ``urn:nasa:pds:context:target:planet.mars``)
+            - LIDVID (for example: ``urn:nasa:pds:context:target:planet.mars::1.0``)
+            - DOI (for example: ``10.17189/1522910``)
 
         Returns
         -------
-        This instance with the "LIDVID identifier" filter applied.
+        This instance with the identifier filter applied.
+
+        Raises
+        ------
+        ValueError
+            If the identifier is not a valid LID, LIDVID, or DOI.
 
         """
+        if DOI_REGEX.match(identifier):
+            return self.with_doi(identifier)
+
         # Note: use of "like" is currently broken in the API when combined with other clauses
-        self._add_clause(f'lidvid eq "{identifier}"', logical_join="or")
-        return self
+        if identifier.startswith("urn:") and "::" in identifier:
+            lid, vid = identifier.rsplit("::", 1)
+            if not lid or not vid:
+                raise ValueError(
+                    f'Invalid identifier "{identifier}". Expected a valid LID, LIDVID, or DOI.'
+                )
+            self._add_clause(f'lidvid eq "{identifier}"', logical_join="or")
+            return self
+
+        if identifier.startswith("urn:"):
+            self._add_clause(f'lid eq "{identifier}"', logical_join="or")
+            return self
+
+        raise ValueError(f'Invalid identifier "{identifier}". Expected a valid LID, LIDVID, or DOI.')
 
     def fields(self, fields: list):
         """Reduce the list of fields returned, for improved efficiency."""
@@ -515,3 +576,18 @@ class QueryBuilder:
         """
         self._result_set.reset()
         self._q_string = ""
+
+    def count(self) -> int:
+        """Returns the number of products returned by this query.
+
+        This requires fetching the first page of results from the PDS Registry API to get the total hit count, but does not require iterating through all results to get a count. If the count has already been fetched during a previous iteration over results, this method will return the cached count value without making an additional API request.
+
+        """
+
+        if self._result_set._count is None:
+            next(self._result_set.init_new_page(query_string=self._q_string, fields=self._fields), None)
+            count = self._result_set._count
+            self._result_set.reset()
+            return count
+
+        return self._result_set._count

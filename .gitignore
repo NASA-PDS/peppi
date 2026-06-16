@@ -144,3 +144,6 @@ terraform.rc
 # Sphinx output
 docs/html/
 docs/build/
+
+# locally store token
+*.token
