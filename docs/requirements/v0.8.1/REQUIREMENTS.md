@@ -136,3 +136,67 @@ This requirement is not impacted by the current version
 
 
 This requirement is not impacted by the current version
+## As a user, I want to search for products by DOI ([#143](https://github.com/NASA-PDS/peppi/issues/143)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to perform geospatial searches with configurable spatial fields ([#144](https://github.com/NASA-PDS/peppi/issues/144)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to use relative time and date-math in queries ([#145](https://github.com/NASA-PDS/peppi/issues/145)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want systematic target synonym and alias expansion ([#146](https://github.com/NASA-PDS/peppi/issues/146)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to export query results as GeoJSON ([#147](https://github.com/NASA-PDS/peppi/issues/147)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to export query results as Parquet files ([#148](https://github.com/NASA-PDS/peppi/issues/148)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want to export results as CSV with extracted/flattened spatial columns ([#149](https://github.com/NASA-PDS/peppi/issues/149)) 
+
+
+This requirement is not impacted by the current version
+## As a user, I want field discovery, search, and validation capabilities ([#150](https://github.com/NASA-PDS/peppi/issues/150)) 
+
+
+This requirement is not impacted by the current version
+## As a data user, I want to perform geospatial searches with configurable spatial fields ([#151](https://github.com/NASA-PDS/peppi/issues/151)) 
+
+
+This requirement is not impacted by the current version
+## As a data user, I want to use relative time and date-math expressions in queries ([#152](https://github.com/NASA-PDS/peppi/issues/152)) 
+
+
+This requirement is not impacted by the current version
+## As a data user, I want systematic target synonym and alias expansion ([#153](https://github.com/NASA-PDS/peppi/issues/153)) 
+
+
+This requirement is not impacted by the current version
+## As a data user, I want to export query results as GeoJSON ([#154](https://github.com/NASA-PDS/peppi/issues/154)) 
+
+
+This requirement is not impacted by the current version
+## As a data user, I want to export query results as Parquet files ([#155](https://github.com/NASA-PDS/peppi/issues/155)) 
+
+
+This requirement is not impacted by the current version
+## As a data user, I want to export results as CSV with extracted spatial columns ([#156](https://github.com/NASA-PDS/peppi/issues/156)) 
+
+
+This requirement is not impacted by the current version
+## As a data user, I want field discovery, search, and validation capabilities ([#157](https://github.com/NASA-PDS/peppi/issues/157)) 
+
+
+This requirement is not impacted by the current version
+## As a data user, I want to search for products by DOI ([#158](https://github.com/NASA-PDS/peppi/issues/158)) 
+
+
+This requirement is not impacted by the current version
