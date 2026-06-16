@@ -1,5 +1,36 @@
 # Changelog
 
+## [«unknown»](https://github.com/NASA-PDS/peppi/tree/«unknown») (2026-06-15)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.9.0...«unknown»)
+
+**Requirements:**
+
+- As a data user, I want to search for products by DOI [\#158](https://github.com/NASA-PDS/peppi/issues/158)
+
+**Defects:**
+
+- count\(\) does not return the total hit count [\#168](https://github.com/NASA-PDS/peppi/issues/168) [[s.medium](https://github.com/NASA-PDS/peppi/labels/s.medium)]
+
+## [v0.9.0](https://github.com/NASA-PDS/peppi/tree/v0.9.0) (2026-05-19)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.8.1...v0.9.0)
+
+**Requirements:**
+
+- As a user, I want field discovery, search, and validation capabilities [\#150](https://github.com/NASA-PDS/peppi/issues/150)
+- As a user, I want to export results as CSV with extracted/flattened spatial columns [\#149](https://github.com/NASA-PDS/peppi/issues/149)
+- As a user, I want to search for products by DOI [\#143](https://github.com/NASA-PDS/peppi/issues/143)
+- As a LLM user, I want to have an idea of the number of result returned [\#140](https://github.com/NASA-PDS/peppi/issues/140)
+
+## [v0.8.1](https://github.com/NASA-PDS/peppi/tree/v0.8.1) (2026-03-05)
+
+[Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.8.0...v0.8.1)
+
+**Other closed issues:**
+
+- MCP comprehensive server: optimize the overhead for new query builder method integration. [\#134](https://github.com/NASA-PDS/peppi/issues/134)
+
 ## [v0.8.0](https://github.com/NASA-PDS/peppi/tree/v0.8.0) (2025-11-06)
 
 [Full Changelog](https://github.com/NASA-PDS/peppi/compare/v0.7.0...v0.8.0)
